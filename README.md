@@ -2,7 +2,7 @@
 
 Present histograms (bars!) of images in a directory, including extras such as exif data from the camera.
 
-Electon based app which runs on node.js.
+Electron based app which runs on node.js.
 
 ## status - !in development!
 
