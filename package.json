@@ -4,10 +4,13 @@
   "description": "Present histograms (bars!) of images in a directory, including extra such as exif data from the camera.",
   "keywords": [
     "image",
-    "photo",
     "histogram",
-    "viewer",
-    "image viewer"
+    "image viewer",
+    "image-viewer",
+    "photo",
+    "photo viewer",
+    "photo-viewer",
+    "viewer"
   ],
   "main": "dist/chocolate-bars.umd.js",
   "module": "dist/chocolate-bars.es5.js",
