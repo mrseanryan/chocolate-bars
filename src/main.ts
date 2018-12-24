@@ -1,28 +1,64 @@
 import * as clc from "cli-color";
 
 import { ChocolateBars } from "./bars/ChocolateBars";
+import { ImageResizer } from "./bars/files/ImageResizer";
+import { ConsoleOutputter } from "./utils/outputter/ConsoleOutputter";
+import { ImageFinder } from "./bars/files/ImageFinder";
+import { ShrinkResultSerDe } from "./utils/ShrinkResultSerDe";
 
 const argv = require("yargs")
-    .usage("Usage: $0 <path to image directory>")
+    .usage("Usage: $0 <path to image directory> [--shrink]")
     .demandCommand(1).argv;
 
 const imageInputDir = argv._[0];
+
+const shrink = argv.shrink;
 
 const errorStyle = clc.black.bgRed;
 const normalStyle = clc.green;
 const successStyle = clc.black.bgGreen;
 const warningStyle = clc.black.bgYellow;
 
-console.log(normalStyle(`Get chocolate bars of images at '${imageInputDir}' ...`));
+const outputter = new ConsoleOutputter();
 
-try {
-    const result = ChocolateBars.processDirectorySync(imageInputDir);
+if (!!shrink) {
+    shrinkImagesAt(imageInputDir);
+} else {
+    getChocalateBarsAt(imageInputDir);
+}
 
-    if (result.isOk) {
-        console.log(successStyle(result));
-    } else {
-        console.warn(warningStyle(result));
+function shrinkImagesAt(imageInputDir: string) {
+    console.log(normalStyle(`*shrink* images at ${imageInputDir} ...`));
+
+    ImageFinder.findImagesInDirectory(imageInputDir, outputter)
+        .then(files => {
+            files.forEach(file => {
+                ImageResizer.resizeImage(file, outputter)
+                    .then(smallerFilePath => {
+                        ShrinkResultSerDe.write(file, smallerFilePath, outputter);
+                    })
+                    .catch(error => outputter.error(error));
+            });
+        })
+        .catch(error => outputter.error(error));
+}
+
+function getChocalateBarsAt(imageInputDir: string) {
+    console.log(normalStyle(`Get chocolate bars of images at '${imageInputDir}' ...`));
+
+    try {
+        ChocolateBars.processDirectory(imageInputDir, outputter)
+            .then(result => {
+                if (result.isOk) {
+                    console.log(successStyle(result));
+                } else {
+                    console.warn(warningStyle(result));
+                }
+            })
+            .catch(error => {
+                throw error;
+            });
+    } catch (error) {
+        console.error(errorStyle("[error]", error));
     }
-} catch (error) {
-    console.error(errorStyle("[error]", error));
 }

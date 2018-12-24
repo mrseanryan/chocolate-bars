@@ -1,6 +1,7 @@
 import * as jquery from "jquery";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { ChocolateBars } from "../bars/ChocolateBars";
+import { ImageDetail } from "../bars/model/ImageDetail";
 const remote = require("electron").remote;
 
 // This file is required by the index.html file and will
@@ -21,10 +22,12 @@ window.onload = () => {
             // TODO xxx display text results
 
             result.imageDetails.forEach(image => {
-                jquery(`#content`).prepend(`<img src="${image.imagePath}" />`);
+                jquery(`#content`).prepend(renderImage(image));
             });
         })
         .catch(error => outputter.error(error));
-
-    jquery(`#content`).text(`hello from TS! - args are '${JSON.stringify(args, null, 2)}'`);
 };
+
+function renderImage(image: ImageDetail): string {
+    return `<img src="${image.smallerFilepath}" width="250px" />`;
+}

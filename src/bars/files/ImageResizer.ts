@@ -64,7 +64,7 @@ export namespace ImageResizer {
                             cb(null, sharpError);
                         }
 
-                        return outPath;
+                        cb(outPath, null);
                     });
             }
         });
