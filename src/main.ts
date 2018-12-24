@@ -21,7 +21,7 @@ const warningStyle = clc.black.bgYellow;
 
 const outputter = new ConsoleOutputter();
 
-if (!!shrink) {
+if (shrink) {
     shrinkImagesAt();
 } else {
     getChocolateBarsAt();
