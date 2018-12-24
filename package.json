@@ -44,7 +44,7 @@
         "build:static:images": "cp static/electronApp/images/* ./dist/lib/electronApp",
         "build-and-test": "yarn build:minimal && yarn test",
         "log:dist": "ls dist -lR",
-        "preinstall": "npm run build:extra",
+        "preinstall": "npm run build:cli",
         "start:rollup": "rollup -c rollup.config.ts -w",
         "start": "npm run build:minimal && electron ./dist/lib/electronApp/appMain.js",
         "start:watch": "yarn build:minimal:watch",
