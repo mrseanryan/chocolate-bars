@@ -1,6 +1,6 @@
 import * as clc from "cli-color";
 
-import { ChocolateBar } from "./bar/ChocolateBar";
+import { ChocolateBars } from "./bars/ChocolateBars";
 
 const argv = require("yargs")
     .usage("Usage: $0 <path to image directory>")
@@ -16,7 +16,7 @@ const warningStyle = clc.black.bgYellow;
 console.log(normalStyle(`Get chocolate bars of images at '${pathToImageDir}' ...`));
 
 try {
-    const result = ChocolateBar.processDirectory(pathToImageDir);
+    const result = ChocolateBars.processDirectory(pathToImageDir);
 
     if (result.isOk) {
         console.log(successStyle(result));
