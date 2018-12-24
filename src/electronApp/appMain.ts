@@ -7,11 +7,17 @@ function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
         height: 600,
-        width: 800
+        width: 800,
+        webPreferences: {
+            nodeIntegration: true,
+            webSecurity: false
+        }
     });
 
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, "./index.html"));
+
+    (global as any)["sharedObject"] = { prop1: process.argv };
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
