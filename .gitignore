@@ -10,3 +10,6 @@ compiled
 .awcache
 .rpt2_cache
 docs
+
+# using yarn - so no need for this file: (do need `npm i` initially, to install hooks)
+package-lock.json
