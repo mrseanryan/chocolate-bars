@@ -7,6 +7,6 @@ export namespace ChocolateBars {
 
         return {
             isOk: true
-        }
+        };
     }
 }
