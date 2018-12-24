@@ -9,7 +9,6 @@ Electron based app which runs on node.js.
 chocolate-bars is in ongoing development (Linux, Mac, Windows) following semantic versioning.
 
 [![Travis](https://img.shields.io/travis/mrseanryan/chocolate-bars.svg)](https://travis-ci.org/mrseanryan/chocolate-bars)
-[![Coveralls](https://img.shields.io/coveralls/mrseanryan/chocolate-bars.svg)](https://coveralls.io/github/mrseanryan/chocolate-bars)
 [![node](https://img.shields.io/node/v/chocolate-bars.svg)](https://nodejs.org)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/mrseanryan/chocolate-bars.svg)](https://greenkeeper.io/)
