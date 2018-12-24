@@ -6,11 +6,11 @@ let mainWindow: Electron.BrowserWindow | null = null;
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
+        icon: path.join(__dirname, "./chocolate-bar-straightened-trans.png"),
         height: 600,
         width: 800,
         webPreferences: {
-            nodeIntegration: true,
-            webSecurity: false
+            nodeIntegration: true
         }
     });
 
