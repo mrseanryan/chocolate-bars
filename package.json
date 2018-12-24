@@ -1,5 +1,5 @@
 {
-  "name": "chocolate-bar",
+  "name": "chocolate-bars",
   "version": "0.0.0-semantically-released",
   "description": "Present histograms (bars!) of images in a directory, including extra such as exif data from the camera.",
   "keywords": [
@@ -9,19 +9,19 @@
     "viewer",
     "image viewer"
   ],
-  "main": "dist/chocolate-bar.umd.js",
-  "module": "dist/chocolate-bar.es5.js",
-  "typings": "dist/types/chocolate-bar.d.ts",
+  "main": "dist/chocolate-bars.umd.js",
+  "module": "dist/chocolate-bars.es5.js",
+  "typings": "dist/types/chocolate-bars.d.ts",
   "files": [
     "dist"
   ],
   "author": "str <str_ie@yahoo.co.uk>",
   "bin": {
-    "chocolate-bar": "./dist/lib/cli.js"
+    "chocolate-bars": "./dist/lib/cli.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mrseanryan/chocolate-bar.git"
+    "url": "https://github.com/mrseanryan/chocolate-bars.git"
   },
   "license": "MIT",
   "engines": {

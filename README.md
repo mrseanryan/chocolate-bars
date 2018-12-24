@@ -1,4 +1,4 @@
-# :chocolate_bar: chocolate-bar readme
+# :chocolate_bar: chocolate-bars readme
 
 Present histograms (bars!) of images in a directory, including extra such as exif data from the camera.
 
@@ -7,18 +7,18 @@ Electon based app which runs on node.js.
 
 ## status - !in development!
 
-chocolate-bar is in ongoing development (Linux, Mac, Windows) following semantic versioning.
+chocolate-bars is in ongoing development (Linux, Mac, Windows) following semantic versioning.
 
-[![Travis](https://img.shields.io/travis/mrseanryan/chocolate-bar.svg)](https://travis-ci.org/mrseanryan/chocolate-bar)
-[![Coveralls](https://img.shields.io/coveralls/mrseanryan/chocolate-bar.svg)](https://coveralls.io/github/mrseanryan/chocolate-bar)
-[![node](https://img.shields.io/node/v/chocolate-bar.svg)](https://nodejs.org)
+[![Travis](https://img.shields.io/travis/mrseanryan/chocolate-bars.svg)](https://travis-ci.org/mrseanryan/chocolate-bars)
+[![Coveralls](https://img.shields.io/coveralls/mrseanryan/chocolate-bars.svg)](https://coveralls.io/github/mrseanryan/chocolate-bars)
+[![node](https://img.shields.io/node/v/chocolate-bars.svg)](https://nodejs.org)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/mrseanryan/chocolate-bar.svg)](https://greenkeeper.io/)
-[![Dependencies](https://david-dm.org/mrseanryan/chocolate-bar.svg)](https://david-dm.org/mrseanryan/chocolate-bar)
-[![Dev Dependencies](https://david-dm.org/mrseanryan/chocolate-bar/dev-status.svg)](https://david-dm.org/mrseanryan/chocolate-bar?type=dev)
+[![Greenkeeper badge](https://badges.greenkeeper.io/mrseanryan/chocolate-bars.svg)](https://greenkeeper.io/)
+[![Dependencies](https://david-dm.org/mrseanryan/chocolate-bars.svg)](https://david-dm.org/mrseanryan/chocolate-bars)
+[![Dev Dependencies](https://david-dm.org/mrseanryan/chocolate-bars/dev-status.svg)](https://david-dm.org/mrseanryan/chocolate-bars?type=dev)
 
-[![npm Package](https://img.shields.io/npm/v/chocolate-bar.svg?style=flat-square)](https://www.npmjs.org/package/chocolate-bar)
-[![NPM Downloads](https://img.shields.io/npm/dm/chocolate-bar.svg)](https://npmjs.org/package/chocolate-bar)
+[![npm Package](https://img.shields.io/npm/v/chocolate-bars.svg?style=flat-square)](https://www.npmjs.org/package/chocolate-bars)
+[![NPM Downloads](https://img.shields.io/npm/dm/chocolate-bars.svg)](https://npmjs.org/package/chocolate-bars)
 
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
@@ -61,7 +61,7 @@ Install:
 
 #### 3 ways to run
 
-You can run `chocolate-bar` in one of three ways:
+You can run `chocolate-bars` in one of three ways:
 
 -   a) as a globally installed command line tool (this is the easiest way)
 -   OR b) as an npm package inside an npm project
@@ -69,25 +69,25 @@ You can run `chocolate-bar` in one of three ways:
 
 ##### a) install globally as a command line tool
 
-`npm i -g chocolate-bar@latest --production`
+`npm i -g chocolate-bars@latest --production`
 
 To use:
 
-`chocolate-bar <path to image>`
+`chocolate-bars <path to image>`
 
 ##### OR b) from the npm package
 
 Install inside your npm project:
 
-`yarn add chocolate-bar`
+`yarn add chocolate-bars`
 
 via bash script:
 
-`node_modules/chocolate-bar/dist/lib/cli.js <path to image>`
+`node_modules/chocolate-bars/dist/lib/cli.js <path to image>`
 
 OR via node:
 
-`node node_modules/chocolate-bar/dist/lib/main <path to image>`
+`node node_modules/chocolate-bars/dist/lib/main <path to image>`
 
 ##### OR c) from the source code
 
@@ -125,9 +125,9 @@ To see more detailed usage info:
 
 | site                 | URL                                         |
 | -------------------- | ------------------------------------------- |
-| source code (github) | https://github.com/mrseanryan/chocolate-bar |
-| github page          | https://mrseanryan.github.io/chocolate-bar/ |
-| npm                  | https://www.npmjs.com/package/chocolate-bar |
+| source code (github) | https://github.com/mrseanryan/chocolate-bars |
+| github page          | https://mrseanryan.github.io/chocolate-bars/ |
+| npm                  | https://www.npmjs.com/package/chocolate-bars |
 
 ## developing code in _this_ repository
 

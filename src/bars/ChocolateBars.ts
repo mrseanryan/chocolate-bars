@@ -1,6 +1,6 @@
 import { ChocolateResult } from "./ChocolateResult";
 
-export namespace ChocolateBar {
+export namespace ChocolateBars {
     export function processDirectory(pathToImageDir: string) : ChocolateResult
     {
         // TODO xxx
