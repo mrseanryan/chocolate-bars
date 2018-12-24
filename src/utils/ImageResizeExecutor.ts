@@ -14,7 +14,7 @@ export namespace ImageResizeExectutor {
             "--shrink"
         ]);
 
-        var stdout = new TextDecoder("utf-8").decode((uint8array as any) as ArrayBuffer);
+        const stdout = new TextDecoder("utf-8").decode((uint8array as any) as ArrayBuffer);
 
         return ShrinkResultSerDe.read(stdout, outputter);
     }

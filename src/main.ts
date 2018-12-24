@@ -22,12 +22,12 @@ const warningStyle = clc.black.bgYellow;
 const outputter = new ConsoleOutputter();
 
 if (!!shrink) {
-    shrinkImagesAt(imageInputDir);
+    shrinkImagesAt();
 } else {
-    getChocalateBarsAt(imageInputDir);
+    getChocolateBarsAt();
 }
 
-function shrinkImagesAt(imageInputDir: string) {
+function shrinkImagesAt() {
     console.log(normalStyle(`*shrink* images at ${imageInputDir} ...`));
 
     ImageFinder.findImagesInDirectory(imageInputDir, outputter)
@@ -43,7 +43,7 @@ function shrinkImagesAt(imageInputDir: string) {
         .catch(error => outputter.error(error));
 }
 
-function getChocalateBarsAt(imageInputDir: string) {
+function getChocolateBarsAt() {
     console.log(normalStyle(`Get chocolate bars of images at '${imageInputDir}' ...`));
 
     try {
