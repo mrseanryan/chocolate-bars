@@ -1,7 +1,7 @@
 {
     "name": "chocolate-bars",
     "version": "0.0.0-semantically-released",
-    "description": "Present histograms (bars!) of images in a directory, including extra such as exif data from the camera.",
+    "description": "Present histograms (bars!) of images in a directory, including extras such as exif data from the camera.",
     "keywords": [
         "image",
         "histogram",

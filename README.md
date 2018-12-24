@@ -1,6 +1,6 @@
 # :chocolate_bar: chocolate-bars readme
 
-Present histograms (bars!) of images in a directory, including extra such as exif data from the camera.
+Present histograms (bars!) of images in a directory, including extras such as exif data from the camera.
 
 Electon based app which runs on node.js.
 
