@@ -56,37 +56,14 @@ Install:
 
 ### 2 get chocolate bars of images
 
-#### 3 ways to run
+#### 2 ways to run
 
-You can run `chocolate-bars` in one of three ways:
+You can run `chocolate-bars` in one of two ways:
 
--   a) as a globally installed command line tool (this is the easiest way)
--   OR b) as an npm package inside an npm project
--   OR c) from the source code
+-   a) from the source code
+-   [TODO] ~~b) as a globally installed command line tool (this is the easiest way)~~
 
-##### a) install globally as a command line tool
-
-`npm i -g chocolate-bars@latest --production`
-
-To use:
-
-`chocolate-bars <path to image>`
-
-##### OR b) from the npm package
-
-Install inside your npm project:
-
-`yarn add chocolate-bars`
-
-via bash script:
-
-`node_modules/chocolate-bars/dist/lib/cli.js <path to image>`
-
-OR via node:
-
-`node node_modules/chocolate-bars/dist/lib/main <path to image>`
-
-##### OR c) from the source code
+##### a) from the source code
 
 ```
 yarn
@@ -117,6 +94,14 @@ To see more detailed usage info:
 ```
 ./go.sh
 ```
+
+##### b) [TODO] install globally as a command line tool
+
+`npm i -g chocolate-bars@latest --production`
+
+To use:
+
+`chocolate-bars <path to image direcory>`
 
 ## references
 
