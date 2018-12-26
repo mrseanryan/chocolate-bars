@@ -8,6 +8,6 @@ export namespace FileUtils {
     }
 
     export function isLargeFile(filePath: string): boolean {
-        return FileUtils.getFilesizeInMegaBytes(filePath) > 0.5;
+        return getFilesizeInMegaBytes(filePath) > 0.5;
     }
 }

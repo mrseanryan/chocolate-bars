@@ -14,9 +14,7 @@ export namespace ImageResizeExectutor {
         outputter.infoVerbose(`finding images at ${imagesDirectory}...`);
         const files = await ImageFinder.findImagesInDirectory(imagesDirectory, outputter);
 
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-
+        for (const file of files) {
             if (!FileUtils.isLargeFile(file)) {
                 yield {
                     originalFilepath: file,
