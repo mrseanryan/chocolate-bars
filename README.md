@@ -1,16 +1,14 @@
 # :chocolate_bar: chocolate-bars readme
 
-Present histograms (bars!) of images in a directory, including extra such as exif data from the camera.
+Present histograms (bars!) of images in a directory, including extras such as exif data from the camera.
 
-Electon based app which runs on node.js.
-
+Electron based app which runs on node.js.
 
 ## status - !in development!
 
 chocolate-bars is in ongoing development (Linux, Mac, Windows) following semantic versioning.
 
 [![Travis](https://img.shields.io/travis/mrseanryan/chocolate-bars.svg)](https://travis-ci.org/mrseanryan/chocolate-bars)
-[![Coveralls](https://img.shields.io/coveralls/mrseanryan/chocolate-bars.svg)](https://coveralls.io/github/mrseanryan/chocolate-bars)
 [![node](https://img.shields.io/node/v/chocolate-bars.svg)](https://nodejs.org)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/mrseanryan/chocolate-bars.svg)](https://greenkeeper.io/)
@@ -30,9 +28,9 @@ chocolate-bars is in ongoing development (Linux, Mac, Windows) following semanti
 
 Histograms are useful for finding iamge defects such as:
 
-- over-exposure
-- under-exposure
-- low contrast
+-   over-exposure
+-   under-exposure
+-   low contrast
 
 Also was curious how to implement this in node.js.
 
@@ -42,11 +40,10 @@ Also was curious how to implement this in node.js.
 
 ## features (in development!)
 
-- scan a folder of images and present a browsable summary
-- show image thumbnail and histogram
-- show additional image properties such as file size, image size
-- show exif tags where available (JPEG files)
-
+-   scan a folder of images and present a browsable summary
+-   show image thumbnail and histogram
+-   show additional image properties such as file size, image size
+-   show exif tags where available (JPEG files)
 
 ## usage - as cli (command line tool)
 
@@ -59,37 +56,16 @@ Install:
 
 ### 2 get chocolate bars of images
 
-#### 3 ways to run
+![Screenshot](./static/site/screenshot-1.png)
 
-You can run `chocolate-bars` in one of three ways:
+#### ways to run
 
--   a) as a globally installed command line tool (this is the easiest way)
--   OR b) as an npm package inside an npm project
--   OR c) from the source code
+You can run `chocolate-bars` in one of two ways:
 
-##### a) install globally as a command line tool
+-   a) from the source code
+-   [TODO] ~~b) as a globally installed command line tool (this is the easiest way)~~
 
-`npm i -g chocolate-bars@latest --production`
-
-To use:
-
-`chocolate-bars <path to image>`
-
-##### OR b) from the npm package
-
-Install inside your npm project:
-
-`yarn add chocolate-bars`
-
-via bash script:
-
-`node_modules/chocolate-bars/dist/lib/cli.js <path to image>`
-
-OR via node:
-
-`node node_modules/chocolate-bars/dist/lib/main <path to image>`
-
-##### OR c) from the source code
+##### a) from the source code
 
 ```
 yarn
@@ -121,10 +97,52 @@ To see more detailed usage info:
 ./go.sh
 ```
 
+##### b) [TODO] install globally as a command line tool
+
+`npm i -g chocolate-bars@latest --production`
+
+To use:
+
+`chocolate-bars <path to image direcory>`
+
+## references
+
+### electron starter
+
+https://github.com/electron/electron-quick-start
+
+### electron and react boilerplate
+
+https://github.com/iRath96/electron-react-typescript-boilerplate
+
+https://github.com/electron-react-boilerplate/electron-react-boilerplate
+
+## known issues
+
+### [solved] 'sharp' needs to be rebuilt to match node version of electron
+
+```
+yarn add electron-rebuild --dev
+yarn add sharp
+./node_modules/.bin/electron-rebuild
+# OR
+./node_modules/.bin/electron-rebuild -p -t "dev,prod,optional"
+```
+
+-   BUT this messes up sharp -> 'not a valid Windows application'
+
+-   so `yarn add sharp`
+
+ref: https://github.com/onmyway133/blog/issues/69
+
+[fail] use older version of electron, that is on node 8.x (57) - electron 3.x not 4.x ?
+
+-   solution: decided NOT to use sharp in same process as electron
+
 ## sites
 
-| site                 | URL                                         |
-| -------------------- | ------------------------------------------- |
+| site                 | URL                                          |
+| -------------------- | -------------------------------------------- |
 | source code (github) | https://github.com/mrseanryan/chocolate-bars |
 | github page          | https://mrseanryan.github.io/chocolate-bars/ |
 | npm                  | https://www.npmjs.com/package/chocolate-bars |
