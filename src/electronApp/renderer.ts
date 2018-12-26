@@ -11,6 +11,8 @@ const remote = require("electron").remote;
 // All of the Node.js APIs are available in this process.
 
 window.onload = () => {
+    addKeyboardListener();
+
     const args = remote.getGlobal("sharedObject").prop1;
 
     const imageInputDir = args[2];
@@ -39,4 +41,17 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
 
 function renderImage(image: ImageDetail): string {
     return `<img src="${image.smallerFilepath}" width="250px" />`;
+}
+
+function addKeyboardListener() {
+    const F12 = 123;
+    const F5 = 116;
+
+    document.addEventListener("keydown", function(e) {
+        if (e.which === F12) {
+            remote.getCurrentWindow().webContents.toggleDevTools();
+        } else if (e.which === F5) {
+            location.reload();
+        }
+    });
 }

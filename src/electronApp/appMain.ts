@@ -19,9 +19,6 @@ function createWindow() {
 
     (global as any)["sharedObject"] = { prop1: process.argv };
 
-    // Open the DevTools.
-    mainWindow.webContents.openDevTools();
-
     // Emitted when the window is closed.
     mainWindow.on("closed", () => {
         // Dereference the window object, usually you would store windows
