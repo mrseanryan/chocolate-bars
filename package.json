@@ -40,7 +40,7 @@
         "build:minimal": "tsc --module commonjs && yarn build:extra",
         "build:minimal:watch": "tsc --module commonjs -w",
         "build:static": "yarn build:static:html && yarn build:static:images",
-        "build:static:html": "cp static/electronApp/index.html ./dist/lib/electronApp",
+        "build:static:html": "cp static/electronApp/index.html ./dist/lib/electronApp && cp node_modules/histogram/histogram.min.js ./dist/lib/electronApp && cp node_modules/plotly.js/dist/plotly.min.js ./dist/lib/electronApp",
         "build:static:images": "cp static/electronApp/images/* ./dist/lib/electronApp",
         "build-and-test": "yarn build:minimal && yarn test",
         "log:dist": "ls dist -lR",
@@ -154,6 +154,8 @@
     },
     "dependencies": {
         "electron": "^4.0.0",
+        "histogram": "^3.0.1",
+        "plotly.js": "^1.43.1",
         "sharp": "^0.21.1"
     }
 }

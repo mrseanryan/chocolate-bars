@@ -4,6 +4,8 @@ import { ChocolateBars } from "../bars/ChocolateBars";
 import { IOutputter } from "../utils/outputter/IOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
 import { HtmlGrid } from "./HtmlGrid";
+import { ImageDetail } from "../bars/model/ImageDetail";
+import { HistogramReader } from "../bars/files/HistogramReader";
 const remote = require("electron").remote;
 
 // This file is required by the index.html file and will
@@ -29,6 +31,8 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
 
     renderHtml(grid.getHeaderHtml(imageInputDir));
 
+    let lastImage: ImageDetail | null = null;
+
     for await (const result of ChocolateBars.processDirectoryIterable(imageInputDir, outputter)) {
         outputter.infoVerbose(`rendering ${result.imageDetails.length} images`);
         if (result.imageDetails.length > 0) {
@@ -39,20 +43,75 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
 
         result.imageDetails.forEach(image => {
             grid.addImage(image);
+            lastImage = image;
 
             if (grid.isRowFull()) {
                 renderHtml(grid.getRowHtml());
+                grid.clearRow();
             }
         });
     }
 
     if (grid.hasRow()) {
         renderHtml(grid.getRowHtml());
+        grid.clearRow();
+    }
+
+    renderDetailContainer();
+
+    if (lastImage) {
+        // NOT waiting
+        renderHistogramForImage(lastImage, outputter);
     }
 }
 
-function renderHtml(html: string) {
-    jquery(`#content`).append(html);
+function renderDetailContainer() {
+    const html = `<div id="image-histogram"></div>`;
+
+    renderHtml(html, "detail-panel");
+}
+
+declare namespace Plotly {
+    function newPlot(divId: string, data: any, layout?: any): void;
+}
+
+async function renderHistogramForImage(image: ImageDetail, outputter: IOutputter) {
+    // TODO [perf] react + mobx could allow rendering to go ahead w/o histogram
+    const histogram = await HistogramReader.getHistogramData(image.smallerFilepath, outputter);
+
+    const x = [];
+    for (var i = 0; i < 500; i++) {
+        x[i] = Math.random();
+    }
+
+    const trace = {
+        x: x,
+        type: "histogram"
+    };
+    const data = [trace];
+
+    // TODO xxx get avg of RGB
+
+    var layout = {
+        autosize: false,
+        width: 250,
+        height: 250,
+        margin: {
+            l: 25,
+            r: 25,
+            b: 25,
+            t: 25,
+            pad: 4
+        },
+        paper_bgcolor: "#ffffff",
+        plot_bgcolor: "#c7c7c7"
+    };
+
+    Plotly.newPlot("image-histogram", data, layout);
+}
+
+function renderHtml(html: string, containerId: string = "content") {
+    jquery(`#${containerId}`).append(html);
 }
 
 function addKeyboardListener() {

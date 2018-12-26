@@ -14,6 +14,10 @@ export class HtmlGrid {
         this.row.push(image);
     }
 
+    clearRow() {
+        this.row.length = 0;
+    }
+
     hasRow(): boolean {
         return this.row.length > 0;
     }
@@ -32,8 +36,6 @@ export class HtmlGrid {
         });
 
         html += this.getContainerEnd();
-
-        this.row.length = 0;
 
         return html;
     };

@@ -4,6 +4,7 @@ import { IOutputter } from "../utils/outputter/IOutputter";
 import { ImageResizeExectutor } from "../utils/ImageResizeExecutor";
 import { ImageFilePath } from "./model/ImageFilePath";
 import { ImageDetail } from "./model/ImageDetail";
+import { HistogramReader } from "./files/HistogramReader";
 
 export namespace ChocolateBars {
     export async function processDirectory(
@@ -19,7 +20,9 @@ export namespace ChocolateBars {
 
         return {
             isOk: true,
-            imageDetails: smallerFiles.map(s => ImageDetail.fromImageFilePath(s))
+            imageDetails: smallerFiles.map((s, index) =>
+                ImageDetail.fromImageFilePath(index.toString(), s)
+            )
         };
     }
 
@@ -44,6 +47,7 @@ export namespace ChocolateBars {
         // shrink if needed, and use that path (also keep original path)
         const iterable = ImageResizeExectutor.resizeImagesAtIterable(imageInputDir, outputter);
 
+        let id = 0;
         for await (const result of iterable) {
             // TODO xxx get size MB, width, height
 
@@ -52,9 +56,11 @@ export namespace ChocolateBars {
             outputter.infoVerbose(`yield results for image at ${[result.originalFilepath]}`);
 
             yield {
-                imageDetails: [ImageDetail.fromImageFilePath(result)],
+                imageDetails: [ImageDetail.fromImageFilePath(id.toString(), result)],
                 isOk: true
             };
+
+            id++;
         }
     }
 }

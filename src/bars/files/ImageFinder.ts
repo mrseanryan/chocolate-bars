@@ -45,8 +45,6 @@ export namespace ImageFinder {
 
         imageFilePaths.sort(bySizeAscending);
 
-        console.log(imageFilePaths);
-
         return Nodash.take(imageFilePaths, MAX_FILES);
     }
 
