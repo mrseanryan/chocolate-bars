@@ -56,7 +56,9 @@ Install:
 
 ### 2 get chocolate bars of images
 
-#### 2 ways to run
+![Screenshot](./static/site/screenshot-1.png)
+
+#### ways to run
 
 You can run `chocolate-bars` in one of two ways:
 
