@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { IOutputter } from "../../utils/outputter/IOutputter";
 import { Nodash } from "../../utils/Nodash";
+import { FileUtils } from "../../utils/FileUtils";
 
 // TODO xxx remove once have paging
 const MAX_FILES = 100;
@@ -36,13 +37,29 @@ export namespace ImageFinder {
             return [];
         }
 
-        const absoluteFilePaths = Nodash.take(files, MAX_FILES).map(f => {
+        const absoluteFilePaths = files.map(f => {
             return path.resolve(path.join(imageInputDirOrFile, f));
         });
 
         const imageFilePaths = filterToImages(absoluteFilePaths, outputter);
 
-        return imageFilePaths;
+        imageFilePaths.sort(bySizeAscending);
+
+        console.log(imageFilePaths);
+
+        return Nodash.take(imageFilePaths, MAX_FILES);
+    }
+
+    function bySizeAscending(one: string, two: string): number {
+        const bySize = (path: string): number => {
+            return FileUtils.isLargeFile(path) ? 100000 : 0;
+        };
+
+        const byNameAscending = (): number => {
+            return path.basename(one).localeCompare(path.basename(two));
+        };
+
+        return bySize(one) - bySize(two) + byNameAscending();
     }
 
     function filterToImages(filePaths: string[], outputter: IOutputter): string[] {

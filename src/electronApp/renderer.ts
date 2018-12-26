@@ -51,7 +51,7 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
 }
 
 function renderHtml(html: string) {
-    jquery(`#content`).prepend(html);
+    jquery(`#content`).append(html);
 }
 
 function addKeyboardListener() {
