@@ -118,9 +118,21 @@ To see more detailed usage info:
 ./go.sh
 ```
 
+## references
+
+### electron starter
+
+https://github.com/electron/electron-quick-start
+
+### electron and react boilerplate
+
+https://github.com/iRath96/electron-react-typescript-boilerplate
+
+https://github.com/electron-react-boilerplate/electron-react-boilerplate
+
 ## known issues
 
-### 'sharp' needs to be rebuilt to match node version of electron
+### [solved] 'sharp' needs to be rebuilt to match node version of electron
 
 ```
 yarn add electron-rebuild --dev
