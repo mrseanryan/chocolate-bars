@@ -46,12 +46,18 @@ function renderImage(image: ImageDetail): string {
 function addKeyboardListener() {
     const F12 = 123;
     const F5 = 116;
+    const R_KEY = getAsciiOf("r");
+    const R_KEY_CAPS = getAsciiOf("R");
 
     document.addEventListener("keydown", function(e) {
         if (e.which === F12) {
             remote.getCurrentWindow().webContents.toggleDevTools();
-        } else if (e.which === F5) {
+        } else if (e.which === F5 || (e.ctrlKey && (e.which === R_KEY || e.which === R_KEY_CAPS))) {
             location.reload();
         }
     });
+}
+
+function getAsciiOf(char: string) {
+    return char.charCodeAt(0);
 }
