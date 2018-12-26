@@ -4,6 +4,7 @@ import { ChocolateBars } from "../bars/ChocolateBars";
 import { ImageDetail } from "../bars/model/ImageDetail";
 import { IOutputter } from "../utils/outputter/IOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
+import { HtmlGrid } from "./HtmlGrid";
 const remote = require("electron").remote;
 
 // This file is required by the index.html file and will
@@ -25,6 +26,8 @@ window.onload = () => {
 };
 
 async function renderImages(imageInputDir: string, outputter: IOutputter) {
+    const grid = new HtmlGrid();
+
     for await (const result of ChocolateBars.processDirectoryIterable(imageInputDir, outputter)) {
         outputter.infoVerbose(`rendering ${result.imageDetails.length} images`);
         if (result.imageDetails.length > 0) {
@@ -34,13 +37,21 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
         // TODO xxx display text results
 
         result.imageDetails.forEach(image => {
-            jquery(`#content`).prepend(renderImage(image));
+            grid.addImage(image);
+
+            if (grid.isRowFull()) {
+                renderHtml(grid.renderRow());
+            }
         });
+
+        if (grid.hasRow()) {
+            renderHtml(grid.renderRow());
+        }
     }
 }
 
-function renderImage(image: ImageDetail): string {
-    return `<img src="${image.smallerFilepath}" width="250px" />`;
+function renderHtml(html: string) {
+    jquery(`#content`).prepend(html);
 }
 
 function addKeyboardListener() {
