@@ -51,6 +51,7 @@ export namespace ShrinkResultSerDe {
         let cleanedPath = StringUtils.replaceAll(imagePath, "//", "/");
         cleanedPath = StringUtils.replaceAll(cleanedPath, "'", "");
         cleanedPath = StringUtils.replaceAll(cleanedPath, "]", "");
+        cleanedPath = StringUtils.replaceAll(cleanedPath, "39m", "");
 
         return cleanedPath.trim();
     }
