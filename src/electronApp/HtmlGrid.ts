@@ -1,6 +1,6 @@
 import { ImageDetail } from "../bars/model/ImageDetail";
 
-const MAX_IMAGES_PER_ROW = 1;
+const MAX_IMAGES_PER_ROW = 3;
 
 enum Orientation {
     Vertical,
@@ -67,18 +67,9 @@ export class HtmlGrid {
 
     private getImageHtml = (image: ImageDetail): string => {
         return `${this.getContainerStart(
-            Orientation.Horizontal,
-            "halfWidth"
+            Orientation.Horizontal
         )}\n<div class="image-container"><img class="user-image" src="${
             image.smallerFilepath
-        }" id="${HtmlGrid.getImageDivId(image)}"' width="250px" /></div>\n${this.getImageTextHtml(
-            image
-        )}\n${this.getContainerEnd()}`;
+        }" id="${HtmlGrid.getImageDivId(image)}"' width="250px" /></div>${this.getContainerEnd()}`;
     };
-
-    private getImageTextHtml(image: ImageDetail): string {
-        return `${this.getContainerStart(Orientation.Vertical, "halfWidth")}\n<div>${
-            image.filename
-        }</div>\n${this.getContainerEnd()}`;
-    }
 }

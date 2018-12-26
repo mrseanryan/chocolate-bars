@@ -11,7 +11,7 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true
         },
-        width: 800
+        width: 1000
     });
 
     mainWindow.setMenu(null);
