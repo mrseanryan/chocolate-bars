@@ -1,6 +1,6 @@
 import { ImageDetail } from "../bars/model/ImageDetail";
 
-const MAX_IMAGES_PER_ROW = 2;
+const MAX_IMAGES_PER_ROW = 1;
 
 enum Orientation {
     Vertical,
@@ -38,10 +38,13 @@ export class HtmlGrid {
         return html;
     };
 
-    private getContainerStart(orientation: Orientation = Orientation.Horizontal): string {
+    private getContainerStart(
+        orientation: Orientation = Orientation.Horizontal,
+        extraClass: string = ""
+    ): string {
         return orientation === Orientation.Horizontal
-            ? `<div class='container'>`
-            : `<div class='container-vertical'>`;
+            ? `<div class='container ${extraClass}'>`
+            : `<div class='container-vertical ${extraClass}'>`;
     }
 
     private getContainerEnd(): string {
@@ -49,13 +52,16 @@ export class HtmlGrid {
     }
 
     private renderImage = (image: ImageDetail): string => {
-        return `${this.getContainerStart()}\n<div class="image-container"><img class="user-image" src="${
+        return `${this.getContainerStart(
+            Orientation.Horizontal,
+            "halfWidth"
+        )}\n<div class="image-container"><img class="user-image" src="${
             image.smallerFilepath
         }" width="250px" /></div>\n${this.renderImageText(image)}\n${this.getContainerEnd()}`;
     };
 
     private renderImageText(image: ImageDetail): string {
-        return `${this.getContainerStart(Orientation.Vertical)}\n<div>${
+        return `${this.getContainerStart(Orientation.Vertical, "halfWidth")}\n<div>${
             image.originalFilepath
         }</div>\n${this.getContainerEnd()}`;
     }

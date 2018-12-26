@@ -43,10 +43,10 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
                 renderHtml(grid.renderRow());
             }
         });
+    }
 
-        if (grid.hasRow()) {
-            renderHtml(grid.renderRow());
-        }
+    if (grid.hasRow()) {
+        renderHtml(grid.renderRow());
     }
 }
 

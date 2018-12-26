@@ -4,12 +4,21 @@
         <meta charset="UTF-8" />
         <title>Chocolate Bars</title>
         <style>
+            .about-technical {
+                font-style: italic;
+                font-size: small;
+                text-align: right;
+            }
+
             .container {
                 display: flex;
             }
             .container-vertical {
                 display: flex;
                 flex-direction: column;
+            }
+            .halfWidth {
+                max-width: 50%;
             }
             .image-container {
                 height: 300px;
@@ -26,12 +35,12 @@
 
         <div id="content"></div>
 
-        <div>
-            Use Electron
+        <div class="about-technical">
+            built with Electron
             <script>
                 document.write(process.versions.electron);
             </script>
-            with Node.js
+            Node.js
             <script>
                 document.write(process.versions.node);
             </script>
