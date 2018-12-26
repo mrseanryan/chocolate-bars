@@ -26,7 +26,7 @@ chocolate-bars is in ongoing development (Linux, Mac, Windows) following semanti
 
 ## why?
 
-Histograms are useful for finding iamge defects such as:
+Histograms are useful for finding image defects such as:
 
 -   over-exposure
 -   under-exposure
@@ -116,28 +116,6 @@ https://github.com/electron/electron-quick-start
 https://github.com/iRath96/electron-react-typescript-boilerplate
 
 https://github.com/electron-react-boilerplate/electron-react-boilerplate
-
-## known issues
-
-### [solved] 'sharp' needs to be rebuilt to match node version of electron
-
-```
-yarn add electron-rebuild --dev
-yarn add sharp
-./node_modules/.bin/electron-rebuild
-# OR
-./node_modules/.bin/electron-rebuild -p -t "dev,prod,optional"
-```
-
--   BUT this messes up sharp -> 'not a valid Windows application'
-
--   so `yarn add sharp`
-
-ref: https://github.com/onmyway133/blog/issues/69
-
-[fail] use older version of electron, that is on node 8.x (57) - electron 3.x not 4.x ?
-
--   solution: decided NOT to use sharp in same process as electron
 
 ## sites
 
