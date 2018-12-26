@@ -100,7 +100,7 @@
             }
         },
         "collectCoverageFrom": [
-            "src/chocolate-bars.test.ts"
+            "src/chocolate-bars.ts"
         ]
     },
     "prettier": {
