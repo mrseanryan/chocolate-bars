@@ -1,7 +1,6 @@
 import * as jquery from "jquery";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { ChocolateBars } from "../bars/ChocolateBars";
-import { ImageDetail } from "../bars/model/ImageDetail";
 import { IOutputter } from "../utils/outputter/IOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
 import { HtmlGrid } from "./HtmlGrid";
@@ -28,6 +27,8 @@ window.onload = () => {
 async function renderImages(imageInputDir: string, outputter: IOutputter) {
     const grid = new HtmlGrid();
 
+    renderHtml(grid.getHeaderHtml(imageInputDir));
+
     for await (const result of ChocolateBars.processDirectoryIterable(imageInputDir, outputter)) {
         outputter.infoVerbose(`rendering ${result.imageDetails.length} images`);
         if (result.imageDetails.length > 0) {
@@ -40,13 +41,13 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
             grid.addImage(image);
 
             if (grid.isRowFull()) {
-                renderHtml(grid.renderRow());
+                renderHtml(grid.getRowHtml());
             }
         });
     }
 
     if (grid.hasRow()) {
-        renderHtml(grid.renderRow());
+        renderHtml(grid.getRowHtml());
     }
 }
 

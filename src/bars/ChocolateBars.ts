@@ -3,6 +3,7 @@ import { ChocolateResult } from "./model/ChocolateResult";
 import { IOutputter } from "../utils/outputter/IOutputter";
 import { ImageResizeExectutor } from "../utils/ImageResizeExecutor";
 import { ImageFilePath } from "./model/ImageFilePath";
+import { ImageDetail } from "./model/ImageDetail";
 
 export namespace ChocolateBars {
     export async function processDirectory(
@@ -18,7 +19,7 @@ export namespace ChocolateBars {
 
         return {
             isOk: true,
-            imageDetails: smallerFiles
+            imageDetails: smallerFiles.map(s => ImageDetail.fromImageFilePath(s))
         };
     }
 
@@ -51,7 +52,7 @@ export namespace ChocolateBars {
             outputter.infoVerbose(`yield results for image at ${[result.originalFilepath]}`);
 
             yield {
-                imageDetails: [result],
+                imageDetails: [ImageDetail.fromImageFilePath(result)],
                 isOk: true
             };
         }

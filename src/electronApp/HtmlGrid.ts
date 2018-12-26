@@ -22,13 +22,13 @@ export class HtmlGrid {
         return this.row.length >= MAX_IMAGES_PER_ROW;
     }
 
-    renderRow = (): string => {
+    getRowHtml = (): string => {
         let html = "";
 
         html += this.getContainerStart();
 
         this.row.forEach(image => {
-            html += this.renderImage(image);
+            html += this.getImageHtml(image);
         });
 
         html += this.getContainerEnd();
@@ -37,6 +37,14 @@ export class HtmlGrid {
 
         return html;
     };
+
+    getHeaderHtml(imageInputDir: string): string {
+        let html = "";
+        html += this.getContainerStart();
+        html += `<div class="grid-header">Images at '${imageInputDir}'</div>`;
+        html += this.getContainerEnd();
+        return html;
+    }
 
     private getContainerStart(
         orientation: Orientation = Orientation.Horizontal,
@@ -51,18 +59,18 @@ export class HtmlGrid {
         return `</div>`;
     }
 
-    private renderImage = (image: ImageDetail): string => {
+    private getImageHtml = (image: ImageDetail): string => {
         return `${this.getContainerStart(
             Orientation.Horizontal,
             "halfWidth"
         )}\n<div class="image-container"><img class="user-image" src="${
             image.smallerFilepath
-        }" width="250px" /></div>\n${this.renderImageText(image)}\n${this.getContainerEnd()}`;
+        }" width="250px" /></div>\n${this.getImageTextHtml(image)}\n${this.getContainerEnd()}`;
     };
 
-    private renderImageText(image: ImageDetail): string {
+    private getImageTextHtml(image: ImageDetail): string {
         return `${this.getContainerStart(Orientation.Vertical, "halfWidth")}\n<div>${
-            image.originalFilepath
+            image.filename
         }</div>\n${this.getContainerEnd()}`;
     }
 }
