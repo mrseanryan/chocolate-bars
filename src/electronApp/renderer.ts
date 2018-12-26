@@ -102,16 +102,16 @@ async function renderHistogramForImage(image: ImageDetail, outputter: IOutputter
     // TODO [perf] react + mobx could allow rendering to go ahead w/o histogram
     const histogram = await HistogramReader.getHistogramData(image.smallerFilepath, outputter);
 
+    const range0to255: number[] = [];
+    for (let i = 0; i < 256; i++) {
+        range0to255.push(i);
+    }
+
     const greys = calculateGreysFromHistogram(histogram);
 
     const trace = {
-        x: greys,
-        autobinx: false,
-        histnorm: "count",
-        xbins: {
-            // defaults to 500
-            size: 100
-        },
+        x: range0to255,
+        y: greys,
         // ref: https://plot.ly/javascript/histograms/#colored-and-styled-histograms
         marker: {
             // ref: https://www.rapidtables.com/web/color/brown-color.html
@@ -122,7 +122,7 @@ async function renderHistogramForImage(image: ImageDetail, outputter: IOutputter
             }
         },
         opacity: 0.75,
-        type: "histogram"
+        type: "bar"
     };
     const data = [trace];
 
