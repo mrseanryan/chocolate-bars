@@ -27,13 +27,21 @@
             .image-container {
                 height: 300px;
                 width: 300px;
+                overflow: hidden;
+                padding: 4px;
             }
+
             .image-histogram {
                 min-width: 300px;
             }
             .user-image {
                 cursor: pointer;
                 object-fit: scale-down;
+                /* dummy border, to avoid resizing issues on hover */
+                border: dashed 1px white;
+            }
+            .user-image:hover {
+                border: dashed 1px blue;
             }
 
             #content {

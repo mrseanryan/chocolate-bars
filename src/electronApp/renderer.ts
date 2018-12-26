@@ -26,6 +26,11 @@ window.onload = () => {
     }, 0);
 };
 
+enum BorderStyle {
+    None,
+    Selected
+}
+
 async function renderImages(imageInputDir: string, outputter: IOutputter) {
     const grid = new HtmlGrid();
 
@@ -76,10 +81,41 @@ function addImageClickListeners(images: ImageDetail[], outputter: IOutputter) {
     });
 }
 
+let previousImageSelected: ImageDetail | null = null;
+
 function onClickImage(image: ImageDetail, outputter: IOutputter) {
     jquery("#detail-header").text("image: " + image.filename);
 
+    if (previousImageSelected) {
+        setImageBorder(previousImageSelected, BorderStyle.None, outputter);
+    }
+    setImageBorder(image, BorderStyle.Selected, outputter);
+    previousImageSelected = image;
+
     renderHistogramForImage(image, outputter);
+}
+
+function setImageBorder(image: ImageDetail, style: BorderStyle, outputter: IOutputter) {
+    let cssStyle: any = null;
+
+    switch (style) {
+        case BorderStyle.Selected:
+            cssStyle = {
+                "border-color": "#00FF00",
+                "border-width": "1px",
+                "border-style": "solid"
+            };
+            break;
+        default:
+            outputter.error(`Unknown BorderStyle '${style}' - defaulting to None`);
+        case BorderStyle.None:
+            cssStyle = {
+                "border-style": "none"
+            };
+            break;
+    }
+
+    jquery(`#${HtmlGrid.getImageDivId(image)}`).css(cssStyle);
 }
 
 function renderDetailContainer() {
