@@ -31,7 +31,7 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
 
     renderHtml(grid.getHeaderHtml(imageInputDir));
 
-    let lastImage: ImageDetail | null = null;
+    const images: ImageDetail[] = [];
 
     for await (const result of ChocolateBars.processDirectoryIterable(imageInputDir, outputter)) {
         outputter.infoVerbose(`rendering ${result.imageDetails.length} images`);
@@ -43,7 +43,7 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
 
         result.imageDetails.forEach(image => {
             grid.addImage(image);
-            lastImage = image;
+            images.push(image);
 
             if (grid.isRowFull()) {
                 renderHtml(grid.getRowHtml());
@@ -59,14 +59,31 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
 
     renderDetailContainer();
 
-    if (lastImage) {
-        // NOT waiting
-        renderHistogramForImage(lastImage, outputter);
-    }
+    addImageClickListeners(images, outputter);
+}
+
+function addImageClickListeners(images: ImageDetail[], outputter: IOutputter) {
+    images.forEach(image => {
+        const imageDivId = HtmlGrid.getImageDivId(image);
+
+        const imageDiv = document.getElementById(imageDivId);
+        if (!imageDiv) {
+            outputter.error(`could not find image div '${imageDivId}'`);
+            return;
+        }
+
+        imageDiv.addEventListener("click", () => onClickImage(image, outputter));
+    });
+}
+
+function onClickImage(image: ImageDetail, outputter: IOutputter) {
+    jquery("#detail-header").text("image: " + image.filename);
+
+    renderHistogramForImage(image, outputter);
 }
 
 function renderDetailContainer() {
-    const html = `<div id="image-histogram"></div>`;
+    const html = `<div class="container-vertical"><div id="detail-header">[Please select an image!]</div><div id="image-histogram"></div></div>`;
 
     renderHtml(html, "detail-panel");
 }
@@ -104,7 +121,13 @@ async function renderHistogramForImage(image: ImageDetail, outputter: IOutputter
             pad: 4
         },
         paper_bgcolor: "#ffffff",
-        plot_bgcolor: "#c7c7c7"
+        plot_bgcolor: "#c7c7c7",
+        xaxis: {
+            fixedrange: true
+        },
+        yaxis: {
+            fixedrange: true
+        }
     };
 
     Plotly.newPlot("image-histogram", data, layout);

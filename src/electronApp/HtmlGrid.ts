@@ -8,6 +8,10 @@ enum Orientation {
 }
 
 export class HtmlGrid {
+    static getImageDivId(image: ImageDetail): string {
+        return `image-id-${image.id}`;
+    }
+
     private row: ImageDetail[] = [];
 
     addImage(image: ImageDetail) {
@@ -67,7 +71,9 @@ export class HtmlGrid {
             "halfWidth"
         )}\n<div class="image-container"><img class="user-image" src="${
             image.smallerFilepath
-        }" width="250px" /></div>\n${this.getImageTextHtml(image)}\n${this.getContainerEnd()}`;
+        }" id="${HtmlGrid.getImageDivId(image)}"' width="250px" /></div>\n${this.getImageTextHtml(
+            image
+        )}\n${this.getContainerEnd()}`;
     };
 
     private getImageTextHtml(image: ImageDetail): string {

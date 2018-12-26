@@ -35,6 +35,7 @@
                 min-width: 300px;
             }
             .user-image {
+                cursor: pointer;
                 object-fit: scale-down;
             }
 
@@ -42,8 +43,14 @@
                 height: calc(100% - 300px);
                 overflow-y: auto;
             }
+            #detail-header {
+                padding-top: 10px;
+            }
             #detail-panel {
                 height: 300px;
+            }
+            #image-histogram {
+                user-select: none;
             }
 
             /* hide plotly.js toolbar*/
