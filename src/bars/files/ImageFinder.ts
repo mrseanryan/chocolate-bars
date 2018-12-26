@@ -1,15 +1,23 @@
 import * as fs from "fs";
 import * as path from "path";
 import { IOutputter } from "../../utils/outputter/IOutputter";
+import { Nodash } from "../../utils/Nodash";
+
+// TODO xxx remove once have paging
+const MAX_FILES = 100;
 
 export namespace ImageFinder {
     export async function findImagesInDirectory(
-        imageInputDir: string,
+        imageInputDirOrFile: string,
         outputter: IOutputter
     ): Promise<string[]> {
+        if (!isDirectory(imageInputDirOrFile) && isFileExtensionOk(imageInputDirOrFile)) {
+            return [imageInputDirOrFile];
+        }
+
         const readdirPromise = () => {
             return new Promise<string[]>(function(ok, notOk) {
-                fs.readdir(imageInputDir, function(err, _files) {
+                fs.readdir(imageInputDirOrFile, function(err, _files) {
                     if (err) {
                         notOk(err);
                     } else {
@@ -28,8 +36,8 @@ export namespace ImageFinder {
             return [];
         }
 
-        const absoluteFilePaths = files.map(f => {
-            return path.resolve(path.join(imageInputDir, f));
+        const absoluteFilePaths = Nodash.take(files, MAX_FILES).map(f => {
+            return path.resolve(path.join(imageInputDirOrFile, f));
         });
 
         const imageFilePaths = filterToImages(absoluteFilePaths, outputter);

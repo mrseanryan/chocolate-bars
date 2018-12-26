@@ -5,21 +5,23 @@ import { ImageResizer } from "./bars/files/ImageResizer";
 import { ConsoleOutputter } from "./utils/outputter/ConsoleOutputter";
 import { ImageFinder } from "./bars/files/ImageFinder";
 import { ShrinkResultSerDe } from "./utils/ShrinkResultSerDe";
+import { Verbosity } from "./utils/outputter/Verbosity";
 
 const argv = require("yargs")
-    .usage("Usage: $0 <path to image directory> [--shrink]")
+    .usage("Usage: $0 <path to image directory> [--shrink] [--verbose]")
     .demandCommand(1).argv;
 
 const imageInputDir = argv._[0];
 
-const shrink = argv.shrink;
+const shrink = !!argv.shrink;
+const isVerbose = !!argv.verbose;
 
 const errorStyle = clc.black.bgRed;
 const normalStyle = clc.green;
 const successStyle = clc.black.bgGreen;
 const warningStyle = clc.black.bgYellow;
 
-const outputter = new ConsoleOutputter();
+const outputter = new ConsoleOutputter(isVerbose ? Verbosity.High : Verbosity.Low);
 
 if (shrink) {
     shrinkImagesAt();

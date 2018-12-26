@@ -5,19 +5,14 @@ import * as path from "path";
 const sharp = require("sharp");
 
 import { IOutputter } from "../../utils/outputter/IOutputter";
+import { FileUtils } from "../../utils/FileUtils";
 
 const MAX_DIMENSION = 800;
 
 export namespace ImageResizer {
-    function getFilesizeInMegaBytes(filename: string): number {
-        const stats = fs.statSync(filename);
-        const fileSizeInBytes = stats.size;
-        return fileSizeInBytes / (1024 * 1024);
-    }
-
     export async function resizeImage(filePath: string, outputter: IOutputter): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            if (!isLargeImage(filePath)) {
+            if (!FileUtils.isLargeFile(filePath)) {
                 resolve(filePath);
                 return;
             }
@@ -36,10 +31,6 @@ export namespace ImageResizer {
                 resolve(outPath);
             });
         });
-    }
-
-    function isLargeImage(filePath: string): boolean {
-        return getFilesizeInMegaBytes(filePath) > 0.5;
     }
 
     // ref: https://github.com/lovell/sharp
