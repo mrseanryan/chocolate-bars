@@ -6,13 +6,15 @@ let mainWindow: Electron.BrowserWindow | null = null;
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        icon: path.join(__dirname, "./chocolate-bar-straightened-trans.png"),
         height: 600,
-        width: 800,
+        icon: path.join(__dirname, "./chocolate-bar-straightened-trans.png"),
         webPreferences: {
             nodeIntegration: true
-        }
+        },
+        width: 800
     });
+
+    mainWindow.setMenu(null);
 
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, "./index.html"));
