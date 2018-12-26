@@ -3,8 +3,8 @@ import * as path from "path";
 import { ImageFilePath } from "./ImageFilePath";
 
 export class ImageDetail {
-    static fromImageFilePath(id: string, path: ImageFilePath): ImageDetail {
-        return new ImageDetail(id, path.originalFilepath, path.smallerFilepath);
+    static fromImageFilePath(id: string, filePath: ImageFilePath): ImageDetail {
+        return new ImageDetail(id, filePath.originalFilepath, filePath.smallerFilepath);
     }
 
     constructor(

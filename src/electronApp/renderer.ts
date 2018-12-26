@@ -98,6 +98,10 @@ function onClickImage(image: ImageDetail, outputter: IOutputter) {
 function setImageBorder(image: ImageDetail, style: BorderStyle, outputter: IOutputter) {
     let cssStyle: any = null;
 
+    const noBorder = {
+        "border-style": "none"
+    };
+
     switch (style) {
         case BorderStyle.Selected:
             cssStyle = {
@@ -106,13 +110,12 @@ function setImageBorder(image: ImageDetail, style: BorderStyle, outputter: IOutp
                 "border-style": "solid"
             };
             break;
+        case BorderStyle.None:
+            cssStyle = noBorder;
+            break;
         default:
             outputter.error(`Unknown BorderStyle '${style}' - defaulting to None`);
-        case BorderStyle.None:
-            cssStyle = {
-                "border-style": "none"
-            };
-            break;
+            cssStyle = noBorder;
     }
 
     jquery(`#${HtmlGrid.getImageDivId(image)}`).css(cssStyle);
@@ -162,7 +165,7 @@ async function renderHistogramForImage(image: ImageDetail, outputter: IOutputter
     };
     const data = [trace];
 
-    var layout = {
+    const layout = {
         autosize: false,
         bargap: 0.1,
         bargroupgap: 0.1,

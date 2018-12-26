@@ -49,8 +49,8 @@ export namespace ImageFinder {
     }
 
     function bySizeAscending(one: string, two: string): number {
-        const bySize = (path: string): number => {
-            return FileUtils.isLargeFile(path) ? 100000 : 0;
+        const bySize = (filePath: string): number => {
+            return FileUtils.isLargeFile(filePath) ? 100000 : 0;
         };
 
         const byNameAscending = (): number => {
