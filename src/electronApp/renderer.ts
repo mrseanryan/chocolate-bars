@@ -5,7 +5,7 @@ import { IOutputter } from "../utils/outputter/IOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
 import { HtmlGrid } from "./HtmlGrid";
 import { ImageDetail } from "../bars/model/ImageDetail";
-import { HistogramReader } from "../bars/files/HistogramReader";
+import { HistogramReader, HistogramData } from "../bars/files/HistogramReader";
 const remote = require("electron").remote;
 
 // This file is required by the index.html file and will
@@ -92,26 +92,46 @@ declare namespace Plotly {
     function newPlot(divId: string, data: any, layout?: any): void;
 }
 
+// TODO xxx extract to HistogramRenderer
+// TODO optimise - run histogram as web worker?
 async function renderHistogramForImage(image: ImageDetail, outputter: IOutputter) {
+    jquery("#image-histogram")
+        .children()
+        .remove();
+
     // TODO [perf] react + mobx could allow rendering to go ahead w/o histogram
     const histogram = await HistogramReader.getHistogramData(image.smallerFilepath, outputter);
 
-    const x = [];
-    for (var i = 0; i < 500; i++) {
-        x[i] = Math.random();
-    }
+    const greys = calculateGreysFromHistogram(histogram);
 
     const trace = {
-        x: x,
+        x: greys,
+        autobinx: false,
+        histnorm: "count",
+        xbins: {
+            // defaults to 500
+            size: 100
+        },
+        // ref: https://plot.ly/javascript/histograms/#colored-and-styled-histograms
+        marker: {
+            // ref: https://www.rapidtables.com/web/color/brown-color.html
+            color: "rgb(139,69,19)",
+            line: {
+                color: "rgb(210,105,30)",
+                width: 1
+            }
+        },
+        opacity: 0.75,
         type: "histogram"
     };
     const data = [trace];
 
-    // TODO xxx get avg of RGB
-
     var layout = {
         autosize: false,
-        width: 250,
+        bargap: 0.1,
+        bargroupgap: 0.1,
+        barmode: "overlay",
+        width: 750,
         height: 250,
         margin: {
             l: 25,
@@ -131,6 +151,24 @@ async function renderHistogramForImage(image: ImageDetail, outputter: IOutputter
     };
 
     Plotly.newPlot("image-histogram", data, layout);
+}
+
+// Calculate greys as average of R, G, B
+function calculateGreysFromHistogram(histogram: HistogramData): number[] {
+    if (histogram.greyscale) {
+        return histogram.red;
+    }
+
+    const greys: number[] = [];
+    for (let r = 0; r < histogram.red.length; r++) {
+        const total = histogram.red[r] + histogram.green[r] + histogram.blue[r];
+
+        const average = total / 3;
+
+        greys.push(average);
+    }
+
+    return greys;
 }
 
 function renderHtml(html: string, containerId: string = "content") {
