@@ -27,6 +27,4 @@ export class ImageDetail {
     get filename(): string {
         return path.basename(this.originalFilepath);
     }
-
-    // TODO xxx add exif property bag
 }

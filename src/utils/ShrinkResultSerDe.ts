@@ -9,11 +9,7 @@ export namespace ShrinkResultSerDe {
         outputter.info(`${filepath} ${INTER_SEPARATOR} ${smallerFilePath}`);
     }
 
-    export function read(
-        stdout: string,
-        outputter: IOutputter
-    ): // TODO xxx extract type ImageFilePath
-    ImageFilePath[] {
+    export function read(stdout: string, outputter: IOutputter): ImageFilePath[] {
         /* example:
 
         "*shrink* images at ./static/testData/goodQuality ...

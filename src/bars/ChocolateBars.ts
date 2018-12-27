@@ -29,8 +29,6 @@ export namespace ChocolateBars {
 
         let id = 0;
         for await (const result of iterable) {
-            // TODO xxx get exif tags
-
             outputter.infoVerbose(`yield results for image at ${[result.originalFilepath]}`);
 
             const imageDetail = ImageDetail.fromImageFilePath(id.toString(), result);
