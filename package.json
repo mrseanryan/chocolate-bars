@@ -150,6 +150,7 @@
     },
     "dependencies": {
         "electron": "^4.0.0",
+        "exif-reader": "^1.0.2",
         "histogram": "^3.0.1",
         "image-size": "^0.6.3",
         "jquery": "^3.3.1",
