@@ -16,7 +16,7 @@ export namespace ShrinkResultSerDe {
     ImageFilePath[] {
         /* example:
 
-        "[32m*shrink* images at ./static/testData/goodQuality ...[39m
+        "*shrink* images at ./static/testData/goodQuality ...
 [ 'C:\\sean\\github\\mrseanryan\\chocolate-bars\\static\\testData\\goodQuality\\flower-631765_960_720.jpg --> C:\\sean\\github\\mrseanryan\\chocolate-bars\\static\\testData\\goodQuality\\flower-631765_960_720.jpg' ]
 [ 'C:\\sean\\github\\mrseanryan\\chocolate-bars\\static\\testData\\goodQuality\\House_sparrow04.jpg --> C:\\sean\\github\\mrseanryan\\chocolate-bars\\static\\testData\\goodQuality\\House_sparrow04.jpg' ]
 [ 'C:\\sean\\github\\mrseanryan\\chocolate-bars\\static\\testData\\goodQuality\\marguerite-daisy-beautiful-beauty.jpg --> C:\\sean\\github\\mrseanryan\\chocolate-bars\\static\\testData\\goodQuality\\marguerite-daisy-beautiful-beauty.jpg' ]
