@@ -1,10 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
-import { IOutputter } from "../../utils/outputter/IOutputter";
-import { Nodash } from "../../utils/Nodash";
-import { FileUtils } from "../../utils/FileUtils";
 
-// TODO xxx remove once have paging
+import { FileUtils } from "../../utils/FileUtils";
+import { Nodash } from "../../utils/Nodash";
+import { IOutputter } from "../../utils/outputter/IOutputter";
+
+// TODO xxx remove limit on file count, once have paging
 const MAX_FILES = 100;
 
 export namespace ImageFinder {
