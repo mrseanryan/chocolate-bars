@@ -1,11 +1,12 @@
+import * as child_process from "child_process";
 import * as clc from "cli-color";
+import * as path from "path";
 
-import { ChocolateBars } from "./bars/ChocolateBars";
+import { ImageFinder } from "./bars/files/ImageFinder";
 import { ImageResizer } from "./bars/files/ImageResizer";
 import { ConsoleOutputter } from "./utils/outputter/ConsoleOutputter";
-import { ImageFinder } from "./bars/files/ImageFinder";
-import { ShrinkResultSerDe } from "./utils/ShrinkResultSerDe";
 import { Verbosity } from "./utils/outputter/Verbosity";
+import { ShrinkResultSerDe } from "./utils/ShrinkResultSerDe";
 
 const argv = require("yargs")
     .usage("Usage: $0 <path to image directory> [--shrink] [--verbose]")
@@ -18,15 +19,13 @@ const isVerbose = !!argv.verbose;
 
 const errorStyle = clc.black.bgRed;
 const normalStyle = clc.green;
-const successStyle = clc.black.bgGreen;
-const warningStyle = clc.black.bgYellow;
 
 const outputter = new ConsoleOutputter(isVerbose ? Verbosity.High : Verbosity.Low);
 
 if (shrink) {
     shrinkImagesAt();
 } else {
-    getChocolateBarsAt();
+    launchChocolateBarsApp();
 }
 
 function shrinkImagesAt() {
@@ -45,22 +44,21 @@ function shrinkImagesAt() {
         .catch(error => outputter.error(error));
 }
 
-function getChocolateBarsAt() {
-    console.log(normalStyle(`Get chocolate bars of images at '${imageInputDir}' ...`));
+// assumption: electron is globally installed
+function launchChocolateBarsApp() {
+    console.log(normalStyle(`Launching chocolate bars of images at '${imageInputDir}' ...`));
+
+    const showElectronTip = () => {
+        console.error(`note: electron must be globally installed:`);
+        console.error(`  npm i -g electron`);
+    };
 
     try {
-        ChocolateBars.processDirectory(imageInputDir, outputter)
-            .then(result => {
-                if (result.isOk) {
-                    console.log(successStyle(result));
-                } else {
-                    console.warn(warningStyle(result));
-                }
-            })
-            .catch(error => {
-                throw error;
-            });
+        const appPath = path.resolve(path.join(__dirname, "electronApp/appMain.js"));
+
+        child_process.spawn("electron", [appPath, imageInputDir], { shell: true });
     } catch (error) {
         console.error(errorStyle("[error]", error));
+        showElectronTip();
     }
 }

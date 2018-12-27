@@ -63,7 +63,7 @@ Install:
 You can run `chocolate-bars` in one of two ways:
 
 -   a) from the source code
--   [TODO] ~~b) as a globally installed command line tool (this is the easiest way)~~
+-   OR b) as a globally installed command line tool
 
 ##### a) from the source code
 
@@ -97,7 +97,9 @@ To see more detailed usage info:
 ./go.sh
 ```
 
-##### b) [TODO] install globally as a command line tool
+##### b) install globally as a command line tool
+
+`npm i -g electron`
 
 `npm i -g chocolate-bars@latest --production`
 
