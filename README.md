@@ -99,7 +99,7 @@ To see more detailed usage info:
 
 ##### b) install globally as a command line tool
 
-`npm i -g electron`
+`npm i -g electron@4`
 
 `npm i -g chocolate-bars@latest --production`
 

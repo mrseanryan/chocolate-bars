@@ -1,5 +1,6 @@
 import { ImageResizeExectutor } from "../utils/ImageResizeExecutor";
 import { IOutputter } from "../utils/outputter/IOutputter";
+import { ImageDimensions } from "./files/ImageDimensions";
 import { ChocolateResult } from "./model/ChocolateResult";
 import { ImageDetail } from "./model/ImageDetail";
 import { ImageFilePath } from "./model/ImageFilePath";
@@ -28,14 +29,14 @@ export namespace ChocolateBars {
 
         let id = 0;
         for await (const result of iterable) {
-            // TODO xxx get size MB, width, height
-
             // TODO xxx get exif tags
 
             outputter.infoVerbose(`yield results for image at ${[result.originalFilepath]}`);
 
+            const imageDetail = ImageDetail.fromImageFilePath(id.toString(), result);
+
             yield {
-                imageDetails: [ImageDetail.fromImageFilePath(id.toString(), result)],
+                imageDetails: [imageDetail],
                 isOk: true
             };
 
