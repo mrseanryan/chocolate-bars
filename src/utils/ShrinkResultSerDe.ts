@@ -1,5 +1,5 @@
-import { IOutputter } from "./outputter/IOutputter";
 import { ImageFilePath } from "../bars/model/ImageFilePath";
+import { IOutputter } from "./outputter/IOutputter";
 import { StringUtils } from "./StringUtils";
 
 const INTER_SEPARATOR = "-->";
@@ -25,7 +25,11 @@ export namespace ShrinkResultSerDe {
 "
         */
 
-        const parts = stdout.split("[");
+        const prelimParts = stdout.split("...");
+        prelimParts.shift();
+        const withoutPrelim = prelimParts.join("...");
+
+        const parts = withoutPrelim.split("[");
 
         const results: ImageFilePath[] = [];
 

@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var child_process = require("child_process");
-var clc = require("cli-color");
 var path = require("path");
 var ImageFinder_1 = require("./bars/files/ImageFinder");
 var ImageResizer_1 = require("./bars/files/ImageResizer");
@@ -14,8 +13,6 @@ var argv = require("yargs")
 var imageInputDir = argv._[0];
 var shrink = !!argv.shrink;
 var isVerbose = !!argv.verbose;
-var errorStyle = clc.black.bgRed;
-var normalStyle = clc.green;
 var outputter = new ConsoleOutputter_1.ConsoleOutputter(isVerbose ? Verbosity_1.Verbosity.High : Verbosity_1.Verbosity.Low);
 if (shrink) {
     shrinkImagesAt();
@@ -24,7 +21,7 @@ else {
     launchChocolateBarsApp();
 }
 function shrinkImagesAt() {
-    console.log(normalStyle("*shrink* images at " + imageInputDir + " ..."));
+    console.log("*shrink* images at " + imageInputDir + " ...");
     ImageFinder_1.ImageFinder.findImagesInDirectory(imageInputDir, outputter)
         .then(function (files) {
         files.forEach(function (file) {
@@ -39,7 +36,7 @@ function shrinkImagesAt() {
 }
 // assumption: electron is globally installed
 function launchChocolateBarsApp() {
-    console.log(normalStyle("Launching chocolate bars of images at '" + imageInputDir + "' ..."));
+    console.log("Launching chocolate bars of images at '" + imageInputDir + "' ...");
     var showElectronTip = function () {
         console.error("note: electron must be globally installed:");
         console.error("  npm i -g electron");
@@ -49,7 +46,7 @@ function launchChocolateBarsApp() {
         child_process.spawn("electron", [appPath, imageInputDir], { shell: true });
     }
     catch (error) {
-        console.error(errorStyle("[error]", error));
+        console.error("[error]", error);
         showElectronTip();
     }
 }

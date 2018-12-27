@@ -1,5 +1,4 @@
 import * as child_process from "child_process";
-import * as clc from "cli-color";
 import * as path from "path";
 
 import { ImageFinder } from "./bars/files/ImageFinder";
@@ -17,9 +16,6 @@ const imageInputDir = argv._[0];
 const shrink = !!argv.shrink;
 const isVerbose = !!argv.verbose;
 
-const errorStyle = clc.black.bgRed;
-const normalStyle = clc.green;
-
 const outputter = new ConsoleOutputter(isVerbose ? Verbosity.High : Verbosity.Low);
 
 if (shrink) {
@@ -29,7 +25,7 @@ if (shrink) {
 }
 
 function shrinkImagesAt() {
-    console.log(normalStyle(`*shrink* images at ${imageInputDir} ...`));
+    console.log(`*shrink* images at ${imageInputDir} ...`);
 
     ImageFinder.findImagesInDirectory(imageInputDir, outputter)
         .then(files => {
@@ -46,7 +42,7 @@ function shrinkImagesAt() {
 
 // assumption: electron is globally installed
 function launchChocolateBarsApp() {
-    console.log(normalStyle(`Launching chocolate bars of images at '${imageInputDir}' ...`));
+    console.log(`Launching chocolate bars of images at '${imageInputDir}' ...`);
 
     const showElectronTip = () => {
         console.error(`note: electron must be globally installed:`);
@@ -58,7 +54,7 @@ function launchChocolateBarsApp() {
 
         child_process.spawn("electron", [appPath, imageInputDir], { shell: true });
     } catch (error) {
-        console.error(errorStyle("[error]", error));
+        console.error("[error]", error);
         showElectronTip();
     }
 }
