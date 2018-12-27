@@ -49,13 +49,21 @@
                 overflow-y: auto;
             }
             #detail-header {
+                height: 20px;
                 padding-top: 10px;
+            }
+            .detail-body {
+                height: calc(100% - 20px);
+                width: 100%;
             }
             #detail-panel {
                 height: 300px;
             }
             #image-histogram {
                 user-select: none;
+            }
+            #image-text {
+                width: 100%;
             }
 
             /* hide plotly.js toolbar*/
@@ -68,6 +76,14 @@
             }
             .noScrollbars {
                 overflow: hidden;
+            }
+
+            .exifContainer {
+                height: auto;
+                max-height: calc(100% - 60px);
+                overflow: hidden;
+                overflow-y: auto;
+                max-width: 220px;
             }
         </style>
     </head>

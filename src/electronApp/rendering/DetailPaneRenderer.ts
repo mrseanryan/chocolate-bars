@@ -30,7 +30,9 @@ export namespace DetailPaneRenderer {
             // tslint:disable-next-line:prefer-template
             `<div>dimensions: ${image.dimensions.width} x ${image.dimensions.height}</div>` +
             `<div>file size: ${MathUtils.roundToFewPlaces(image.fileSizeInMb)} Mb</div>` +
-            ExifRenderer.getHtmlForImage(image, outputter);
+            `<div id="image-exif" class="exifContainer"></div>`;
+
+        ExifRenderer.getHtmlForImage(image, "image-exif");
 
         jquery("#image-text").append(html);
     }

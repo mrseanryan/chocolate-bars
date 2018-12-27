@@ -3720,7 +3720,7 @@ execa@^1.0.0:
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
 
-exif-reader@^1.0.2:
+exif-reader@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/exif-reader/-/exif-reader-1.0.2.tgz#02408b97b61028ea4f45e5b893a836f9aa28ac4f"
   integrity sha1-AkCLl7YQKOpPReW4k6g2+aoorE8=
@@ -6379,6 +6379,14 @@ jest@^23.6.0:
     import-local "^1.0.0"
     jest-cli "^23.6.0"
 
+jpg-stream@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/jpg-stream/-/jpg-stream-1.1.2.tgz#4dba159d9d19368df21318f648cee980a72be407"
+  integrity sha1-TboVnZ0ZNo3yExj2SM7pgKcr5Ac=
+  dependencies:
+    exif-reader "^1.0.0"
+    pixel-stream "^1.0.3"
+
 jquery@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
@@ -8704,6 +8712,13 @@ pirates@^4.0.0:
   integrity sha512-8t5BsXy1LUIjn3WWOlOuFDuKswhQb/tkak641lvBgmPOBUQHXveORtlMCp6OdPV1dtuTaEahKA8VNz6uLfKBtA==
   dependencies:
     node-modules-regexp "^1.0.0"
+
+pixel-stream@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/pixel-stream/-/pixel-stream-1.0.3.tgz#53e8c54b21d5508393b53bcb32b64a7755f1fa5e"
+  integrity sha1-U+jFSyHVUIOTtTvLMrZKd1Xx+l4=
+  dependencies:
+    shallow-copy "0.0.1"
 
 pkg-conf@^2.1.0:
   version "2.1.0"
