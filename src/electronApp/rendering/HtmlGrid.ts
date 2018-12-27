@@ -1,4 +1,4 @@
-import { ImageDetail } from "../bars/model/ImageDetail";
+import { ImageDetail } from "../../bars/model/ImageDetail";
 
 const MAX_IMAGES_PER_ROW = 3;
 

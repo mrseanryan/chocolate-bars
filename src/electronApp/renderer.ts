@@ -5,8 +5,8 @@ import { ImageDetail } from "../bars/model/ImageDetail";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { IOutputter } from "../utils/outputter/IOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
-import { DetailPaneRenderer } from "./DetailPaneRenderer";
-import { HtmlGrid } from "./HtmlGrid";
+import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
+import { HtmlGrid } from "./rendering/HtmlGrid";
 
 const remote = require("electron").remote;
 

@@ -1,9 +1,9 @@
 import * as jquery from "jquery";
 
-import { HistogramData, HistogramReader } from "../bars/files/HistogramReader";
-import { ImageDetail } from "../bars/model/ImageDetail";
-import { MathUtils } from "../utils/MathUtils";
-import { IOutputter } from "../utils/outputter/IOutputter";
+import { HistogramData, HistogramReader } from "../../bars/files/HistogramReader";
+import { ImageDetail } from "../../bars/model/ImageDetail";
+import { MathUtils } from "../../utils/MathUtils";
+import { IOutputter } from "../../utils/outputter/IOutputter";
 
 export namespace DetailPaneRenderer {
     export function renderDetailForImage(image: ImageDetail, outputter: IOutputter) {
