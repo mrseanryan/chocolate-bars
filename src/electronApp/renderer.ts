@@ -123,9 +123,9 @@ function setImageBorder(image: ImageDetail, style: BorderStyle, outputter: IOutp
 
 function renderDetailContainer() {
     const html =
-        `<div class="container-vertical"><div id="detail-header">[Please select an image!]</div>` +
-        `<div class="container">` +
-        `<div id="image-histogram"></div><div id="image-text"></div>` +
+        `<div class="container-vertical fullHeight"><div id="detail-header">[Please select an image!]</div>` +
+        `<div class="container detail-body">` +
+        `<div id="image-histogram"></div><div id="image-text" class="fullHeight"></div>` +
         `</div>` +
         `</div>`;
 
