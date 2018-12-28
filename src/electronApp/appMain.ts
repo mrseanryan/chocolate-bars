@@ -6,12 +6,15 @@ let mainWindow: Electron.BrowserWindow | null = null;
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        height: 600,
         icon: path.join(__dirname, "./chocolate-bar-straightened-trans.png"),
         webPreferences: {
             nodeIntegration: true
         },
-        width: 1000
+        // Resuling min values are bigger!
+        minWidth: 680, // = 835 on Windows 10
+        minHeight: 600, // = 718 on Windows 10
+        width: 1000,
+        height: 600
     });
 
     mainWindow.setMenu(null);

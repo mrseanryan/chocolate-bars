@@ -18,7 +18,7 @@ export class HtmlGrid {
 
     getHeaderHtml(imageInputDir: string): string {
         let html = "";
-        html += this.getContainerStart();
+        html += this.getContainerStart(Orientation.Horizontal, "grid-header-container");
         html += `<div class="grid-header">Images at '${imageInputDir}'</div>`;
         html += this.getContainerEnd();
         return html;
