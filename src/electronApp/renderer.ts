@@ -21,6 +21,8 @@ const outputter = new ConsoleOutputter(Verbosity.High);
 
 const grid = new HtmlGrid();
 
+const HIDE_LOADING_AFTER_N_IMAGES = 9;
+
 const state = {
     currentPage: 0,
     imageInputDir: "",
@@ -99,6 +101,9 @@ async function renderPagerButtons() {
 
 async function renderImages() {
     grid.clearImagesContainer();
+    DetailPaneRenderer.clear();
+
+    showImagesLoading();
 
     const imageInputDir = state.imageInputDir;
     grid.setTitleForDir(imageInputDir);
@@ -108,6 +113,7 @@ async function renderImages() {
 
     let isFirst = true;
     let thisEpoch = state.epoch;
+    let imagesLoaded = 0;
 
     for await (const result of ChocolateBars.processDirectoryIterable(
         imageInputDir,
@@ -133,8 +139,23 @@ async function renderImages() {
                 onClickImage(image);
                 isFirst = false;
             }
+
+            imagesLoaded++;
+            if (imagesLoaded > HIDE_LOADING_AFTER_N_IMAGES) {
+                hideImagesLoading();
+            }
         });
     }
+
+    hideImagesLoading();
+}
+
+function showImagesLoading() {
+    renderHtml(getLoaderHtml(), grid.getImagesContainerId());
+}
+
+function hideImagesLoading() {
+    jquery(`#${grid.getImagesContainerId()} .lds-ring`).hide();
 }
 
 function renderPager(pageId: number) {
@@ -161,6 +182,8 @@ function onClickPager(pageId: number) {
     state.epoch++;
 
     state.currentPage = pageId;
+
+    showImagesLoading();
 
     // a new pager button may become disabled
     renderImagesAndPager();
@@ -270,7 +293,7 @@ function renderDetailContainer() {
     const html =
         `<div class="container-vertical fullHeight"><div id="detail-header"></div>` +
         `<div class="container detail-body">` +
-        `<div class="image-histogram-container">${renderLoaderHtml()}` +
+        `<div class="image-histogram-container">${getLoaderHtml()}` +
         `<div id="image-histogram"/></div>` +
         `<div id="image-text" class="fullHeight"></div>` +
         `</div>` +
@@ -279,7 +302,7 @@ function renderDetailContainer() {
     renderHtml(html, "detail-panel");
 }
 
-function renderLoaderHtml(): string {
+function getLoaderHtml(): string {
     return `<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`;
 }
 

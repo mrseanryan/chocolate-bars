@@ -17,7 +17,7 @@ export namespace DetailPaneRenderer {
             .catch(error => outputter.error(error));
     }
 
-    function clear() {
+    export function clear() {
         jquery("#image-text")
             .children()
             .remove();
