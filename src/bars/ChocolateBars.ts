@@ -1,6 +1,5 @@
 import { ImageResizeExectutor } from "../utils/ImageResizeExecutor";
 import { IOutputter } from "../utils/outputter/IOutputter";
-import { ImageDimensions } from "./files/ImageDimensions";
 import { ChocolateResult } from "./model/ChocolateResult";
 import { ImageDetail } from "./model/ImageDetail";
 import { ImageFilePath } from "./model/ImageFilePath";
