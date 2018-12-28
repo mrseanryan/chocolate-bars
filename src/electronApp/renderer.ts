@@ -15,6 +15,10 @@ const remote = require("electron").remote;
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
+const outputter = new ConsoleOutputter(Verbosity.High);
+
+const grid = new HtmlGrid();
+
 window.onload = () => {
     addKeyboardListener();
 
@@ -24,10 +28,8 @@ window.onload = () => {
 };
 
 function processDirectory(imageInputDir: string) {
-    const outputter = new ConsoleOutputter(Verbosity.High);
-
     setTimeout(() => {
-        renderImages(imageInputDir, outputter);
+        renderContainerAndDetailWithImages(imageInputDir);
 
         addSelectDirectoryListener();
     }, 0);
@@ -38,16 +40,18 @@ enum BorderStyle {
     Selected
 }
 
-async function renderImages(imageInputDir: string, outputter: IOutputter) {
-    const grid = new HtmlGrid();
-
-    clearHtml();
-
+async function renderContainerAndDetailWithImages(imageInputDir: string) {
     renderHtml(grid.getHeaderHtml(imageInputDir));
 
     renderHtml(grid.getImagesContainerHtml());
 
     renderDetailContainer();
+
+    await renderImages(imageInputDir);
+}
+
+async function renderImages(imageInputDir: string) {
+    grid.clearImagesContainer();
 
     let isFirst = true;
     for await (const result of ChocolateBars.processDirectoryIterable(imageInputDir, outputter)) {
@@ -59,17 +63,17 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
         result.imageDetails.forEach(image => {
             grid.addImageToContainer(image);
 
-            addImageClickListener(image, outputter);
+            addImageClickListener(image);
 
             if (isFirst) {
-                onClickImage(image, outputter);
+                onClickImage(image);
                 isFirst = false;
             }
         });
     }
 }
 
-function addImageClickListener(image: ImageDetail, outputter: IOutputter) {
+function addImageClickListener(image: ImageDetail) {
     const imageDivId = HtmlGrid.getImageDivId(image);
 
     const imageDiv = document.getElementById(imageDivId);
@@ -78,24 +82,24 @@ function addImageClickListener(image: ImageDetail, outputter: IOutputter) {
         return;
     }
 
-    imageDiv.addEventListener("click", () => onClickImage(image, outputter));
+    imageDiv.addEventListener("click", () => onClickImage(image));
 }
 
 let previousImageSelected: ImageDetail | null = null;
 
-function onClickImage(image: ImageDetail, outputter: IOutputter) {
+function onClickImage(image: ImageDetail) {
     jquery("#detail-header").text("image: " + image.filename);
 
     if (previousImageSelected) {
-        setImageBorder(previousImageSelected, BorderStyle.None, outputter);
+        setImageBorder(previousImageSelected, BorderStyle.None);
     }
-    setImageBorder(image, BorderStyle.Selected, outputter);
+    setImageBorder(image, BorderStyle.Selected);
     previousImageSelected = image;
 
     DetailPaneRenderer.renderDetailForImage(image, outputter);
 }
 
-function setImageBorder(image: ImageDetail, style: BorderStyle, outputter: IOutputter) {
+function setImageBorder(image: ImageDetail, style: BorderStyle) {
     const jqueryDiv = jquery(`#${HtmlGrid.getImageDivId(image)}`);
 
     const selectedClass = "user-image-selected";
@@ -133,16 +137,6 @@ function renderLoaderHtml(): string {
     return `<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`;
 }
 
-function clearHtml() {
-    clearHtmlDiv("content");
-}
-
-function clearHtmlDiv(divId: string) {
-    jquery(`#${divId}`)
-        .children()
-        .remove();
-}
-
 function renderHtml(html: string, containerId: string = "content") {
     jquery(`#${containerId}`).append(html);
 }
@@ -168,7 +162,7 @@ function addSelectDirectoryListener() {
         const directories = selectDirectory();
 
         if (directories.length === 1) {
-            processDirectory(directories[0]);
+            renderImages(directories[0]);
         }
     });
 }

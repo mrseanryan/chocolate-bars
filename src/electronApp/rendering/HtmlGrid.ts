@@ -1,6 +1,9 @@
 import * as jquery from "jquery";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
+import { JQueryUtils } from "../../utils/JQueryUtils";
+
+const IMAGE_CONTAINER_ID = "images-wrapping-container";
 
 enum Orientation {
     Vertical,
@@ -12,6 +15,10 @@ export class HtmlGrid {
         return `image-id-${image.id}`;
     }
 
+    clearImagesContainer() {
+        JQueryUtils.clearHtmlDiv(IMAGE_CONTAINER_ID);
+    }
+
     getHeaderHtml(imageInputDir: string): string {
         let html = "";
         html += this.getContainerStart(Orientation.Horizontal, "grid-header-container");
@@ -21,12 +28,15 @@ export class HtmlGrid {
     }
 
     getImagesContainerHtml(): string {
-        return `<div class="images-wrapping-container"></div>`;
+        return `<div id="${IMAGE_CONTAINER_ID}"></div>`;
     }
 
     addImageToContainer(image: ImageDetail) {
-        const jqueryDiv = jquery(`.images-wrapping-container`);
-        jqueryDiv.append(this.getImageHtml(image));
+        this.getImageContainerDiv().append(this.getImageHtml(image));
+    }
+
+    private getImageContainerDiv(): JQuery<HTMLElement> {
+        return jquery(`#images-wrapping-container`);
     }
 
     private renderBrowseButton(): string {
