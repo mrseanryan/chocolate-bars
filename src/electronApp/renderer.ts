@@ -64,6 +64,10 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
     renderDetailContainer();
 
     addImageClickListeners(images, outputter);
+
+    if (images.length > 0) {
+        onClickImage(images[0], outputter);
+    }
 }
 
 function addImageClickListeners(images: ImageDetail[], outputter: IOutputter) {
@@ -117,7 +121,7 @@ function setImageBorder(image: ImageDetail, style: BorderStyle, outputter: IOutp
 
 function renderDetailContainer() {
     const html =
-        `<div class="container-vertical fullHeight"><div id="detail-header">[Please select an image!]</div>` +
+        `<div class="container-vertical fullHeight"><div id="detail-header"></div>` +
         `<div class="container detail-body">` +
         `<div id="image-histogram"></div><div id="image-text" class="fullHeight"></div>` +
         `</div>` +
