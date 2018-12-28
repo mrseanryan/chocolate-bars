@@ -7,7 +7,6 @@
             /* Loader style - ref: https://loading.io/css/ */
             .lds-ring {
                 display: inline-block;
-                /* position: relative; */
                 width: 64px;
                 height: 64px;
 
@@ -81,13 +80,11 @@
             }
 
             .image-histogram-container {
-                /* min-width: 300px; */
                 position: relative;
                 width: calc(100% - 250px);
             }
 
             #image-histogram {
-                /* min-width: 300px; */
                 height: 250px;
                 user-select: none;
             }
@@ -108,11 +105,19 @@
                 border: dashed 2px blue;
             }
 
+            .images-and-pager-container {
+                height: calc(100% - 25px);
+            }
             #images-wrapping-container {
                 display: flex;
                 flex-wrap: wrap;
-                height: calc(100% - 25px);
                 overflow-y: auto;
+                width: calc(100% - 25px);
+            }
+            .image-pager {
+                overflow-y: auto;
+                padding-left: 10px;
+                width: 25px;
             }
 
             #browseButton {
@@ -122,7 +127,7 @@
             #content {
                 height: calc(100% - 300px);
             }
-            /* TODO xxx add top-header which is not scrolled */
+
             #detail-header {
                 height: 20px;
                 padding-top: 10px;

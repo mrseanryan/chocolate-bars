@@ -1,9 +1,10 @@
 import * as jquery from "jquery";
 
 import { ChocolateBars } from "../bars/ChocolateBars";
+import { ImageFinder } from "../bars/files/ImageFinder";
 import { ImageDetail } from "../bars/model/ImageDetail";
+import { PagingModel } from "../bars/model/PagingModel";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
-import { IOutputter } from "../utils/outputter/IOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
 import { SharedDataUtils } from "../utils/SharedDataUtils";
 import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
@@ -19,6 +20,11 @@ const outputter = new ConsoleOutputter(Verbosity.High);
 
 const grid = new HtmlGrid();
 
+const state = {
+    currentPage: 0,
+    imageInputDir: ""
+};
+
 window.onload = () => {
     addKeyboardListener();
 
@@ -30,8 +36,6 @@ window.onload = () => {
 function processDirectory(imageInputDir: string) {
     setTimeout(() => {
         renderContainerAndDetailWithImages(imageInputDir);
-
-        addSelectDirectoryListener();
     }, 0);
 }
 
@@ -41,21 +45,59 @@ enum BorderStyle {
 }
 
 async function renderContainerAndDetailWithImages(imageInputDir: string) {
-    renderHtml(grid.getHeaderHtml(imageInputDir));
+    state.imageInputDir = imageInputDir;
 
-    renderHtml(grid.getImagesContainerHtml());
+    renderHtml(grid.getHeaderHtml());
+
+    renderHtml(grid.getImagesAndPagerContainerHtml());
 
     renderDetailContainer();
 
-    await renderImages(imageInputDir);
+    await renderImagesAndPager();
 }
 
-async function renderImages(imageInputDir: string) {
+async function renderImagesAndPager() {
+    renderPagerButtons();
+    await renderImages();
+}
+
+async function renderPagerButtons() {
+    let pageCount = 0;
+    let imageCountThisPage = 0;
+    grid.clearPagerContainer();
+
+    // Always have a 1st page:
+    renderPager(pageCount);
+    pageCount++;
+
+    const allImages = await ImageFinder.findImagesInDirectory(state.imageInputDir, outputter);
+    allImages.forEach(() => {
+        imageCountThisPage++;
+
+        if (imageCountThisPage > PagingModel.IMAGES_PER_PAGE) {
+            renderPager(pageCount);
+
+            pageCount++;
+            imageCountThisPage = 1;
+        }
+    });
+}
+
+async function renderImages() {
     grid.clearImagesContainer();
+
+    const imageInputDir = state.imageInputDir;
     grid.setTitleForDir(imageInputDir);
 
+    // TODO xxx split out the button from the title - then can listen earlier
+    addSelectDirectoryListener();
+
     let isFirst = true;
-    for await (const result of ChocolateBars.processDirectoryIterable(imageInputDir, outputter)) {
+    for await (const result of ChocolateBars.processDirectoryIterable(
+        imageInputDir,
+        outputter,
+        state.currentPage
+    )) {
         outputter.infoVerbose(`rendering ${result.imageDetails.length} images`);
         if (result.imageDetails.length > 0) {
             outputter.infoVerbose(`first = ${result.imageDetails[0].originalFilepath}`);
@@ -72,6 +114,32 @@ async function renderImages(imageInputDir: string) {
             }
         });
     }
+}
+
+function renderPager(pageId: number) {
+    const disabled = pageId === state.currentPage ? " disabled" : "";
+
+    const pagerHtml = `<button id='button-pager-${pageId}}'${disabled}>${pageId + 1}</button>`;
+    jquery(".image-pager").append(pagerHtml);
+
+    addPagerClickListener(pageId);
+}
+
+function addPagerClickListener(pageId: number) {
+    const pageDiv = document.getElementById(`button-pager-${pageId}}`);
+    if (!pageDiv) {
+        outputter.error(`could not find page button div for '${pageId}'`);
+        return;
+    }
+
+    pageDiv.addEventListener("click", () => onClickPager(pageId));
+}
+
+function onClickPager(pageId: number) {
+    state.currentPage = pageId;
+
+    // a new pager button may become disabled
+    renderImagesAndPager();
 }
 
 function addImageClickListener(image: ImageDetail) {
@@ -162,8 +230,9 @@ function addSelectDirectoryListener() {
     browseButton.addEventListener("click", _ => {
         const directories = selectDirectory();
 
-        if (directories.length === 1) {
-            renderImages(directories[0]);
+        if (directories && directories.length === 1) {
+            state.imageInputDir = directories[0];
+            renderImagesAndPager();
         }
     });
 }

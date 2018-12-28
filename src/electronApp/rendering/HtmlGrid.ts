@@ -16,14 +16,18 @@ export class HtmlGrid {
     }
 
     clearImagesContainer() {
-        JQueryUtils.clearHtmlDiv(IMAGE_CONTAINER_ID);
+        JQueryUtils.clearHtmlDivById(IMAGE_CONTAINER_ID);
+    }
+
+    clearPagerContainer() {
+        JQueryUtils.clearHtmlDivByClass("image-pager");
     }
 
     setTitleForDir(imageInputDir: string) {
         jquery(".grid-header").html(`Images at '${imageInputDir}'${this.renderBrowseButton()}`);
     }
 
-    getHeaderHtml(imageInputDir: string): string {
+    getHeaderHtml(): string {
         let html = "";
         html += this.getContainerStart(Orientation.Horizontal, "grid-header-container");
         html += `<div class="grid-header"></div>`;
@@ -31,8 +35,13 @@ export class HtmlGrid {
         return html;
     }
 
-    getImagesContainerHtml(): string {
-        return `<div id="${IMAGE_CONTAINER_ID}"></div>`;
+    getImagesAndPagerContainerHtml(): string {
+        return (
+            `${this.getContainerStart(Orientation.Horizontal, "images-and-pager-container")}` +
+            `<div id="${IMAGE_CONTAINER_ID}"></div>` +
+            `<div class="image-pager"></div>` +
+            `${this.getContainerEnd()}`
+        );
     }
 
     addImageToContainer(image: ImageDetail) {

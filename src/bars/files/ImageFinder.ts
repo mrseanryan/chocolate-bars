@@ -5,9 +5,6 @@ import { FileUtils } from "../../utils/FileUtils";
 import { Nodash } from "../../utils/Nodash";
 import { IOutputter } from "../../utils/outputter/IOutputter";
 
-// TODO xxx remove limit on file count, once we have paging
-const MAX_FILES = 100;
-
 export namespace ImageFinder {
     export async function findImagesInDirectory(
         imageInputDirOrFile: string,
@@ -46,7 +43,7 @@ export namespace ImageFinder {
 
         imageFilePaths.sort(bySizeAscending);
 
-        return Nodash.take(imageFilePaths, MAX_FILES);
+        return imageFilePaths;
     }
 
     function bySizeAscending(one: string, two: string): number {

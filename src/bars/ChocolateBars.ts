@@ -21,10 +21,15 @@ export namespace ChocolateBars {
     // Yield image results as they become available
     export async function* processDirectoryIterable(
         imageInputDir: string,
-        outputter: IOutputter
+        outputter: IOutputter,
+        currentPage: number
     ): AsyncIterableIterator<ChocolateResult> {
         // shrink if needed, and use that path (also keep original path)
-        const iterable = ImageResizeExectutor.resizeImagesAtIterable(imageInputDir, outputter);
+        const iterable = ImageResizeExectutor.resizeImagesAtIterable(
+            imageInputDir,
+            outputter,
+            currentPage
+        );
 
         let id = 0;
         for await (const result of iterable) {
