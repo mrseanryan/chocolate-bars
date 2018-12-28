@@ -1,3 +1,5 @@
+import * as jquery from "jquery";
+
 import { ImageDetail } from "../../bars/model/ImageDetail";
 
 enum Orientation {
@@ -10,34 +12,25 @@ export class HtmlGrid {
         return `image-id-${image.id}`;
     }
 
-    private images: ImageDetail[] = [];
-
-    addImage(image: ImageDetail) {
-        this.images.push(image);
-    }
-
     getHeaderHtml(imageInputDir: string): string {
         let html = "";
         html += this.getContainerStart(Orientation.Horizontal, "grid-header-container");
-        html += `<div class="grid-header">Images at '${imageInputDir}'</div>`;
+        html += `<div class="grid-header">Images at '${imageInputDir}'${this.renderBrowseButton()}</div>`;
         html += this.getContainerEnd();
         return html;
     }
 
-    getImagesHtml(): string {
-        const imagesHtml = this.images
-            .map(this.getImageHtml)
-            .reduce((prev, current) => prev + current, "");
-
-        return this.getImagesContainerStart() + imagesHtml + this.getClosingHtml();
+    getImagesContainerHtml(): string {
+        return `<div class="images-wrapping-container"></div>`;
     }
 
-    private getImagesContainerStart(): string {
-        return `<div class="images-wrapping-container">`;
+    addImageToContainer(image: ImageDetail) {
+        const jqueryDiv = jquery(`.images-wrapping-container`);
+        jqueryDiv.append(this.getImageHtml(image));
     }
 
-    getClosingHtml(): string {
-        return `</div>`;
+    private renderBrowseButton(): string {
+        return `<button id="browseButton">Browse...</button>`;
     }
 
     private getContainerStart(

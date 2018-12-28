@@ -20,12 +20,18 @@ window.onload = () => {
 
     const imageInputDir = SharedDataUtils.getArgs()[2];
 
+    processDirectory(imageInputDir);
+};
+
+function processDirectory(imageInputDir: string) {
     const outputter = new ConsoleOutputter(Verbosity.High);
 
     setTimeout(() => {
         renderImages(imageInputDir, outputter);
+
+        addSelectDirectoryListener();
     }, 0);
-};
+}
 
 enum BorderStyle {
     None,
@@ -35,10 +41,15 @@ enum BorderStyle {
 async function renderImages(imageInputDir: string, outputter: IOutputter) {
     const grid = new HtmlGrid();
 
+    clearHtml();
+
     renderHtml(grid.getHeaderHtml(imageInputDir));
 
-    const images: ImageDetail[] = [];
+    renderHtml(grid.getImagesContainerHtml());
 
+    renderDetailContainer();
+
+    let isFirst = true;
     for await (const result of ChocolateBars.processDirectoryIterable(imageInputDir, outputter)) {
         outputter.infoVerbose(`rendering ${result.imageDetails.length} images`);
         if (result.imageDetails.length > 0) {
@@ -46,34 +57,28 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
         }
 
         result.imageDetails.forEach(image => {
-            grid.addImage(image);
-            images.push(image);
+            grid.addImageToContainer(image);
+
+            addImageClickListener(image, outputter);
+
+            if (isFirst) {
+                onClickImage(image, outputter);
+                isFirst = false;
+            }
         });
-    }
-
-    renderHtml(grid.getImagesHtml());
-
-    renderDetailContainer();
-
-    addImageClickListeners(images, outputter);
-
-    if (images.length > 0) {
-        onClickImage(images[0], outputter);
     }
 }
 
-function addImageClickListeners(images: ImageDetail[], outputter: IOutputter) {
-    images.forEach(image => {
-        const imageDivId = HtmlGrid.getImageDivId(image);
+function addImageClickListener(image: ImageDetail, outputter: IOutputter) {
+    const imageDivId = HtmlGrid.getImageDivId(image);
 
-        const imageDiv = document.getElementById(imageDivId);
-        if (!imageDiv) {
-            outputter.error(`could not find image div '${imageDivId}'`);
-            return;
-        }
+    const imageDiv = document.getElementById(imageDivId);
+    if (!imageDiv) {
+        outputter.error(`could not find image div '${imageDivId}'`);
+        return;
+    }
 
-        imageDiv.addEventListener("click", () => onClickImage(image, outputter));
-    });
+    imageDiv.addEventListener("click", () => onClickImage(image, outputter));
 }
 
 let previousImageSelected: ImageDetail | null = null;
@@ -128,6 +133,16 @@ function renderLoaderHtml(): string {
     return `<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`;
 }
 
+function clearHtml() {
+    clearHtmlDiv("content");
+}
+
+function clearHtmlDiv(divId: string) {
+    jquery(`#${divId}`)
+        .children()
+        .remove();
+}
+
 function renderHtml(html: string, containerId: string = "content") {
     jquery(`#${containerId}`).append(html);
 }
@@ -139,5 +154,29 @@ function addKeyboardListener() {
         } else if (e.key === "F5" || (e.ctrlKey && (e.key === "R" || e.key === "r"))) {
             location.reload();
         }
+    });
+}
+
+function addSelectDirectoryListener() {
+    const browseButton = document.getElementById("browseButton");
+
+    if (!browseButton) {
+        throw new Error("could not find the browse button");
+    }
+
+    browseButton.addEventListener("click", _ => {
+        const directories = selectDirectory();
+
+        if (directories.length === 1) {
+            processDirectory(directories[0]);
+        }
+    });
+}
+
+function selectDirectory(): string[] {
+    const mainWindow = remote.getCurrentWindow();
+
+    return remote.dialog.showOpenDialog(mainWindow, {
+        properties: ["openDirectory"]
     });
 }
