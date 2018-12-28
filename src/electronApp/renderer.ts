@@ -140,7 +140,8 @@ async function renderImages() {
 function renderPager(pageId: number) {
     const disabled = pageId === state.currentPage ? " disabled" : "";
 
-    const pagerHtml = `<button id='button-pager-${pageId}}'${disabled}>${pageId + 1}</button>`;
+    const pagerHtml = `<button id='button-pager-${pageId}}'${disabled} class="image-pager-button">${pageId +
+        1}</button>`;
     jquery(".image-pager").append(pagerHtml);
 
     addPagerClickListener(pageId);

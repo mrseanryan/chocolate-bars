@@ -155,6 +155,7 @@
 
             .images-and-pager-container {
                 height: calc(100% - 25px);
+                position: relative;
             }
             #images-wrapping-container {
                 display: flex;
@@ -163,11 +164,17 @@
                 width: 100%;
             }
             .image-pager {
-                overflow-y: auto;
                 position: absolute;
-                width: 25px;
                 top: 4px;
                 right: 30px;
+
+                display: flex;
+                flex-wrap: wrap-reverse;
+                flex-direction: column;
+                height: 100%;
+            }
+            .image-pager-button {
+                cursor: pointer;
             }
 
             #browseButton {
