@@ -102,6 +102,7 @@ async function renderPagerButtons() {
 async function renderImages() {
     grid.clearImagesContainer();
     DetailPaneRenderer.clear();
+    clearImageHeader();
 
     showImagesLoading();
 
@@ -231,7 +232,7 @@ function addImageNewWindowClickListener(image: ImageDetail) {
 let previousImageSelected: ImageDetail | null = null;
 
 function onClickImage(image: ImageDetail) {
-    jquery("#detail-header").text("image: " + image.filename);
+    setImageHeader(image);
 
     if (previousImageSelected) {
         setImageBorder(previousImageSelected, BorderStyle.None);
@@ -240,6 +241,14 @@ function onClickImage(image: ImageDetail) {
     previousImageSelected = image;
 
     DetailPaneRenderer.renderDetailForImage(image, outputter);
+}
+
+function setImageHeader(image: ImageDetail) {
+    jquery("#detail-header").text("image: " + image.filename);
+}
+
+function clearImageHeader() {
+    jquery("#detail-header").text("");
 }
 
 // TODO xxx refactor this file - extract ExpandedImageRenderer - and de-dupe the class name here
