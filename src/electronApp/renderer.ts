@@ -5,6 +5,7 @@ import { ImageDetail } from "../bars/model/ImageDetail";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { IOutputter } from "../utils/outputter/IOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
+import { SharedDataUtils } from "../utils/SharedDataUtils";
 import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
 
@@ -17,9 +18,7 @@ const remote = require("electron").remote;
 window.onload = () => {
     addKeyboardListener();
 
-    const args = remote.getGlobal("sharedObject").prop1;
-
-    const imageInputDir = args[2];
+    const imageInputDir = SharedDataUtils.getArgs()[2];
 
     const outputter = new ConsoleOutputter(Verbosity.High);
 

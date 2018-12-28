@@ -1,9 +1,12 @@
 import * as child_process from "child_process";
-import { IOutputter } from "./outputter/IOutputter";
-import { ShrinkResultSerDe } from "./ShrinkResultSerDe";
-import { ImageFilePath } from "../bars/model/ImageFilePath";
+import * as path from "path";
+
 import { ImageFinder } from "../bars/files/ImageFinder";
+import { ImageFilePath } from "../bars/model/ImageFilePath";
 import { FileUtils } from "./FileUtils";
+import { IOutputter } from "./outputter/IOutputter";
+import { SharedDataUtils } from "./SharedDataUtils";
+import { ShrinkResultSerDe } from "./ShrinkResultSerDe";
 
 // Execute shrinking via sharp in separate process, to avoid issues with Sharp + Electron in same process (C++ build)
 export namespace ImageResizeExectutor {
@@ -49,10 +52,15 @@ export namespace ImageResizeExectutor {
     }
 
     async function execShrinkPromise(filePath: string): Promise<string> {
+        // determine path, whether running locally in repo OR globally as cli:
+        // dist/lib/electronApp
+        const thisScriptDir = path.dirname(SharedDataUtils.getArgs()[1]);
+
         return new Promise<string>((resolve, reject) => {
             child_process.execFile(
                 "node",
-                ["./dist/lib/main.js", filePath, "--shrink"],
+                // .. to reach dist/lib
+                [path.resolve(path.join(thisScriptDir, "..", "main.js")), filePath, "--shrink"],
                 (err, stdout, stderr) => {
                     if (err) {
                         reject(err);
