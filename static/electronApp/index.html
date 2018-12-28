@@ -72,6 +72,7 @@
                 flex-direction: column;
             }
             .image-container {
+                position: relative;
                 max-height: 300px;
                 max-width: 300px;
                 overflow: hidden;
@@ -102,6 +103,54 @@
             }
             .user-image-not-selected:hover {
                 border: dashed 2px blue;
+            }
+
+            /* TODO xxx use icons like ultimate */
+            .user-image-expand {
+                position: absolute;
+                border: dashed 2px green;
+                right: 10px;
+                top: 13px;
+                width: 16px;
+                height: 16px;
+                cursor: zoom-in;
+            }
+            .user-image-expand:hover {
+                border: solid 2px #0f09;
+            }
+
+            .user-image-new-window {
+                position: absolute;
+                border: dashed 2px blue;
+                right: 34px;
+                top: 13px;
+                width: 16px;
+                height: 16px;
+                cursor: zoom-in;
+            }
+            .user-image-new-window:hover {
+                border: solid 2px #09f;
+            }
+
+            .user-image-popup {
+                z-index: 10000;
+                display: none;
+
+                align-items: center;
+                justify-content: center;
+
+                position: absolute;
+                border: solid 1px black;
+                top: 25px;
+                left: 25px;
+                height: calc(100% - 50px);
+                width: calc(100% - 50px);
+                /* width: 100%; */
+                cursor: zoom-out;
+            }
+
+            .user-image-popup-visible {
+                display: flex;
             }
 
             .images-and-pager-container {

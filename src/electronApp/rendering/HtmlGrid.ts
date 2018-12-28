@@ -15,6 +15,14 @@ export class HtmlGrid {
         return `image-id-${image.id}`;
     }
 
+    static getImageExpandDivId(image: ImageDetail): string {
+        return this.getImageDivId(image) + "-expand";
+    }
+
+    static getImageOpenNewWindowDivId(image: ImageDetail): string {
+        return this.getImageDivId(image) + "-new-window";
+    }
+
     clearImagesContainer() {
         JQueryUtils.clearHtmlDivById(IMAGE_CONTAINER_ID);
     }
@@ -70,8 +78,15 @@ export class HtmlGrid {
     }
 
     private getImageHtml = (image: ImageDetail): string => {
-        return `<div class="image-container"><img class="user-image user-image-not-selected" src="${
-            image.smallerFilepath
-        }" id="${HtmlGrid.getImageDivId(image)}"' width="250px" /></div>`;
+        return (
+            `<div class="image-container"><img class="user-image user-image-not-selected" src="${
+                image.smallerFilepath
+            }" id="${HtmlGrid.getImageDivId(image)}"' width="250px" />` +
+            `<div id="${HtmlGrid.getImageExpandDivId(image)}" class="user-image-expand"/>` +
+            `<div id="${HtmlGrid.getImageOpenNewWindowDivId(
+                image
+            )}" class="user-image-new-window"/>` +
+            `</div>`
+        );
     };
 }

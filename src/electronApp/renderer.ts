@@ -4,6 +4,7 @@ import { ChocolateBars } from "../bars/ChocolateBars";
 import { ImageFinder } from "../bars/files/ImageFinder";
 import { ImageDetail } from "../bars/model/ImageDetail";
 import { PagingModel } from "../bars/model/PagingModel";
+import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
 import { SharedDataUtils } from "../utils/SharedDataUtils";
@@ -56,7 +57,17 @@ async function renderContainerAndDetailWithImages(imageInputDir: string) {
 
     renderDetailContainer();
 
+    renderHiddenExpandedImagePopup();
+
     await renderImagesAndPager();
+}
+
+function renderHiddenExpandedImagePopup() {
+    const html = `<div class="user-image-popup" />`;
+
+    jquery("body").append(html);
+
+    addClickExpandedImageListener();
 }
 
 async function renderImagesAndPager() {
@@ -164,6 +175,33 @@ function addImageClickListener(image: ImageDetail) {
     }
 
     imageDiv.addEventListener("click", () => onClickImage(image));
+
+    addImageExpandClickListener(image);
+    addImageNewWindowClickListener(image);
+}
+
+function addImageExpandClickListener(image: ImageDetail) {
+    const imageExpandDivId = HtmlGrid.getImageExpandDivId(image);
+
+    const imageExpandDiv = document.getElementById(imageExpandDivId);
+    if (!imageExpandDiv) {
+        outputter.error(`could not find image expand div '${imageExpandDivId}'`);
+        return;
+    }
+
+    imageExpandDiv.addEventListener("click", () => onClickExpandImage(image));
+}
+
+function addImageNewWindowClickListener(image: ImageDetail) {
+    const imageNewWindowDivId = HtmlGrid.getImageOpenNewWindowDivId(image);
+
+    const imageNewWindowDiv = document.getElementById(imageNewWindowDivId);
+    if (!imageNewWindowDiv) {
+        outputter.error(`could not find image new window div '${imageNewWindowDivId}'`);
+        return;
+    }
+
+    imageNewWindowDiv.addEventListener("click", () => onClickOpenImageInNewWindow(image));
 }
 
 let previousImageSelected: ImageDetail | null = null;
@@ -178,6 +216,32 @@ function onClickImage(image: ImageDetail) {
     previousImageSelected = image;
 
     DetailPaneRenderer.renderDetailForImage(image, outputter);
+}
+
+// TODO xxx refactor this file - extract ExpandedImageRenderer - and de-dupe the class name here
+function addClickExpandedImageListener() {
+    jquery(".user-image-popup").on("click", () => {
+        onClickExpandedImagePop();
+    });
+}
+
+function onClickExpandImage(image: ImageDetail) {
+    JQueryUtils.clearHtmlDivByClass("user-image-popup");
+
+    // use the smaller image, as is smaller and already loaded - so faster
+    const imageHtml = `<img src="${image.smallerFilepath}" />`;
+
+    jquery(".user-image-popup").append(imageHtml);
+
+    jquery(".user-image-popup").addClass("user-image-popup-visible");
+}
+
+function onClickOpenImageInNewWindow(image: ImageDetail) {
+    window.open(`file://${image.originalFilepath}`, "_blank", "nodeIntegration=no");
+}
+
+function onClickExpandedImagePop() {
+    jquery(".user-image-popup").removeClass("user-image-popup-visible");
 }
 
 function setImageBorder(image: ImageDetail, style: BorderStyle) {
