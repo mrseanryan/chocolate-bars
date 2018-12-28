@@ -19,10 +19,14 @@ export class HtmlGrid {
         JQueryUtils.clearHtmlDiv(IMAGE_CONTAINER_ID);
     }
 
+    setTitleForDir(imageInputDir: string) {
+        jquery(".grid-header").html(`Images at '${imageInputDir}'${this.renderBrowseButton()}`);
+    }
+
     getHeaderHtml(imageInputDir: string): string {
         let html = "";
         html += this.getContainerStart(Orientation.Horizontal, "grid-header-container");
-        html += `<div class="grid-header">Images at '${imageInputDir}'${this.renderBrowseButton()}</div>`;
+        html += `<div class="grid-header"></div>`;
         html += this.getContainerEnd();
         return html;
     }

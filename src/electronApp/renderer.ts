@@ -52,6 +52,7 @@ async function renderContainerAndDetailWithImages(imageInputDir: string) {
 
 async function renderImages(imageInputDir: string) {
     grid.clearImagesContainer();
+    grid.setTitleForDir(imageInputDir);
 
     let isFirst = true;
     for await (const result of ChocolateBars.processDirectoryIterable(imageInputDir, outputter)) {
