@@ -56,7 +56,7 @@ export class HtmlGrid {
         this.getImageContainerDiv().append(this.getImageHtml(image));
     }
 
-    private getImageContainerDiv(): JQuery<HTMLElement> {
+    private getImageContainerDiv(): JQuery {
         return jquery(`#images-wrapping-container`);
     }
 
