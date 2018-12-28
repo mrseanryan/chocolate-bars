@@ -123,11 +123,17 @@ function renderDetailContainer() {
     const html =
         `<div class="container-vertical fullHeight"><div id="detail-header"></div>` +
         `<div class="container detail-body">` +
-        `<div id="image-histogram"></div><div id="image-text" class="fullHeight"></div>` +
+        `<div class="image-histogram-container">${renderLoaderHtml()}` +
+        `<div id="image-histogram"/></div>` +
+        `<div id="image-text" class="fullHeight"></div>` +
         `</div>` +
         `</div>`;
 
     renderHtml(html, "detail-panel");
+}
+
+function renderLoaderHtml(): string {
+    return `<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`;
 }
 
 function renderHtml(html: string, containerId: string = "content") {

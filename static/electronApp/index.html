@@ -4,6 +4,50 @@
         <meta charset="UTF-8" />
         <title>Chocolate Bars</title>
         <style>
+            /* Loader style - ref: https://loading.io/css/ */
+            .lds-ring {
+                display: inline-block;
+                /* position: relative; */
+                width: 64px;
+                height: 64px;
+
+                position: absolute;
+                top: calc(50% - 32px);
+                left: calc(50% - 32px);
+                z-index: 10;
+            }
+            .lds-ring div {
+                box-sizing: border-box;
+                display: block;
+                position: absolute;
+                width: 51px;
+                height: 51px;
+                margin: 6px;
+                border: 6px solid rgb(139, 69, 19);
+                border-radius: 50%;
+                animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+                border-color: rgb(139, 69, 19) transparent transparent transparent;
+            }
+            .lds-ring div:nth-child(1) {
+                animation-delay: -0.45s;
+            }
+            .lds-ring div:nth-child(2) {
+                animation-delay: -0.3s;
+            }
+            .lds-ring div:nth-child(3) {
+                animation-delay: -0.15s;
+            }
+            @keyframes lds-ring {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+        <style>
+            /* App styles */
             .about-technical {
                 font-style: italic;
                 font-size: small;
@@ -31,8 +75,20 @@
                 padding: 4px;
             }
 
-            .image-histogram {
-                min-width: 300px;
+            .image-histogram-container {
+                /* min-width: 300px; */
+                position: relative;
+                width: calc(100% - 250px);
+            }
+
+            #image-histogram {
+                /* min-width: 300px; */
+                height: 250px;
+                user-select: none;
+            }
+            /* from plotly.js: */
+            .svg-container {
+                z-index: 100;
             }
             .user-image {
                 cursor: pointer;
@@ -62,11 +118,9 @@
             #detail-panel {
                 height: 300px;
             }
-            #image-histogram {
-                user-select: none;
-            }
+
             #image-text {
-                width: 100%;
+                width: 280px;
             }
 
             /* hide plotly.js toolbar*/

@@ -5,7 +5,7 @@ import { ImageDetail } from "../../bars/model/ImageDetail";
 import { IOutputter } from "../../utils/outputter/IOutputter";
 
 declare namespace Plotly {
-    function newPlot(divId: string, data: any, layout?: any): void;
+    function newPlot(divId: string, data: any, layout?: any, options?: any): void;
 }
 
 export namespace HistogramRenderer {
@@ -45,12 +45,9 @@ export namespace HistogramRenderer {
         const data = [trace];
 
         const layout = {
-            autosize: false,
             bargap: 0.1,
             bargroupgap: 0.1,
             barmode: "overlay",
-            width: 750,
-            height: 250,
             margin: {
                 l: 25,
                 r: 25,
@@ -68,7 +65,7 @@ export namespace HistogramRenderer {
             }
         };
 
-        Plotly.newPlot("image-histogram", data, layout);
+        Plotly.newPlot("image-histogram", data, layout, { responsive: true });
     }
 
     // Calculate greys as average of R, G, B
