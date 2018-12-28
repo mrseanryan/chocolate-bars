@@ -68,7 +68,7 @@ export class HtmlGrid {
     private getImageHtml = (image: ImageDetail): string => {
         return `${this.getContainerStart(
             Orientation.Horizontal
-        )}\n<div class="image-container"><img class="user-image" src="${
+        )}\n<div class="image-container"><img class="user-image user-image-not-selected" src="${
             image.smallerFilepath
         }" id="${HtmlGrid.getImageDivId(image)}"' width="250px" /></div>${this.getContainerEnd()}`;
     };

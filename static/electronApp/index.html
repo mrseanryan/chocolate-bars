@@ -38,10 +38,13 @@
                 cursor: pointer;
                 object-fit: scale-down;
                 /* dummy border, to avoid resizing issues on hover */
-                border: dashed 1px white;
+                border: solid 2px white;
             }
-            .user-image:hover {
-                border: dashed 1px blue;
+            .user-image-selected {
+                border: solid 2px #00ff00;
+            }
+            .user-image-not-selected:hover {
+                border: dashed 2px blue;
             }
 
             #content {

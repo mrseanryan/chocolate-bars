@@ -95,29 +95,24 @@ function onClickImage(image: ImageDetail, outputter: IOutputter) {
 }
 
 function setImageBorder(image: ImageDetail, style: BorderStyle, outputter: IOutputter) {
-    let cssStyle: any = null;
+    const jqueryDiv = jquery(`#${HtmlGrid.getImageDivId(image)}`);
 
-    const noBorder = {
-        "border-style": "none"
-    };
+    const selectedClass = "user-image-selected";
+    const notSelectedClass = "user-image-not-selected";
 
     switch (style) {
         case BorderStyle.Selected:
-            cssStyle = {
-                "border-color": "#00FF00",
-                "border-width": "1px",
-                "border-style": "solid"
-            };
+            jqueryDiv.addClass(selectedClass);
+            jqueryDiv.removeClass(notSelectedClass);
             break;
         case BorderStyle.None:
-            cssStyle = noBorder;
+            jqueryDiv.addClass(notSelectedClass);
+            jqueryDiv.removeClass(selectedClass);
             break;
         default:
             outputter.error(`Unknown BorderStyle '${style}' - defaulting to None`);
-            cssStyle = noBorder;
+            jqueryDiv.removeClass(selectedClass);
     }
-
-    jquery(`#${HtmlGrid.getImageDivId(image)}`).css(cssStyle);
 }
 
 function renderDetailContainer() {
