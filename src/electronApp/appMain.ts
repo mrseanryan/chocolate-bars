@@ -47,6 +47,11 @@ app.on("window-all-closed", () => {
     }
 });
 
+// hide toolbar, even on new windows:
+app.on("browser-window-created", function(e, window) {
+    window.setMenu(null);
+});
+
 app.on("activate", () => {
     // On OS X it"s common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
