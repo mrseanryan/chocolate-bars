@@ -22,7 +22,10 @@ const grid = new HtmlGrid();
 
 const state = {
     currentPage: 0,
-    imageInputDir: ""
+    imageInputDir: "",
+    // Each 'browse to directory' or 'select page' is a new epoch,
+    // so can igore stale async responses. Alt could be to cancel promises but seems complicated.
+    epoch: 0
 };
 
 window.onload = () => {
@@ -93,11 +96,18 @@ async function renderImages() {
     addSelectDirectoryListener();
 
     let isFirst = true;
+    let thisEpoch = state.epoch;
+
     for await (const result of ChocolateBars.processDirectoryIterable(
         imageInputDir,
         outputter,
         state.currentPage
     )) {
+        if (thisEpoch !== state.epoch) {
+            // a stale response
+            return;
+        }
+
         outputter.infoVerbose(`rendering ${result.imageDetails.length} images`);
         if (result.imageDetails.length > 0) {
             outputter.infoVerbose(`first = ${result.imageDetails[0].originalFilepath}`);
@@ -136,6 +146,8 @@ function addPagerClickListener(pageId: number) {
 }
 
 function onClickPager(pageId: number) {
+    state.epoch++;
+
     state.currentPage = pageId;
 
     // a new pager button may become disabled
@@ -231,6 +243,7 @@ function addSelectDirectoryListener() {
         const directories = selectDirectory();
 
         if (directories && directories.length === 1) {
+            state.epoch++;
             state.imageInputDir = directories[0];
             renderImagesAndPager();
         }
