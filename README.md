@@ -4,9 +4,9 @@ Present histograms (bars!) of images in a directory, including extras such as ex
 
 Electron based app which runs on node.js.
 
-## status - !in development!
+## status - stable
 
-chocolate-bars is in ongoing development (Linux, Mac, Windows) following semantic versioning.
+chocolate-bars is stable on Windows (Linux, Mac possible but not tested). Releases follow semantic versioning.
 
 [![Travis](https://img.shields.io/travis/mrseanryan/chocolate-bars.svg)](https://travis-ci.org/mrseanryan/chocolate-bars)
 [![node](https://img.shields.io/node/v/chocolate-bars.svg)](https://nodejs.org)
@@ -38,10 +38,10 @@ Also was curious how to implement this in node.js.
 
 -   Node 8.11.3 or higher
 
-## features (in development!)
+## features
 
 -   scan a folder of images and present a browsable summary
--   show image thumbnail and histogram
+-   show image thumbnails and histogram
 -   show additional image properties such as file size, image size
 -   show exif tags where available (JPEG files)
 
@@ -56,16 +56,26 @@ Install:
 
 ### 2 get chocolate bars of images
 
-![Screenshot](./static/site/screenshot-2.png)
+![Screenshot](./static/site/screenshot-3.png)
 
 #### ways to run
 
 You can run `chocolate-bars` in one of two ways:
 
--   a) from the source code
--   OR b) as a globally installed command line tool
+-   a) as a globally installed command line tool
+-   OR b) from the source code
 
-##### a) from the source code
+##### a) install globally as a command line tool
+
+`npm i -g electron@4`
+
+`npm i -g chocolate-bars@latest --production`
+
+To use:
+
+`chocolate-bars <path to image direcory>`
+
+##### b) from the source code
 
 ```
 yarn
@@ -96,16 +106,6 @@ To see more detailed usage info:
 ```
 ./go.sh
 ```
-
-##### b) install globally as a command line tool
-
-`npm i -g electron@4`
-
-`npm i -g chocolate-bars@latest --production`
-
-To use:
-
-`chocolate-bars <path to image direcory>`
 
 ## references
 
