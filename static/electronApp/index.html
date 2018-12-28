@@ -111,13 +111,15 @@
             #images-wrapping-container {
                 display: flex;
                 flex-wrap: wrap;
-                overflow-y: auto;
-                width: calc(100% - 25px);
+                overflow-y: scroll;
+                width: 100%;
             }
             .image-pager {
                 overflow-y: auto;
-                padding-left: 10px;
+                position: absolute;
                 width: 25px;
+                top: 4px;
+                right: 30px;
             }
 
             #browseButton {

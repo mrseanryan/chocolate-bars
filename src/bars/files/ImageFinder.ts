@@ -2,7 +2,6 @@ import * as fs from "fs";
 import * as path from "path";
 
 import { FileUtils } from "../../utils/FileUtils";
-import { Nodash } from "../../utils/Nodash";
 import { IOutputter } from "../../utils/outputter/IOutputter";
 
 export namespace ImageFinder {
