@@ -29,6 +29,13 @@ export namespace ImageResizeExectutor {
                 };
                 continue;
             }
+            if (FileUtils.isSmallerFileNewer(file)) {
+                yield {
+                    originalFilepath: file,
+                    smallerFilepath: FileUtils.getSmallerFilePath(file)
+                };
+                continue;
+            }
             outputter.infoVerbose(`resizing image at ${file}...`);
 
             const stdout = await execShrinkPromise(file);

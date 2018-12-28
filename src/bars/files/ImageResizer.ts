@@ -1,11 +1,9 @@
 import * as fs from "fs";
-import * as os from "os";
-import * as path from "path";
+
+import { FileUtils } from "../../utils/FileUtils";
+import { IOutputter } from "../../utils/outputter/IOutputter";
 
 const sharp = require("sharp");
-
-import { IOutputter } from "../../utils/outputter/IOutputter";
-import { FileUtils } from "../../utils/FileUtils";
 
 const MAX_DIMENSION = 800;
 
@@ -39,7 +37,7 @@ export namespace ImageResizer {
         outputter: IOutputter,
         cb: (outPath: string | null, err: any) => void
     ) {
-        const outPath = path.join(os.tmpdir(), path.basename(filePath) + ".resized.jpg");
+        const outPath = FileUtils.getSmallerFilePath(filePath);
 
         // read file to avoid issue where sharp does not release the file lock!
         fs.readFile(filePath, (err, data) => {
