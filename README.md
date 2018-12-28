@@ -56,7 +56,7 @@ Install:
 
 ### 2 get chocolate bars of images
 
-![Screenshot](./static/site/screenshot-1.png)
+![Screenshot](./static/site/screenshot-2.png)
 
 #### ways to run
 
