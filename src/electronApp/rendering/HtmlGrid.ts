@@ -1,7 +1,5 @@
 import { ImageDetail } from "../../bars/model/ImageDetail";
 
-const MAX_IMAGES_PER_ROW = 3;
-
 enum Orientation {
     Vertical,
     Horizontal
@@ -12,37 +10,11 @@ export class HtmlGrid {
         return `image-id-${image.id}`;
     }
 
-    private row: ImageDetail[] = [];
+    private images: ImageDetail[] = [];
 
     addImage(image: ImageDetail) {
-        this.row.push(image);
+        this.images.push(image);
     }
-
-    clearRow() {
-        this.row.length = 0;
-    }
-
-    hasRow(): boolean {
-        return this.row.length > 0;
-    }
-
-    isRowFull(): boolean {
-        return this.row.length >= MAX_IMAGES_PER_ROW;
-    }
-
-    getRowHtml = (): string => {
-        let html = "";
-
-        html += this.getContainerStart();
-
-        this.row.forEach(image => {
-            html += this.getImageHtml(image);
-        });
-
-        html += this.getContainerEnd();
-
-        return html;
-    };
 
     getHeaderHtml(imageInputDir: string): string {
         let html = "";
@@ -50,6 +22,22 @@ export class HtmlGrid {
         html += `<div class="grid-header">Images at '${imageInputDir}'</div>`;
         html += this.getContainerEnd();
         return html;
+    }
+
+    getImagesHtml(): string {
+        const imagesHtml = this.images
+            .map(this.getImageHtml)
+            .reduce((prev, current) => prev + current, "");
+
+        return this.getImagesContainerStart() + imagesHtml + this.getClosingHtml();
+    }
+
+    private getImagesContainerStart(): string {
+        return `<div class="images-wrapping-container">`;
+    }
+
+    getClosingHtml(): string {
+        return `</div>`;
     }
 
     private getContainerStart(
@@ -66,10 +54,8 @@ export class HtmlGrid {
     }
 
     private getImageHtml = (image: ImageDetail): string => {
-        return `${this.getContainerStart(
-            Orientation.Horizontal
-        )}\n<div class="image-container"><img class="user-image user-image-not-selected" src="${
+        return `<div class="image-container"><img class="user-image user-image-not-selected" src="${
             image.smallerFilepath
-        }" id="${HtmlGrid.getImageDivId(image)}"' width="250px" /></div>${this.getContainerEnd()}`;
+        }" id="${HtmlGrid.getImageDivId(image)}"' width="250px" /></div>`;
     };
 }

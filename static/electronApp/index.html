@@ -69,6 +69,7 @@
                 flex-direction: column;
             }
             .image-container {
+                /* TODO xxx max height? */
                 height: 300px;
                 width: 300px;
                 overflow: hidden;
@@ -103,10 +104,16 @@
                 border: dashed 2px blue;
             }
 
+            .images-wrapping-container {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
             #content {
                 height: calc(100% - 300px);
                 overflow-y: auto;
             }
+            /* TODO xxx add top-header which is not scrolled */
             #detail-header {
                 height: 20px;
                 padding-top: 10px;

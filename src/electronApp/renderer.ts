@@ -48,18 +48,10 @@ async function renderImages(imageInputDir: string, outputter: IOutputter) {
         result.imageDetails.forEach(image => {
             grid.addImage(image);
             images.push(image);
-
-            if (grid.isRowFull()) {
-                renderHtml(grid.getRowHtml());
-                grid.clearRow();
-            }
         });
     }
 
-    if (grid.hasRow()) {
-        renderHtml(grid.getRowHtml());
-        grid.clearRow();
-    }
+    renderHtml(grid.getImagesHtml());
 
     renderDetailContainer();
 
