@@ -342,6 +342,7 @@ function addSelectDirectoryListener() {
 
         if (directories && directories.length === 1) {
             state.epoch++;
+            state.currentPage = 0;
             state.imageInputDir = directories[0];
             renderImagesAndPager();
         }
