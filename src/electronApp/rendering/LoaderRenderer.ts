@@ -9,7 +9,7 @@ export namespace LoaderRenderer {
     }
 
     export function showImagesLoading() {
-        JQueryUtils.renderHtml(LoaderRenderer.getLoaderHtml(), HtmlGrid.getImagesContainerId());
+        JQueryUtils.renderHtml(getLoaderHtml(), HtmlGrid.getImagesContainerId());
     }
 
     export function hideImagesLoading() {
