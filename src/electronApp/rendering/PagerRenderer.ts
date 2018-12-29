@@ -18,11 +18,12 @@ export namespace PagerRenderer {
 
         clearPagerContainer();
 
-        // Always have a 1st page:
+        // Always have a 1st page - else off by one issue with pages!
         renderPager(pageCount, state, outputter, renderImagesAndPager);
         pageCount++;
 
         const allImages = await ImageFinder.findImagesInDirectory(state.imageInputDir, outputter);
+
         allImages.forEach(() => {
             imageCountThisPage++;
 
@@ -33,6 +34,10 @@ export namespace PagerRenderer {
                 imageCountThisPage = 1;
             }
         });
+
+        if (pageCount < 2) {
+            clearPagerContainer();
+        }
     }
 
     function renderPager(
