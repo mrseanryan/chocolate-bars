@@ -19,6 +19,22 @@ export namespace HistogramRenderer {
         return "image-histogram";
     }
 
+    export function getHistogramContainerClass(): string {
+        return "image-histogram-container";
+    }
+
+    export function renderHistogramForNoImages() {
+        getHistogramLoaderDiv().hide();
+    }
+
+    export function setHistogramAsLoading() {
+        getHistogramLoaderDiv().show();
+    }
+
+    function getHistogramLoaderDiv(): JQuery {
+        return jquery(`.${getHistogramContainerClass()} > .lds-ring`);
+    }
+
     // TODO optimise - run histogram as web worker?
     export async function renderHistogramForImage(image: ImageDetail, outputter: IOutputter) {
         // TODO [perf] react + mobx could allow rendering to go ahead w/o histogram

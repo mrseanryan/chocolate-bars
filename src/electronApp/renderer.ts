@@ -143,7 +143,7 @@ async function renderImages() {
 function renderForNoImages() {
     grid.renderForNoImages();
 
-    renderHistogramForNoImages();
+    HistogramRenderer.renderHistogramForNoImages();
 }
 
 function addImageClickListener(image: ImageDetail) {
@@ -189,7 +189,7 @@ let previousImageSelected: ImageDetail | null = null;
 
 function onClickImage(image: ImageDetail) {
     setImageHeader(image);
-    setHistogramAsLoading();
+    HistogramRenderer.setHistogramAsLoading();
 
     if (previousImageSelected) {
         setImageBorder(previousImageSelected, BorderStyle.None);
@@ -239,29 +239,13 @@ function renderDetailContainer() {
         `<div class="container-vertical fullHeight">` +
         `<div id="detail-header"><div id="detail-header-text"/></div>` +
         `<div class="container detail-body">` +
-        `<div class="${getHistogramContainerClass()}">${LoaderRenderer.getLoaderHtml()}` +
+        `<div class="${HistogramRenderer.getHistogramContainerClass()}">${LoaderRenderer.getLoaderHtml()}` +
         `<div id="${HistogramRenderer.getHistogramContainerId()}"/></div>` +
         `<div id="image-text" class="fullHeight"></div>` +
         `</div>` +
         `</div>`;
 
     JQueryUtils.renderHtml(html, "detail-panel");
-}
-
-function getHistogramContainerClass(): string {
-    return "image-histogram-container";
-}
-
-function renderHistogramForNoImages() {
-    getHistogramLoaderDiv().hide();
-}
-
-function setHistogramAsLoading() {
-    getHistogramLoaderDiv().show();
-}
-
-function getHistogramLoaderDiv(): JQuery {
-    return jquery(`.${getHistogramContainerClass()} > .lds-ring`);
 }
 
 function addKeyboardListener() {
