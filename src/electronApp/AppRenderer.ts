@@ -1,3 +1,4 @@
+import { DataStorage } from "../bars/model/persisted/DataStorage";
 import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
@@ -22,8 +23,18 @@ const state: State = {
 };
 
 export namespace AppRenderer {
-    export function onload() {
+    export function onLoad() {
         addKeyboardListener();
+
+        periodicallySave();
+    }
+
+    // TODO should really save on quit - would need to send JSON back to server
+    export function periodicallySave() {
+        setInterval(() => {
+            console.log("saving data...");
+            DataStorage.saveForDirectorySync(state.imageInputDir);
+        }, 5000);
     }
 
     export async function renderContainerAndDetailWithImages(imageInputDir: string) {

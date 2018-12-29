@@ -50,6 +50,8 @@ export namespace ImagesRenderer {
             }
 
             result.imageDetails.forEach(image => {
+                DataStorage.updateImageDetail(image);
+
                 grid.addImageToContainer(image);
 
                 addImageClickListener(image, outputter);
