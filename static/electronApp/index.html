@@ -22,10 +22,10 @@
                 width: 51px;
                 height: 51px;
                 margin: 6px;
-                border: 6px solid rgba(43, 255, 0, 0.5);
+                border: 6px solid sandybrown;
                 border-radius: 50%;
                 animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-                border-color: rgba(43, 255, 0, 0.5) transparent transparent transparent;
+                border-color: sandybrown transparent transparent transparent;
             }
             .lds-ring div:nth-child(1) {
                 animation-delay: -0.45s;
@@ -99,7 +99,7 @@
                 border: solid 2px white;
             }
             .user-image-selected {
-                border: solid 2px #00ff00;
+                border: solid 2px sandybrown;
             }
             .user-image-not-selected:hover {
                 border: dashed 2px blue;
@@ -108,7 +108,7 @@
             /* TODO xxx use icons like ultimate */
             .user-image-expand {
                 position: absolute;
-                border: dashed 2px green;
+                border: dashed 2px sandybrown;
                 right: 10px;
                 top: 13px;
                 width: 16px;
@@ -116,7 +116,7 @@
                 cursor: zoom-in;
             }
             .user-image-expand:hover {
-                border: solid 2px #0f09;
+                border: solid 2px orange;
             }
 
             .user-image-new-window {
@@ -140,7 +140,6 @@
                 justify-content: center;
 
                 position: absolute;
-                border: solid 1px black;
                 top: 25px;
                 left: 25px;
                 height: calc(100% - 50px);
@@ -160,9 +159,38 @@
             #images-wrapping-container {
                 display: flex;
                 flex-wrap: wrap;
+                justify-content: space-evenly;
                 overflow-y: scroll;
                 width: 100%;
             }
+
+            button {
+                background: sandybrown;
+                border-color: black;
+                border-style: solid;
+                border-width: 1px;
+                border-right: solid gray 1px;
+                border-bottom: solid gray 1px;
+                cursor: pointer;
+                border-radius: 8px;
+                margin-bottom: 1px;
+            }
+            button:hover {
+                background: orange;
+                color: white;
+                border-color: blue;
+            }
+            button:focus {
+                outline: 0 !important;
+                border-color: yellow;
+            }
+            button:disabled {
+                background: sandybrown;
+                border: none;
+                color: gray;
+                cursor: default;
+            }
+
             .image-pager {
                 position: absolute;
                 top: 4px;
@@ -173,12 +201,15 @@
                 flex-direction: column;
                 height: 100%;
             }
-            .image-pager-button {
-                cursor: pointer;
+            .image-pager-button-current {
+                color: white !important;
             }
 
             #browseButton {
-                margin-left: 10px;
+                position: absolute;
+                top: 9px;
+                right: 0;
+                margin-right: 30px;
             }
 
             #content {
@@ -187,7 +218,12 @@
 
             #detail-header {
                 height: 20px;
-                padding-top: 10px;
+                position: relative;
+            }
+            #detail-header-text {
+                position: absolute;
+                top: 16px;
+                z-index: 110;
             }
             .detail-body {
                 height: calc(100% - 20px);
@@ -219,6 +255,10 @@
                 overflow: hidden;
                 overflow-y: auto;
                 max-width: 220px;
+            }
+
+            .exifContainer pre {
+                margin: 0;
             }
         </style>
     </head>

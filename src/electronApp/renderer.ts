@@ -54,6 +54,7 @@ async function renderContainerAndDetailWithImages(imageInputDir: string) {
     state.imageInputDir = imageInputDir;
 
     renderHtml(grid.getHeaderHtml());
+    addSelectDirectoryListener();
 
     renderHtml(grid.getImagesAndPagerContainerHtml());
 
@@ -109,9 +110,6 @@ async function renderImages() {
     const imageInputDir = state.imageInputDir;
     grid.setTitleForDir(imageInputDir);
 
-    // TODO xxx split out the button from the title - then can listen earlier
-    addSelectDirectoryListener();
-
     let isFirst = true;
     let thisEpoch = state.epoch;
     let imagesLoaded = 0;
@@ -160,9 +158,11 @@ function hideImagesLoading() {
 }
 
 function renderPager(pageId: number) {
-    const disabled = pageId === state.currentPage ? " disabled" : "";
+    const isCurrent = pageId === state.currentPage;
+    const disabled = isCurrent ? " disabled" : "";
+    const currentClass = isCurrent ? " image-pager-button-current" : "";
 
-    const pagerHtml = `<button id='button-pager-${pageId}}'${disabled} class="image-pager-button">${pageId +
+    const pagerHtml = `<button id='button-pager-${pageId}}'${disabled} class="image-pager-button${currentClass}">${pageId +
         1}</button>`;
     jquery(".image-pager").append(pagerHtml);
 
@@ -244,11 +244,11 @@ function onClickImage(image: ImageDetail) {
 }
 
 function setImageHeader(image: ImageDetail) {
-    jquery("#detail-header").text("image: " + image.filename);
+    jquery("#detail-header-text").text("image: " + image.filename);
 }
 
 function clearImageHeader() {
-    jquery("#detail-header").text("");
+    jquery("#detail-header-text").text("");
 }
 
 // TODO xxx refactor this file - extract ExpandedImageRenderer - and de-dupe the class name here
@@ -300,7 +300,8 @@ function setImageBorder(image: ImageDetail, style: BorderStyle) {
 
 function renderDetailContainer() {
     const html =
-        `<div class="container-vertical fullHeight"><div id="detail-header"></div>` +
+        `<div class="container-vertical fullHeight">` +
+        `<div id="detail-header"><div id="detail-header-text"/></div>` +
         `<div class="container detail-body">` +
         `<div class="image-histogram-container">${getLoaderHtml()}` +
         `<div id="image-histogram"/></div>` +

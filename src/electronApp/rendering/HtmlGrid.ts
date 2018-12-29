@@ -36,13 +36,13 @@ export class HtmlGrid {
     }
 
     setTitleForDir(imageInputDir: string) {
-        jquery(".grid-header").html(`Images at '${imageInputDir}'${this.renderBrowseButton()}`);
+        jquery(".grid-header").html(`Images at '${imageInputDir}'`);
     }
 
     getHeaderHtml(): string {
         let html = "";
         html += this.getContainerStart(Orientation.Horizontal, "grid-header-container");
-        html += `<div class="grid-header"></div>`;
+        html += `<div class="grid-header"/>${this.renderBrowseButton()}`;
         html += this.getContainerEnd();
         return html;
     }
