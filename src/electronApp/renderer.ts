@@ -1,3 +1,4 @@
+import { DataStorage } from "../bars/model/persisted/DataStorage";
 import { SharedDataUtils } from "../utils/SharedDataUtils";
 import { AppRenderer } from "./AppRenderer";
 
@@ -6,7 +7,7 @@ import { AppRenderer } from "./AppRenderer";
 // All of the Node.js APIs are available in this process.
 
 window.onload = () => {
-    AppRenderer.onload();
+    AppRenderer.onLoad();
 
     const imageInputDir = SharedDataUtils.getArgs()[2];
 

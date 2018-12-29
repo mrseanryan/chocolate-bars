@@ -1,3 +1,4 @@
+import { DataStorage } from "../bars/model/persisted/DataStorage";
 import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
@@ -5,6 +6,7 @@ import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
 import { ImagesRenderer } from "./rendering/ImagesRenderer";
+import { MoveStarredImagesRenderer } from "./rendering/MovedStarredImagesRenderer";
 import { PagerRenderer } from "./rendering/PagerRenderer";
 import { SelectDirectoryRenderer } from "./rendering/SelectDirectoryRenderer";
 import { State } from "./State";
@@ -22,8 +24,18 @@ const state: State = {
 };
 
 export namespace AppRenderer {
-    export function onload() {
+    export function onLoad() {
         addKeyboardListener();
+
+        periodicallySave();
+    }
+
+    // TODO should really save on quit - would need to send JSON back to server
+    export function periodicallySave() {
+        setInterval(() => {
+            console.log("saving data...");
+            DataStorage.saveForDirectorySync(state.imageInputDir);
+        }, 5000);
     }
 
     export async function renderContainerAndDetailWithImages(imageInputDir: string) {
@@ -31,6 +43,7 @@ export namespace AppRenderer {
 
         JQueryUtils.renderHtml(grid.getHeaderHtml());
         SelectDirectoryRenderer.addSelectDirectoryListener(renderImagesAndPagerForDirectory);
+        MoveStarredImagesRenderer.addMovedStarredListener(state, renderImagesAndPagerForDirectory);
 
         JQueryUtils.renderHtml(grid.getImagesAndPagerContainerHtml());
 
@@ -73,6 +86,15 @@ export namespace AppRenderer {
                 }
                 case "ArrowRight": {
                     ExpandedImageRenderer.goToNextImage();
+                    break;
+                }
+                case "*": {
+                    ExpandedImageRenderer.toggleStarredImage();
+                    break;
+                }
+                // note: space is taken by Chrome = page down scrollbar
+                case "Enter": {
+                    ExpandedImageRenderer.toggleStarredImage();
                     break;
                 }
                 default:

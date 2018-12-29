@@ -2,10 +2,11 @@ import * as jquery from "jquery";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
 import { JQueryUtils } from "../../utils/JQueryUtils";
-
-const SHOW_POPUP_BUTTON_CLASS = "user-image-popup";
+import { ImageStarRenderer } from "./ImageStarRenderer";
 
 export namespace ExpandedImageRenderer {
+    export const IMAGE_POPUP_CLASS = "user-image-popup";
+
     let allImages: ImageDetail[] = [];
     let currentImageIndex = -1;
 
@@ -18,7 +19,7 @@ export namespace ExpandedImageRenderer {
     }
 
     export function renderHiddenPopup() {
-        const html = `<div class="${SHOW_POPUP_BUTTON_CLASS}" />`;
+        const html = `<div class="${IMAGE_POPUP_CLASS}" />`;
 
         jquery("body").append(html);
 
@@ -26,9 +27,21 @@ export namespace ExpandedImageRenderer {
     }
 
     function addClickExpandedImageListener() {
-        jquery(`.${SHOW_POPUP_BUTTON_CLASS}`).on("click", () => {
+        jquery(`.${IMAGE_POPUP_CLASS}`).on("click", () => {
             hideExpandedImage();
         });
+    }
+
+    function addClickImageStarListener() {
+        jquery(`.${IMAGE_POPUP_CLASS} .${ImageStarRenderer.STAR_CONTAINER_CLASS}`).on(
+            "click",
+            () => {
+                toggleStarredImage();
+
+                // prevent the expanded image from closing:
+                return false;
+            }
+        );
     }
 
     export function onClickExpandImage(image: ImageDetail) {
@@ -36,25 +49,31 @@ export namespace ExpandedImageRenderer {
 
         updateCurrentImageByIndex();
 
-        jquery(`.${SHOW_POPUP_BUTTON_CLASS}`).addClass("user-image-popup-visible");
+        jquery(`.${IMAGE_POPUP_CLASS}`).addClass("user-image-popup-visible");
     }
 
     export function hideExpandedImage() {
-        jquery(`.${SHOW_POPUP_BUTTON_CLASS}`).removeClass("user-image-popup-visible");
+        jquery(`.${IMAGE_POPUP_CLASS}`).removeClass("user-image-popup-visible");
     }
 
     function updateCurrentImageByIndex() {
-        const image = allImages[currentImageIndex];
-        if (!image) {
-            return;
-        }
+        const image = getCurrentImage();
 
-        JQueryUtils.clearHtmlDivByClass(SHOW_POPUP_BUTTON_CLASS);
+        // TODO could clear just the image - not the star
+        JQueryUtils.clearHtmlDivByClass(IMAGE_POPUP_CLASS);
 
         // use the smaller image, as is smaller and already loaded - so faster
-        const imageHtml = `<img src="${image.smallerFilepath}" />`;
+        const imageHtml = `<div class="expanded-image-and-star"><img src="${
+            image.smallerFilepath
+        }" />${ImageStarRenderer.getStarContainerHtml(image)}</div>`;
 
-        jquery(`.${SHOW_POPUP_BUTTON_CLASS}`).append(imageHtml);
+        jquery(`.${IMAGE_POPUP_CLASS}`).append(imageHtml);
+        addClickImageStarListener();
+    }
+
+    function getCurrentImage() {
+        const image = allImages[currentImageIndex];
+        return image;
     }
 
     export function goToPreviousImage() {
@@ -73,5 +92,14 @@ export namespace ExpandedImageRenderer {
         }
 
         updateCurrentImageByIndex();
+    }
+
+    export function toggleStarredImage() {
+        const image = getCurrentImage();
+        if (!image) {
+            return;
+        }
+
+        ImageStarRenderer.toggleStarForImage(image);
     }
 }

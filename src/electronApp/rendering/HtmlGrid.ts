@@ -2,6 +2,8 @@ import * as jquery from "jquery";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
 import { JQueryUtils } from "../../utils/JQueryUtils";
+import { ImageStarRenderer } from "./ImageStarRenderer";
+import { MoveStarredImagesRenderer } from "./MovedStarredImagesRenderer";
 import { SelectDirectoryRenderer } from "./SelectDirectoryRenderer";
 
 const IMAGE_CONTAINER_ID = "images-wrapping-container";
@@ -24,6 +26,10 @@ export class HtmlGrid {
         return this.getImageDivId(image) + "-new-window";
     }
 
+    static getImageStarContainerDivId(image: ImageDetail): string {
+        return this.getImageDivId(image) + "-star-container";
+    }
+
     static getImagesContainerId() {
         return IMAGE_CONTAINER_ID;
     }
@@ -39,7 +45,7 @@ export class HtmlGrid {
     getHeaderHtml(): string {
         let html = "";
         html += this.getContainerStart(Orientation.Horizontal, "grid-header-container");
-        html += `<div class="grid-header"/>${SelectDirectoryRenderer.getBrowseButtonHtml()}`;
+        html += `<div class="grid-header"/>${MoveStarredImagesRenderer.getButtonHtml()}${SelectDirectoryRenderer.getBrowseButtonHtml()}`;
         html += this.getContainerEnd();
         return html;
     }
@@ -89,6 +95,9 @@ export class HtmlGrid {
             `<div id="${HtmlGrid.getImageOpenNewWindowDivId(
                 image
             )}" class="user-image-new-window"/>` +
+            `<div id="${HtmlGrid.getImageStarContainerDivId(image)}" class="${
+                ImageStarRenderer.STAR_CONTAINER_CLASS
+            }">${ImageStarRenderer.getStarOrNoStarHtml(image)}</div>` +
             `</div>`
         );
     };

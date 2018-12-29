@@ -10,7 +10,7 @@ import { SharedDataUtils } from "./SharedDataUtils";
 import { ShrinkResultSerDe } from "./ShrinkResultSerDe";
 
 // Execute shrinking via sharp in separate process, to avoid issues with Sharp + Electron in same process (C++ build)
-export namespace ImageResizeExectutor {
+export namespace ImageResizeExecutor {
     export async function* resizeImagesAtIterable(
         imagesDirectory: string,
         outputter: IOutputter,
