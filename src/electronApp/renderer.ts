@@ -186,8 +186,11 @@ function onClickPager(pageId: number) {
 
     showImagesLoading();
 
-    // a new pager button may become disabled
-    renderImagesAndPager();
+    // use setTimeout to ensure loader appears
+    setTimeout(() => {
+        // a new pager button may become disabled - so also need to render the pager buttons.
+        renderImagesAndPager();
+    }, 250);
 }
 
 function addImageClickListener(image: ImageDetail) {
