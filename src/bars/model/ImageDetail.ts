@@ -27,4 +27,6 @@ export class ImageDetail {
     get filename(): string {
         return path.basename(this.originalFilepath);
     }
+
+    isStarred: boolean = false;
 }

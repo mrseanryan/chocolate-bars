@@ -2,6 +2,7 @@ import * as jquery from "jquery";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
 import { JQueryUtils } from "../../utils/JQueryUtils";
+import { ImageStarRenderer } from "./ImageStarRenderer";
 import { SelectDirectoryRenderer } from "./SelectDirectoryRenderer";
 
 const IMAGE_CONTAINER_ID = "images-wrapping-container";
@@ -22,6 +23,10 @@ export class HtmlGrid {
 
     static getImageOpenNewWindowDivId(image: ImageDetail): string {
         return this.getImageDivId(image) + "-new-window";
+    }
+
+    static getImageStarContainerDivId(image: ImageDetail): string {
+        return this.getImageDivId(image) + "-star-container";
     }
 
     static getImagesContainerId() {
@@ -89,6 +94,9 @@ export class HtmlGrid {
             `<div id="${HtmlGrid.getImageOpenNewWindowDivId(
                 image
             )}" class="user-image-new-window"/>` +
+            `<div id="${HtmlGrid.getImageStarContainerDivId(image)}" class="${
+                ImageStarRenderer.STAR_CONTAINER_CLASS
+            }">${ImageStarRenderer.getStarOrNoStarHtml(image)}</div>` +
             `</div>`
         );
     };

@@ -2,12 +2,14 @@ import * as jquery from "jquery";
 
 import { ChocolateBars } from "../../bars/ChocolateBars";
 import { ImageDetail } from "../../bars/model/ImageDetail";
+import { DataStorage } from "../../bars/model/persisted/DataStorage";
 import { IOutputter } from "../../utils/outputter/IOutputter";
 import { State } from "../State";
 import { DetailPaneRenderer } from "./DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./ExpandedImageRenderer";
 import { HistogramRenderer } from "./HistogramRenderer";
 import { HtmlGrid } from "./HtmlGrid";
+import { ImageStarRenderer } from "./ImageStarRenderer";
 import { LoaderRenderer } from "./LoaderRenderer";
 
 const HIDE_LOADING_AFTER_N_IMAGES = 9;
@@ -19,12 +21,11 @@ enum BorderStyle {
 
 export namespace ImagesRenderer {
     export async function renderImages(grid: HtmlGrid, state: State, outputter: IOutputter) {
-        grid.clearImagesContainer();
-        DetailPaneRenderer.clear();
-        clearImageHeader();
-        ExpandedImageRenderer.clearImages();
-
         LoaderRenderer.showImagesLoading();
+
+        clearImages(grid);
+
+        await DataStorage.loadForDirectoryOrCreate(state.imageInputDir);
 
         const imageInputDir = state.imageInputDir;
         grid.setTitleForDir(imageInputDir);
@@ -77,6 +78,13 @@ export namespace ImagesRenderer {
         }
     }
 
+    function clearImages(grid: HtmlGrid) {
+        grid.clearImagesContainer();
+        DetailPaneRenderer.clear();
+        clearImageHeader();
+        ExpandedImageRenderer.clearImages();
+    }
+
     function clearImageHeader() {
         jquery("#detail-header-text").text("");
     }
@@ -100,6 +108,7 @@ export namespace ImagesRenderer {
 
         addImageExpandClickListener(image, outputter);
         addImageNewWindowClickListener(image, outputter);
+        addImageStarClickListener(image, outputter);
     }
 
     function addImageExpandClickListener(image: ImageDetail, outputter: IOutputter) {
@@ -128,6 +137,22 @@ export namespace ImagesRenderer {
         }
 
         imageNewWindowDiv.addEventListener("click", () => onClickOpenImageInNewWindow(image));
+    }
+
+    function addImageStarClickListener(image: ImageDetail, outputter: IOutputter) {
+        const starContainerId = HtmlGrid.getImageStarContainerDivId(image);
+
+        const starDiv = document.getElementById(starContainerId);
+        if (!starDiv) {
+            outputter.error(`could not find image star div '${starContainerId}'`);
+            return;
+        }
+
+        starDiv.addEventListener("click", () => onClickImageStar(image));
+    }
+
+    function onClickImageStar(image: ImageDetail) {
+        ImageStarRenderer.toggleStarForImage(image);
     }
 
     let previousImageSelected: ImageDetail | null = null;

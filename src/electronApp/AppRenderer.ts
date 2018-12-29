@@ -75,6 +75,15 @@ export namespace AppRenderer {
                     ExpandedImageRenderer.goToNextImage();
                     break;
                 }
+                case "*": {
+                    ExpandedImageRenderer.toggleStarredImage();
+                    break;
+                }
+                // note: space is taken by Chrome = page down scrollbar
+                case "Enter": {
+                    ExpandedImageRenderer.toggleStarredImage();
+                    break;
+                }
                 default:
                 // do nothing
             }
