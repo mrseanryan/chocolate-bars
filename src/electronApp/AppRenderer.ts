@@ -62,8 +62,21 @@ export namespace AppRenderer {
                 location.reload();
             }
 
-            if (e.key === "Escape") {
-                ExpandedImageRenderer.onClickExpandedImagePopup();
+            switch (e.key) {
+                case "Escape": {
+                    ExpandedImageRenderer.hideExpandedImage();
+                    break;
+                }
+                case "ArrowLeft": {
+                    ExpandedImageRenderer.goToPreviousImage();
+                    break;
+                }
+                case "ArrowRight": {
+                    ExpandedImageRenderer.goToNextImage();
+                    break;
+                }
+                default:
+                // do nothing
             }
         });
     }

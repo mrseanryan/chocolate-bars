@@ -22,6 +22,7 @@ export namespace ImagesRenderer {
         grid.clearImagesContainer();
         DetailPaneRenderer.clear();
         clearImageHeader();
+        ExpandedImageRenderer.clearImages();
 
         LoaderRenderer.showImagesLoading();
 
@@ -109,6 +110,8 @@ export namespace ImagesRenderer {
             outputter.error(`could not find image expand div '${imageExpandDivId}'`);
             return;
         }
+
+        ExpandedImageRenderer.addImage(image);
 
         imageExpandDiv.addEventListener("click", () =>
             ExpandedImageRenderer.onClickExpandImage(image)
