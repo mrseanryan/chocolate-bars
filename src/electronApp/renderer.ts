@@ -330,6 +330,10 @@ function addKeyboardListener() {
         } else if (e.key === "F5" || (e.ctrlKey && (e.key === "R" || e.key === "r"))) {
             location.reload();
         }
+
+        if (e.key === "Escape") {
+            onClickExpandedImagePop();
+        }
     });
 }
 
