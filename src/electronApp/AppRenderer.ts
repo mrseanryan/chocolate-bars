@@ -6,6 +6,7 @@ import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
 import { ImagesRenderer } from "./rendering/ImagesRenderer";
+import { MoveStarredImagesRenderer } from "./rendering/MovedStarredImagesRenderer";
 import { PagerRenderer } from "./rendering/PagerRenderer";
 import { SelectDirectoryRenderer } from "./rendering/SelectDirectoryRenderer";
 import { State } from "./State";
@@ -42,6 +43,7 @@ export namespace AppRenderer {
 
         JQueryUtils.renderHtml(grid.getHeaderHtml());
         SelectDirectoryRenderer.addSelectDirectoryListener(renderImagesAndPagerForDirectory);
+        MoveStarredImagesRenderer.addMovedStarredListener(state, renderImagesAndPagerForDirectory);
 
         JQueryUtils.renderHtml(grid.getImagesAndPagerContainerHtml());
 

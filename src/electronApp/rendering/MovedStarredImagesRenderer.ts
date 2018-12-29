@@ -1,0 +1,74 @@
+import * as fs from "fs";
+import * as path from "path";
+
+import { DataStorage } from "../../bars/model/persisted/DataStorage";
+import { DirectorySelector } from "../../utils/DirectorySelector";
+import { State } from "../State";
+
+export namespace MoveStarredImagesRenderer {
+    export function getButtonHtml(): string {
+        return `<button id="moveStarredButton">Move *...</button>`;
+    }
+
+    export function addMovedStarredListener(
+        state: State,
+        renderImagesAndPagerForDirectory: (imageInputDir: string) => void
+    ) {
+        const moveStarredButton = document.getElementById("moveStarredButton");
+
+        if (!moveStarredButton) {
+            throw new Error("could not find the 'move starred' button");
+        }
+
+        moveStarredButton.addEventListener("click", _ => {
+            const directories = DirectorySelector.selectDirectory();
+
+            const imageInputDir = state.imageInputDir;
+
+            if (directories && directories.length === 1) {
+                moveStarredImagesTo(imageInputDir, directories[0])
+                    .then(() => {
+                        // refresh the current directory:
+                        renderImagesAndPagerForDirectory(imageInputDir);
+                    })
+                    .catch((err: any) => {
+                        console.error(err);
+
+                        // some files may have moved OK - so refresh the current directory:
+                        renderImagesAndPagerForDirectory(imageInputDir);
+                    });
+            }
+        });
+    }
+
+    async function moveStarredImagesTo(
+        currentImageInputDir: string,
+        directoryPath: string
+    ): Promise<void> {
+        const imagePaths = DataStorage.getPathsOfStarredImages(currentImageInputDir);
+
+        let hasErrors = false;
+
+        return new Promise<void>((resolve, reject) => {
+            imagePaths.forEach(imagePath => {
+                const fileName = path.basename(imagePath);
+                const newPath = path.resolve(path.join(directoryPath, fileName));
+
+                fs.rename(imagePath, newPath, error => {
+                    if (error) {
+                        console.error(error);
+                        hasErrors = true;
+                    } else {
+                        DataStorage.setImageAsNoStar(imagePath);
+                    }
+                });
+            });
+
+            if (hasErrors) {
+                reject("Some errors occurred when moving the files");
+            } else {
+                resolve();
+            }
+        });
+    }
+}

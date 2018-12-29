@@ -7,11 +7,20 @@ import { DirectoryMetaData } from "./DirectoryMetaData";
 export namespace DataStorage {
     export async function loadForDirectoryOrCreate(imageInputDir: string) {
         if (fs.existsSync(getDataFilePathForDirectory(imageInputDir))) {
-            currentMetaData = await loadForDirectory(imageInputDir);
+            try {
+                currentMetaData = await loadForDirectory(imageInputDir);
+            } catch (error) {
+                console.error("error loading stars - will default to no stars", error);
+                currentMetaData = getEmptyData();
+            }
             return;
         }
 
-        currentMetaData = {
+        currentMetaData = getEmptyData();
+    }
+
+    function getEmptyData(): DirectoryMetaData {
+        return {
             starredImageFilenames: []
         };
     }
@@ -27,9 +36,39 @@ export namespace DataStorage {
                     return;
                 }
 
-                resolve(JSON.parse(data));
+                try {
+                    resolve(JSON.parse(data));
+                } catch (parseError) {
+                    console.error("error parsing the JSON", parseError);
+                    reject(parseError);
+                }
             });
         });
+    }
+
+    export function getPathsOfStarredImages(currentImageInputDir: string): string[] {
+        if (!currentMetaData) {
+            return [];
+        }
+
+        return currentMetaData.starredImageFilenames.map(filename =>
+            path.resolve(path.join(currentImageInputDir, filename))
+        );
+    }
+
+    export function setImageAsNoStar(originalImagePath: string) {
+        if (!currentMetaData) {
+            throw new Error("No meta data!");
+        }
+
+        const filename = path.basename(originalImagePath);
+        const index = getIndexOfStarredImageFilename(filename);
+
+        if (index < 0) {
+            throw new Error(`Cannot find image in store - '${filename}'`);
+        }
+
+        currentMetaData.starredImageFilenames.splice(index, 1);
     }
 
     export function updateImageDetail(image: ImageDetail) {
@@ -90,11 +129,15 @@ export namespace DataStorage {
     }
 
     function getIndexOfStarredImage(image: ImageDetail): number {
+        return getIndexOfStarredImageFilename(image.filename);
+    }
+
+    function getIndexOfStarredImageFilename(imageFilename: string): number {
         if (!currentMetaData) {
             return -1;
         }
 
-        return currentMetaData.starredImageFilenames.findIndex(i => i === image.filename);
+        return currentMetaData.starredImageFilenames.findIndex(i => i === imageFilename);
     }
 
     function isImageStarred(image: ImageDetail): boolean {

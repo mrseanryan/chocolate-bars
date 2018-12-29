@@ -1,4 +1,4 @@
-const remote = require("electron").remote;
+import { DirectorySelector } from "../../utils/DirectorySelector";
 
 export namespace SelectDirectoryRenderer {
     export function getBrowseButtonHtml(): string {
@@ -15,19 +15,11 @@ export namespace SelectDirectoryRenderer {
         }
 
         browseButton.addEventListener("click", _ => {
-            const directories = selectDirectory();
+            const directories = DirectorySelector.selectDirectory();
 
             if (directories && directories.length === 1) {
                 renderImagesAndPagerForDirectory(directories[0]);
             }
-        });
-    }
-
-    function selectDirectory(): string[] {
-        const mainWindow = remote.getCurrentWindow();
-
-        return remote.dialog.showOpenDialog(mainWindow, {
-            properties: ["openDirectory"]
         });
     }
 }
