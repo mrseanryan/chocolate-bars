@@ -32,10 +32,6 @@ export class HtmlGrid {
         JQueryUtils.clearHtmlDivById(IMAGE_CONTAINER_ID);
     }
 
-    clearPagerContainer() {
-        JQueryUtils.clearHtmlDivByClass("image-pager");
-    }
-
     setTitleForDir(imageInputDir: string) {
         jquery(".grid-header").html(`Images at '${imageInputDir}'`);
     }

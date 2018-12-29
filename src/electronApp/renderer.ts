@@ -1,9 +1,7 @@
 import * as jquery from "jquery";
 
 import { ChocolateBars } from "../bars/ChocolateBars";
-import { ImageFinder } from "../bars/files/ImageFinder";
 import { ImageDetail } from "../bars/model/ImageDetail";
-import { PagingModel } from "../bars/model/PagingModel";
 import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
@@ -12,7 +10,9 @@ import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
 import { LoaderRenderer } from "./rendering/LoaderRenderer";
+import { PagerRenderer } from "./rendering/PagerRenderer";
 import { SelectDirectoryRenderer } from "./rendering/SelectDirectoryRenderer";
+import { State } from "./State";
 
 const remote = require("electron").remote;
 
@@ -26,11 +26,9 @@ const grid = new HtmlGrid();
 
 const HIDE_LOADING_AFTER_N_IMAGES = 9;
 
-const state = {
+const state: State = {
     currentPage: 0,
     imageInputDir: "",
-    // Each 'browse to directory' or 'select page' is a new epoch,
-    // so can igore stale async responses. Alt could be to cancel promises but seems complicated.
     epoch: 0
 };
 
@@ -70,7 +68,7 @@ async function renderContainerAndDetailWithImages(imageInputDir: string) {
 }
 
 async function renderImagesAndPager() {
-    renderPagerButtons();
+    PagerRenderer.renderPagerButtons(state, outputter, renderImagesAndPager);
     await renderImages();
 }
 
@@ -80,29 +78,6 @@ async function renderImagesAndPagerForDirectory(imageInputDir: string) {
     state.imageInputDir = imageInputDir;
 
     renderImagesAndPager();
-}
-
-// xxx PagerRenderer
-async function renderPagerButtons() {
-    let pageCount = 0;
-    let imageCountThisPage = 0;
-    grid.clearPagerContainer();
-
-    // Always have a 1st page:
-    renderPager(pageCount);
-    pageCount++;
-
-    const allImages = await ImageFinder.findImagesInDirectory(state.imageInputDir, outputter);
-    allImages.forEach(() => {
-        imageCountThisPage++;
-
-        if (imageCountThisPage > PagingModel.IMAGES_PER_PAGE) {
-            renderPager(pageCount);
-
-            pageCount++;
-            imageCountThisPage = 1;
-        }
-    });
 }
 
 // xxx ImagesRenderer
@@ -153,43 +128,6 @@ async function renderImages() {
     }
 
     LoaderRenderer.hideImagesLoading();
-}
-
-// xxx PagerRenderer
-function renderPager(pageId: number) {
-    const isCurrent = pageId === state.currentPage;
-    const disabled = isCurrent ? " disabled" : "";
-    const currentClass = isCurrent ? " image-pager-button-current" : "";
-
-    const pagerHtml = `<button id='button-pager-${pageId}}'${disabled} class="image-pager-button${currentClass}">${pageId +
-        1}</button>`;
-    jquery(".image-pager").append(pagerHtml);
-
-    addPagerClickListener(pageId);
-}
-
-function addPagerClickListener(pageId: number) {
-    const pageDiv = document.getElementById(`button-pager-${pageId}}`);
-    if (!pageDiv) {
-        outputter.error(`could not find page button div for '${pageId}'`);
-        return;
-    }
-
-    pageDiv.addEventListener("click", () => onClickPager(pageId));
-}
-
-function onClickPager(pageId: number) {
-    state.epoch++;
-
-    state.currentPage = pageId;
-
-    LoaderRenderer.showImagesLoading();
-
-    // use setTimeout to ensure loader appears
-    setTimeout(() => {
-        // a new pager button may become disabled - so also need to render the pager buttons.
-        renderImagesAndPager();
-    }, 250);
 }
 
 function addImageClickListener(image: ImageDetail) {
