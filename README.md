@@ -1,8 +1,8 @@
 # :chocolate_bar: chocolate-bars readme
 
-Present histograms (bars!) of images in a directory, including extras such as exif data from the camera.
+Present histograms (bars!) of images in a directory, including extras such as exif data from the camera. Star and move favorite images.
 
-Electron based app which runs on node.js.
+Electron based app - so, it runs on node.js.
 
 ## status - stable
 
@@ -34,6 +34,8 @@ Histograms are useful for finding image defects such as:
 
 Also was curious how to implement this in node.js.
 
+Also, I really miss the 'moved starred images' feature of [good ole' Picasa](http://googlephotos.blogspot.com/2016/02/moving-on-from-picasa.html)
+
 ## dependencies
 
 -   Node 8.11.3 or higher
@@ -44,6 +46,8 @@ Also was curious how to implement this in node.js.
 -   show image thumbnails and histogram
 -   show additional image properties such as file size, image size
 -   show exif tags where available (JPEG files)
+-   'star' images in a folder like in Picasa
+-   move previously 'starred' images to a new folder
 
 ## usage - as cli (command line tool)
 
@@ -56,7 +60,7 @@ Install:
 
 ### 2. Get chocolate bars (histograms) of images
 
-![Screenshot](./static/site/screenshot-4.png)
+![Screenshot](./static/site/screenshot-5.png)
 
 #### ways to run
 
@@ -106,6 +110,17 @@ To see more detailed usage info:
 ```
 ./go.sh
 ```
+
+### keyboard shortcuts
+
+When an image is expanded by clicking on the small orange box in the top-right, a number of keyboard shortcuts can be used:
+
+| Key         | Action                          |
+| ----------- | ------------------------------- |
+| \* or Enter | Toggle the star for that image. |
+| Left Arrow  | Show the previous image.        |
+| Right Arrow | Show the next image.            |
+| Escape      | Close the expanded image.       |
 
 ## references
 
