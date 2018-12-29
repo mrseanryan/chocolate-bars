@@ -195,11 +195,12 @@
             .image-pager {
                 position: absolute;
                 top: 4px;
-                right: 30px;
+                right: 19px;
                 padding-left: 4px;
 
                 display: flex;
-                flex-wrap: wrap;
+                /* reverse so buttons will not overlap the scrollbar */
+                flex-wrap: wrap-reverse;
                 flex-direction: column;
                 height: 100%;
             }
