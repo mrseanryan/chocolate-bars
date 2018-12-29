@@ -8,6 +8,7 @@ import { Verbosity } from "../utils/outputter/Verbosity";
 import { SharedDataUtils } from "../utils/SharedDataUtils";
 import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
+import { HistogramRenderer } from "./rendering/HistogramRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
 import { LoaderRenderer } from "./rendering/LoaderRenderer";
 import { PagerRenderer } from "./rendering/PagerRenderer";
@@ -127,7 +128,22 @@ async function renderImages() {
         });
     }
 
+    if (thisEpoch !== state.epoch) {
+        // a stale response
+        return;
+    }
+
     LoaderRenderer.hideImagesLoading();
+
+    if (imagesLoaded === 0) {
+        renderForNoImages();
+    }
+}
+
+function renderForNoImages() {
+    grid.renderForNoImages();
+
+    renderHistogramForNoImages();
 }
 
 function addImageClickListener(image: ImageDetail) {
@@ -173,6 +189,7 @@ let previousImageSelected: ImageDetail | null = null;
 
 function onClickImage(image: ImageDetail) {
     setImageHeader(image);
+    setHistogramAsLoading();
 
     if (previousImageSelected) {
         setImageBorder(previousImageSelected, BorderStyle.None);
@@ -222,13 +239,29 @@ function renderDetailContainer() {
         `<div class="container-vertical fullHeight">` +
         `<div id="detail-header"><div id="detail-header-text"/></div>` +
         `<div class="container detail-body">` +
-        `<div class="image-histogram-container">${LoaderRenderer.getLoaderHtml()}` +
-        `<div id="image-histogram"/></div>` +
+        `<div class="${getHistogramContainerClass()}">${LoaderRenderer.getLoaderHtml()}` +
+        `<div id="${HistogramRenderer.getHistogramContainerId()}"/></div>` +
         `<div id="image-text" class="fullHeight"></div>` +
         `</div>` +
         `</div>`;
 
     JQueryUtils.renderHtml(html, "detail-panel");
+}
+
+function getHistogramContainerClass(): string {
+    return "image-histogram-container";
+}
+
+function renderHistogramForNoImages() {
+    getHistogramLoaderDiv().hide();
+}
+
+function setHistogramAsLoading() {
+    getHistogramLoaderDiv().show();
+}
+
+function getHistogramLoaderDiv(): JQuery {
+    return jquery(`.${getHistogramContainerClass()} > .lds-ring`);
 }
 
 function addKeyboardListener() {

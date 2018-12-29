@@ -57,6 +57,12 @@ export class HtmlGrid {
         this.getImageContainerDiv().append(this.getImageHtml(image));
     }
 
+    renderForNoImages() {
+        const noImagesHtml = `<div class="no-images">[No images to display]</div>`;
+
+        this.getImageContainerDiv().append(noImagesHtml);
+    }
+
     private getImageContainerDiv(): JQuery {
         return jquery(`#images-wrapping-container`);
     }

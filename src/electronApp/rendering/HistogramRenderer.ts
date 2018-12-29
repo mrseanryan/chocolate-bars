@@ -10,9 +10,13 @@ declare namespace Plotly {
 
 export namespace HistogramRenderer {
     export function clear() {
-        jquery("#image-histogram")
+        jquery(`#${getHistogramContainerId()}`)
             .children()
             .remove();
+    }
+
+    export function getHistogramContainerId() {
+        return "image-histogram";
     }
 
     // TODO optimise - run histogram as web worker?
@@ -65,7 +69,7 @@ export namespace HistogramRenderer {
             }
         };
 
-        Plotly.newPlot("image-histogram", data, layout, { responsive: true });
+        Plotly.newPlot(getHistogramContainerId(), data, layout, { responsive: true });
     }
 
     // Calculate greys as average of R, G, B
