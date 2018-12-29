@@ -47,16 +47,16 @@ Also was curious how to implement this in node.js.
 
 ## usage - as cli (command line tool)
 
-### 1 Install dependencies
+### 1. Install dependencies
 
 Install:
 
 -   Yarn
 -   Node 8.3.11 (or higher)
 
-### 2 get chocolate bars of images
+### 2. Get chocolate bars (histograms) of images
 
-![Screenshot](./static/site/screenshot-3.png)
+![Screenshot](./static/site/screenshot-4.png)
 
 #### ways to run
 
