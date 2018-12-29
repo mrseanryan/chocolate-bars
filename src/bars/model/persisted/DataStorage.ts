@@ -28,7 +28,7 @@ export namespace DataStorage {
     async function loadForDirectory(imageInputDir: string): Promise<DirectoryMetaData> {
         const filepath = getDataFilePathForDirectory(imageInputDir);
 
-        return new Promise((resolve, reject) => {
+        return new Promise<DirectoryMetaData>((resolve, reject) => {
             fs.readFile(filepath, "utf8", (error, data) => {
                 if (error) {
                     console.error(error);
