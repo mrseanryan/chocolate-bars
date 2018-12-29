@@ -1,10 +1,12 @@
 import * as jquery from "jquery";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
+import { JQueryUtils } from "../../utils/JQueryUtils";
 import { MathUtils } from "../../utils/MathUtils";
 import { IOutputter } from "../../utils/outputter/IOutputter";
 import { ExifRenderer } from "./ExifRenderer";
 import { HistogramRenderer } from "./HistogramRenderer";
+import { LoaderRenderer } from "./LoaderRenderer";
 
 export namespace DetailPaneRenderer {
     export function renderDetailForImage(image: ImageDetail, outputter: IOutputter) {
@@ -23,6 +25,20 @@ export namespace DetailPaneRenderer {
             .remove();
 
         HistogramRenderer.clear();
+    }
+
+    export function renderDetailContainer() {
+        const html =
+            `<div class="container-vertical fullHeight">` +
+            `<div id="detail-header"><div id="detail-header-text"/></div>` +
+            `<div class="container detail-body">` +
+            `<div class="${HistogramRenderer.getHistogramContainerClass()}">${LoaderRenderer.getLoaderHtml()}` +
+            `<div id="${HistogramRenderer.getHistogramContainerId()}"/></div>` +
+            `<div id="image-text" class="fullHeight"></div>` +
+            `</div>` +
+            `</div>`;
+
+        JQueryUtils.renderHtml(html, "detail-panel");
     }
 
     function renderImageText(image: ImageDetail, outputter: IOutputter) {
