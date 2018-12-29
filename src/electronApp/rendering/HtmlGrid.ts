@@ -2,6 +2,7 @@ import * as jquery from "jquery";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
 import { JQueryUtils } from "../../utils/JQueryUtils";
+import { SelectDirectoryRenderer } from "./SelectDirectoryRenderer";
 
 const IMAGE_CONTAINER_ID = "images-wrapping-container";
 
@@ -42,7 +43,7 @@ export class HtmlGrid {
     getHeaderHtml(): string {
         let html = "";
         html += this.getContainerStart(Orientation.Horizontal, "grid-header-container");
-        html += `<div class="grid-header"/>${this.renderBrowseButton()}`;
+        html += `<div class="grid-header"/>${SelectDirectoryRenderer.getBrowseButtonHtml()}`;
         html += this.getContainerEnd();
         return html;
     }
@@ -62,10 +63,6 @@ export class HtmlGrid {
 
     private getImageContainerDiv(): JQuery {
         return jquery(`#images-wrapping-container`);
-    }
-
-    private renderBrowseButton(): string {
-        return `<button id="browseButton">Browse...</button>`;
     }
 
     private getContainerStart(

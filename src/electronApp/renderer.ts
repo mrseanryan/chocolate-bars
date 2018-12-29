@@ -10,6 +10,7 @@ import { SharedDataUtils } from "../utils/SharedDataUtils";
 import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
+import { SelectDirectoryRenderer } from "./rendering/SelectDirectoryRenderer";
 
 const remote = require("electron").remote;
 
@@ -50,11 +51,12 @@ enum BorderStyle {
     Selected
 }
 
+// xxx  AppRenderer
 async function renderContainerAndDetailWithImages(imageInputDir: string) {
     state.imageInputDir = imageInputDir;
 
     renderHtml(grid.getHeaderHtml());
-    addSelectDirectoryListener();
+    SelectDirectoryRenderer.addSelectDirectoryListener(renderImagesAndPagerForDirectory);
 
     renderHtml(grid.getImagesAndPagerContainerHtml());
 
@@ -70,6 +72,15 @@ async function renderImagesAndPager() {
     await renderImages();
 }
 
+async function renderImagesAndPagerForDirectory(imageInputDir: string) {
+    state.epoch++;
+    state.currentPage = 0;
+    state.imageInputDir = imageInputDir;
+
+    renderImagesAndPager();
+}
+
+// xxx PagerRenderer
 async function renderPagerButtons() {
     let pageCount = 0;
     let imageCountThisPage = 0;
@@ -92,6 +103,7 @@ async function renderPagerButtons() {
     });
 }
 
+// xxx ImagesRenderer
 async function renderImages() {
     grid.clearImagesContainer();
     DetailPaneRenderer.clear();
@@ -149,6 +161,7 @@ function hideImagesLoading() {
     jquery(`#${grid.getImagesContainerId()} .lds-ring`).hide();
 }
 
+// xxx PagerRenderer
 function renderPager(pageId: number) {
     const isCurrent = pageId === state.currentPage;
     const disabled = isCurrent ? " disabled" : "";
@@ -271,6 +284,7 @@ function setImageBorder(image: ImageDetail, style: BorderStyle) {
     }
 }
 
+// xx DetailPaneRenderer
 function renderDetailContainer() {
     const html =
         `<div class="container-vertical fullHeight">` +
@@ -285,6 +299,7 @@ function renderDetailContainer() {
     renderHtml(html, "detail-panel");
 }
 
+// xxx LoaderRenderer
 function getLoaderHtml(): string {
     return `<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`;
 }
@@ -304,32 +319,5 @@ function addKeyboardListener() {
         if (e.key === "Escape") {
             ExpandedImageRenderer.onClickExpandedImagePopup();
         }
-    });
-}
-
-function addSelectDirectoryListener() {
-    const browseButton = document.getElementById("browseButton");
-
-    if (!browseButton) {
-        throw new Error("could not find the browse button");
-    }
-
-    browseButton.addEventListener("click", _ => {
-        const directories = selectDirectory();
-
-        if (directories && directories.length === 1) {
-            state.epoch++;
-            state.currentPage = 0;
-            state.imageInputDir = directories[0];
-            renderImagesAndPager();
-        }
-    });
-}
-
-function selectDirectory(): string[] {
-    const mainWindow = remote.getCurrentWindow();
-
-    return remote.dialog.showOpenDialog(mainWindow, {
-        properties: ["openDirectory"]
     });
 }
