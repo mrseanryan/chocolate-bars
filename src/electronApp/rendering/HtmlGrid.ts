@@ -24,16 +24,16 @@ export class HtmlGrid {
         return this.getImageDivId(image) + "-new-window";
     }
 
+    static getImagesContainerId() {
+        return IMAGE_CONTAINER_ID;
+    }
+
     clearImagesContainer() {
         JQueryUtils.clearHtmlDivById(IMAGE_CONTAINER_ID);
     }
 
     clearPagerContainer() {
         JQueryUtils.clearHtmlDivByClass("image-pager");
-    }
-
-    getImagesContainerId() {
-        return IMAGE_CONTAINER_ID;
     }
 
     setTitleForDir(imageInputDir: string) {

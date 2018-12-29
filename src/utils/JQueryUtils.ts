@@ -12,4 +12,8 @@ export namespace JQueryUtils {
             .children()
             .remove();
     }
+
+    export function renderHtml(html: string, containerId: string = "content") {
+        jquery(`#${containerId}`).append(html);
+    }
 }

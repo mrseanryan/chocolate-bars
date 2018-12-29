@@ -4,12 +4,14 @@ import { ChocolateBars } from "../bars/ChocolateBars";
 import { ImageFinder } from "../bars/files/ImageFinder";
 import { ImageDetail } from "../bars/model/ImageDetail";
 import { PagingModel } from "../bars/model/PagingModel";
+import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
 import { SharedDataUtils } from "../utils/SharedDataUtils";
 import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
+import { LoaderRenderer } from "./rendering/LoaderRenderer";
 import { SelectDirectoryRenderer } from "./rendering/SelectDirectoryRenderer";
 
 const remote = require("electron").remote;
@@ -55,10 +57,10 @@ enum BorderStyle {
 async function renderContainerAndDetailWithImages(imageInputDir: string) {
     state.imageInputDir = imageInputDir;
 
-    renderHtml(grid.getHeaderHtml());
+    JQueryUtils.renderHtml(grid.getHeaderHtml());
     SelectDirectoryRenderer.addSelectDirectoryListener(renderImagesAndPagerForDirectory);
 
-    renderHtml(grid.getImagesAndPagerContainerHtml());
+    JQueryUtils.renderHtml(grid.getImagesAndPagerContainerHtml());
 
     renderDetailContainer();
 
@@ -109,7 +111,7 @@ async function renderImages() {
     DetailPaneRenderer.clear();
     clearImageHeader();
 
-    showImagesLoading();
+    LoaderRenderer.showImagesLoading();
 
     const imageInputDir = state.imageInputDir;
     grid.setTitleForDir(imageInputDir);
@@ -145,20 +147,12 @@ async function renderImages() {
 
             imagesLoaded++;
             if (imagesLoaded > HIDE_LOADING_AFTER_N_IMAGES) {
-                hideImagesLoading();
+                LoaderRenderer.hideImagesLoading();
             }
         });
     }
 
-    hideImagesLoading();
-}
-
-function showImagesLoading() {
-    renderHtml(getLoaderHtml(), grid.getImagesContainerId());
-}
-
-function hideImagesLoading() {
-    jquery(`#${grid.getImagesContainerId()} .lds-ring`).hide();
+    LoaderRenderer.hideImagesLoading();
 }
 
 // xxx PagerRenderer
@@ -189,7 +183,7 @@ function onClickPager(pageId: number) {
 
     state.currentPage = pageId;
 
-    showImagesLoading();
+    LoaderRenderer.showImagesLoading();
 
     // use setTimeout to ensure loader appears
     setTimeout(() => {
@@ -290,22 +284,13 @@ function renderDetailContainer() {
         `<div class="container-vertical fullHeight">` +
         `<div id="detail-header"><div id="detail-header-text"/></div>` +
         `<div class="container detail-body">` +
-        `<div class="image-histogram-container">${getLoaderHtml()}` +
+        `<div class="image-histogram-container">${LoaderRenderer.getLoaderHtml()}` +
         `<div id="image-histogram"/></div>` +
         `<div id="image-text" class="fullHeight"></div>` +
         `</div>` +
         `</div>`;
 
-    renderHtml(html, "detail-panel");
-}
-
-// xxx LoaderRenderer
-function getLoaderHtml(): string {
-    return `<div class="lds-ring"><div></div><div></div><div></div><div></div></div>`;
-}
-
-function renderHtml(html: string, containerId: string = "content") {
-    jquery(`#${containerId}`).append(html);
+    JQueryUtils.renderHtml(html, "detail-panel");
 }
 
 function addKeyboardListener() {
