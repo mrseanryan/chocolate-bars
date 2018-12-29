@@ -4,11 +4,11 @@ import { ChocolateBars } from "../bars/ChocolateBars";
 import { ImageFinder } from "../bars/files/ImageFinder";
 import { ImageDetail } from "../bars/model/ImageDetail";
 import { PagingModel } from "../bars/model/PagingModel";
-import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
 import { SharedDataUtils } from "../utils/SharedDataUtils";
 import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
+import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
 
 const remote = require("electron").remote;
@@ -60,17 +60,9 @@ async function renderContainerAndDetailWithImages(imageInputDir: string) {
 
     renderDetailContainer();
 
-    renderHiddenExpandedImagePopup();
+    ExpandedImageRenderer.renderHiddenPopup();
 
     await renderImagesAndPager();
-}
-
-function renderHiddenExpandedImagePopup() {
-    const html = `<div class="user-image-popup" />`;
-
-    jquery("body").append(html);
-
-    addClickExpandedImageListener();
 }
 
 async function renderImagesAndPager() {
@@ -217,7 +209,7 @@ function addImageExpandClickListener(image: ImageDetail) {
         return;
     }
 
-    imageExpandDiv.addEventListener("click", () => onClickExpandImage(image));
+    imageExpandDiv.addEventListener("click", () => ExpandedImageRenderer.onClickExpandImage(image));
 }
 
 function addImageNewWindowClickListener(image: ImageDetail) {
@@ -254,30 +246,8 @@ function clearImageHeader() {
     jquery("#detail-header-text").text("");
 }
 
-// TODO xxx refactor this file - extract ExpandedImageRenderer - and de-dupe the class name here
-function addClickExpandedImageListener() {
-    jquery(".user-image-popup").on("click", () => {
-        onClickExpandedImagePop();
-    });
-}
-
-function onClickExpandImage(image: ImageDetail) {
-    JQueryUtils.clearHtmlDivByClass("user-image-popup");
-
-    // use the smaller image, as is smaller and already loaded - so faster
-    const imageHtml = `<img src="${image.smallerFilepath}" />`;
-
-    jquery(".user-image-popup").append(imageHtml);
-
-    jquery(".user-image-popup").addClass("user-image-popup-visible");
-}
-
 function onClickOpenImageInNewWindow(image: ImageDetail) {
     window.open(`file://${image.originalFilepath}`, "_blank", "nodeIntegration=no");
-}
-
-function onClickExpandedImagePop() {
-    jquery(".user-image-popup").removeClass("user-image-popup-visible");
 }
 
 function setImageBorder(image: ImageDetail, style: BorderStyle) {
@@ -332,7 +302,7 @@ function addKeyboardListener() {
         }
 
         if (e.key === "Escape") {
-            onClickExpandedImagePop();
+            ExpandedImageRenderer.onClickExpandedImagePopup();
         }
     });
 }
