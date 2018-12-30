@@ -50,7 +50,15 @@ export namespace MoveStarredImagesRenderer {
         let hasErrors = false;
 
         return new Promise<void>((resolve, reject) => {
-            imagePaths.forEach(imagePath => {
+            const done = () => {
+                if (hasErrors) {
+                    reject("Some errors occurred when moving the files");
+                } else {
+                    resolve();
+                }
+            };
+
+            imagePaths.forEach((imagePath, index) => {
                 const fileName = path.basename(imagePath);
                 const newPath = path.resolve(path.join(directoryPath, fileName));
 
@@ -61,14 +69,12 @@ export namespace MoveStarredImagesRenderer {
                     } else {
                         DataStorage.setImageAsNoStar(imagePath);
                     }
+
+                    if (index === imagePaths.length - 1) {
+                        done();
+                    }
                 });
             });
-
-            if (hasErrors) {
-                reject("Some errors occurred when moving the files");
-            } else {
-                resolve();
-            }
         });
     }
 }
