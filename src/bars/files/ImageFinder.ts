@@ -5,6 +5,8 @@ import { FileUtils } from "../../utils/FileUtils";
 import { IOutputter } from "../../utils/outputter/IOutputter";
 
 export namespace ImageFinder {
+    export const RECOGNISED_EXTENSIONS = [".jpg", ".jpeg"];
+
     export async function findImagesInDirectory(
         imageInputDirOrFile: string,
         outputter: IOutputter
@@ -75,9 +77,8 @@ export namespace ImageFinder {
 
         // extensions - works for files with something before the '.'
         const ext = path.extname(filepath);
-        const goodExtensions = [".jpg", ".jpeg"];
 
-        return goodExtensions.some(goodExt => goodExt.toLowerCase() === ext.toLowerCase());
+        return RECOGNISED_EXTENSIONS.some(goodExt => goodExt.toLowerCase() === ext.toLowerCase());
     };
 
     const isDirectory = (filepath: string) => {
