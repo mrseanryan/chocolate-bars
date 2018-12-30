@@ -84,7 +84,7 @@ export namespace PagerRenderer {
 
     function onClickPager(pageId: number, state: State, renderImagesAndPager: () => void) {
         state.epoch++;
-
+        state.selectedImage = null;
         state.currentPage = pageId;
 
         LoaderRenderer.showImagesLoading();

@@ -20,7 +20,8 @@ const grid = new HtmlGrid();
 const state: State = {
     currentPage: 0,
     imageInputDir: "",
-    epoch: 0
+    epoch: 0,
+    selectedImage: null
 };
 
 export namespace AppRenderer {
@@ -71,6 +72,7 @@ export namespace AppRenderer {
     async function renderImagesAndPagerForDirectorySamePage(imageInputDir: string) {
         state.epoch++;
         state.imageInputDir = imageInputDir;
+        state.selectedImage = null;
 
         renderImagesAndPager();
     }
@@ -85,29 +87,50 @@ export namespace AppRenderer {
 
             switch (e.key) {
                 case "Escape": {
-                    ExpandedImageRenderer.hideExpandedImage();
+                    if (ExpandedImageRenderer.isOpen()) {
+                        ExpandedImageRenderer.hideExpandedImage();
+                    }
                     break;
                 }
                 case "ArrowLeft": {
-                    ExpandedImageRenderer.goToPreviousImage();
+                    if (ExpandedImageRenderer.isOpen()) {
+                        ExpandedImageRenderer.goToPreviousImage();
+                    }
                     break;
                 }
                 case "ArrowRight": {
-                    ExpandedImageRenderer.goToNextImage();
+                    if (ExpandedImageRenderer.isOpen()) {
+                        ExpandedImageRenderer.goToNextImage();
+                    }
+                    break;
+                }
+                case "+": {
+                    if (ExpandedImageRenderer.isOpen()) {
+                        ExpandedImageRenderer.hideExpandedImage();
+                    } else if (!ExpandedImageRenderer.isOpen() && state.selectedImage) {
+                        ExpandedImageRenderer.onClickExpandImage(state.selectedImage);
+                    }
                     break;
                 }
                 case "*": {
-                    ExpandedImageRenderer.toggleStarredImage();
+                    toggleStarredImage();
                     break;
                 }
                 // note: space is taken by Chrome = page down scrollbar
                 case "Enter": {
-                    ExpandedImageRenderer.toggleStarredImage();
+                    toggleStarredImage();
                     break;
                 }
                 default:
                 // do nothing
             }
         });
+    }
+
+    function toggleStarredImage() {
+        if (ExpandedImageRenderer.isOpen()) {
+            ExpandedImageRenderer.toggleStarredImage();
+        }
+        // TODO xxx else toggle selectedImage
     }
 }

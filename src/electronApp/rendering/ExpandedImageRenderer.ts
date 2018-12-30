@@ -9,6 +9,11 @@ export namespace ExpandedImageRenderer {
 
     let allImages: ImageDetail[] = [];
     let currentImageIndex = -1;
+    let isPopupOpen = false;
+
+    export function isOpen(): boolean {
+        return isPopupOpen;
+    }
 
     export function addImage(image: ImageDetail) {
         allImages.push(image);
@@ -19,6 +24,7 @@ export namespace ExpandedImageRenderer {
     }
 
     export function renderHiddenPopup() {
+        isPopupOpen = false;
         const html = `<div class="${IMAGE_POPUP_CLASS}" />`;
 
         jquery("body").append(html);
@@ -46,6 +52,7 @@ export namespace ExpandedImageRenderer {
 
     export function onClickExpandImage(image: ImageDetail) {
         currentImageIndex = allImages.findIndex(i => i.originalFilepath === image.originalFilepath);
+        isPopupOpen = true;
 
         updateCurrentImageByIndex();
 
@@ -53,6 +60,7 @@ export namespace ExpandedImageRenderer {
     }
 
     export function hideExpandedImage() {
+        isPopupOpen = false;
         jquery(`.${IMAGE_POPUP_CLASS}`).removeClass("user-image-popup-visible");
     }
 

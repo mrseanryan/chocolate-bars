@@ -113,14 +113,19 @@ To see more detailed usage info:
 
 ### keyboard shortcuts
 
-When an image is expanded by clicking on the small orange box in the top-right, a number of keyboard shortcuts can be used:
+A number of keyboard shortcuts are available:
 
-| Key         | Action                          |
-| ----------- | ------------------------------- |
-| \* or Enter | Toggle the star for that image. |
-| Left Arrow  | Show the previous image.        |
-| Right Arrow | Show the next image.            |
-| Escape      | Close the expanded image.       |
+| Area                             | Key                  | Action                                 |
+| -------------------------------- | -------------------- | -------------------------------------- |
+| Images panel\*                   | Up Arrow, Down Arrow | Scroll up or down the set of images.   |
+| Images panel\*                   | Space                | Scroll down the set of images.         |
+| Selected image, Expanded image\* | +                    | Toggle the expanded view of the image. |
+| Expanded image\*                 | \* or Enter          | Toggle the star for that image.        |
+| Expanded image\*                 | Left Arrow           | Show the previous image.               |
+| Expanded image\*                 | Right Arrow          | Show the next image.                   |
+| Expanded image\*                 | Escape               | Close the expanded image.              |
+
+\* An image is expanded by clicking on the small orange box in the top-right
 
 ## references
 

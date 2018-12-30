@@ -54,10 +54,10 @@ export namespace ImagesRenderer {
 
                 grid.addImageToContainer(image);
 
-                addImageClickListener(image, outputter);
+                addImageClickListener(state, image, outputter);
 
                 if (isFirst) {
-                    onClickImage(image, outputter);
+                    onClickImage(state, image, outputter);
                     isFirst = false;
                 }
 
@@ -97,7 +97,7 @@ export namespace ImagesRenderer {
         HistogramRenderer.renderHistogramForNoImages();
     }
 
-    function addImageClickListener(image: ImageDetail, outputter: IOutputter) {
+    function addImageClickListener(state: State, image: ImageDetail, outputter: IOutputter) {
         const imageDivId = HtmlGrid.getImageDivId(image);
 
         const imageDiv = document.getElementById(imageDivId);
@@ -106,7 +106,7 @@ export namespace ImagesRenderer {
             return;
         }
 
-        imageDiv.addEventListener("click", () => onClickImage(image, outputter));
+        imageDiv.addEventListener("click", () => onClickImage(state, image, outputter));
 
         addImageExpandClickListener(image, outputter);
         addImageNewWindowClickListener(image, outputter);
@@ -159,7 +159,8 @@ export namespace ImagesRenderer {
 
     let previousImageSelected: ImageDetail | null = null;
 
-    function onClickImage(image: ImageDetail, outputter: IOutputter) {
+    function onClickImage(state: State, image: ImageDetail, outputter: IOutputter) {
+        state.selectedImage = image;
         setImageHeader(image);
         HistogramRenderer.setHistogramAsLoading();
 
