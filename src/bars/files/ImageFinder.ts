@@ -11,7 +11,10 @@ export namespace ImageFinder {
         imageInputDirOrFile: string,
         outputter: IOutputter
     ): Promise<string[]> {
-        if (!isDirectory(imageInputDirOrFile) && isFileExtensionOk(imageInputDirOrFile)) {
+        if (
+            !isDirectoryOrNotEnoughPermissions(imageInputDirOrFile) &&
+            isFileExtensionOk(imageInputDirOrFile)
+        ) {
             return [imageInputDirOrFile];
         }
 
@@ -61,8 +64,10 @@ export namespace ImageFinder {
 
     function filterToImages(filePaths: string[], outputter: IOutputter): string[] {
         return filePaths.filter(imagePath => {
-            if (isDirectory(imagePath) || !isFileExtensionOk(imagePath)) {
-                outputter.warn(`\nskipping file ${imagePath} (is dir or a skipped file extension)`);
+            if (isDirectoryOrNotEnoughPermissions(imagePath) || !isFileExtensionOk(imagePath)) {
+                outputter.warn(
+                    `\nskipping file ${imagePath} (is dir or not enough permissions or a skipped file extension)`
+                );
 
                 return false;
             }
@@ -81,7 +86,13 @@ export namespace ImageFinder {
         return RECOGNISED_EXTENSIONS.some(goodExt => goodExt.toLowerCase() === ext.toLowerCase());
     };
 
-    const isDirectory = (filepath: string) => {
-        return fs.lstatSync(filepath).isDirectory();
+    const isDirectoryOrNotEnoughPermissions = (filepath: string) => {
+        try {
+            return fs.lstatSync(filepath).isDirectory();
+        } catch (error) {
+            // can occur if not enough permissions, or file is already in use
+            console.error(error);
+            return true;
+        }
     };
 }
