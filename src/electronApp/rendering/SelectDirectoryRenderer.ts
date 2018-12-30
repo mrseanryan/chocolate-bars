@@ -15,7 +15,10 @@ export namespace SelectDirectoryRenderer {
         }
 
         browseButton.addEventListener("click", _ => {
-            const directories = DirectorySelector.selectDirectory();
+            const directories = DirectorySelector.selectImagesDirectory(
+                "Select a directory to view",
+                "Select Directory"
+            );
 
             if (directories && directories.length === 1) {
                 renderImagesAndPagerForDirectory(directories[0]);

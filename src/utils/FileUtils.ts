@@ -10,7 +10,10 @@ export namespace FileUtils {
     }
 
     export function getSmallerFilePath(filePath: string): string {
-        return path.join(os.tmpdir(), path.basename(filePath) + ".resized.jpg");
+        return path.join(
+            os.tmpdir(),
+            `${path.basename(filePath)}.resized${path.extname(filePath)}`
+        );
     }
 
     export function isLargeFile(filePath: string): boolean {

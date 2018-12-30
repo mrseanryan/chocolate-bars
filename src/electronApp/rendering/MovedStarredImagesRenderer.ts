@@ -21,7 +21,10 @@ export namespace MoveStarredImagesRenderer {
         }
 
         moveStarredButton.addEventListener("click", _ => {
-            const directories = DirectorySelector.selectDirectory();
+            const directories = DirectorySelector.selectImagesDirectory(
+                "Move starred images to directory",
+                "Move images"
+            );
 
             const imageInputDir = state.imageInputDir;
 
