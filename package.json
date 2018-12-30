@@ -3,8 +3,11 @@
     "version": "0.0.0-semantically-released",
     "description": "Present histograms (bars!) of images in a directory, including extras such as exif data from the camera.",
     "keywords": [
-        "image",
+        "electron",
+        "exif",
+        "exif-data",
         "histogram",
+        "image",
         "image viewer",
         "image-viewer",
         "photo",
