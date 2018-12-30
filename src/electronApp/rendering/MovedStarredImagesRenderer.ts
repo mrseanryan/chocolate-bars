@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 import { DataStorage } from "../../bars/model/persisted/DataStorage";
-import { DirectorySelector } from "../../utils/DirectorySelector";
+import { DirectorySelectorDialog } from "../../utils/DirectorySelectorDialog";
 import { State } from "../State";
 
 export namespace MoveStarredImagesRenderer {
@@ -21,7 +21,7 @@ export namespace MoveStarredImagesRenderer {
         }
 
         moveStarredButton.addEventListener("click", _ => {
-            const directories = DirectorySelector.selectImagesDirectory(
+            const directories = DirectorySelectorDialog.selectImagesDirectory(
                 "Move starred images to directory",
                 "Move images"
             );

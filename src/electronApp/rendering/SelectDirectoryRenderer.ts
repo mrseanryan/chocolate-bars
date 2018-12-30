@@ -1,4 +1,4 @@
-import { DirectorySelector } from "../../utils/DirectorySelector";
+import { DirectorySelectorDialog } from "../../utils/DirectorySelectorDialog";
 
 export namespace SelectDirectoryRenderer {
     export function getBrowseButtonHtml(): string {
@@ -15,7 +15,7 @@ export namespace SelectDirectoryRenderer {
         }
 
         browseButton.addEventListener("click", _ => {
-            const directories = DirectorySelector.selectImagesDirectory(
+            const directories = DirectorySelectorDialog.selectImagesDirectory(
                 "Select a directory to view",
                 "Select Directory"
             );

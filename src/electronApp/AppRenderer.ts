@@ -1,7 +1,9 @@
+import { ImageDetail } from "../bars/model/ImageDetail";
 import { DataStorage } from "../bars/model/persisted/DataStorage";
 import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
+import { DeleteImageRenderer } from "./rendering/DeleteImageRenderer";
 import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
@@ -89,6 +91,12 @@ export namespace AppRenderer {
             }
 
             switch (e.key) {
+                case "Delete": {
+                    if (ExpandedImageRenderer.isOpen()) {
+                        promptToDelete(ExpandedImageRenderer.getCurrentImage());
+                    }
+                    break;
+                }
                 case "Escape": {
                     if (ExpandedImageRenderer.isOpen()) {
                         ExpandedImageRenderer.hideExpandedImage();
@@ -128,6 +136,22 @@ export namespace AppRenderer {
                 // do nothing
             }
         });
+    }
+
+    function promptToDelete(image: ImageDetail | null) {
+        if (!image) {
+            return;
+        }
+
+        const afterDelete = () => {
+            // Simplest to hide the expanded view
+            ExpandedImageRenderer.hideExpandedImage();
+
+            // refresh the current directory
+            renderImagesAndPagerForDirectorySamePage(state.imageInputDir);
+        };
+
+        DeleteImageRenderer.renderPrompt(image, afterDelete);
     }
 
     function toggleStarredImage() {

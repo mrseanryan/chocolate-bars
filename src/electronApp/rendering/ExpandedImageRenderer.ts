@@ -79,7 +79,7 @@ export namespace ExpandedImageRenderer {
         addClickImageStarListener();
     }
 
-    function getCurrentImage() {
+    export function getCurrentImage() {
         const image = allImages[currentImageIndex];
         return image;
     }

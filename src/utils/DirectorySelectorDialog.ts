@@ -1,8 +1,6 @@
-import { FileFilter } from "electron";
-
 const remote = require("electron").remote;
 
-export namespace DirectorySelector {
+export namespace DirectorySelectorDialog {
     export function selectImagesDirectory(title: string, buttonLabel: string): string[] {
         const mainWindow = remote.getCurrentWindow();
 

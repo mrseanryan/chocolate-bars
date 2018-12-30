@@ -123,6 +123,7 @@ A number of keyboard shortcuts are available:
 | Selected image, Expanded image\* | \* or Enter          | Toggle the star for that image.        |
 | Expanded image\*                 | Left Arrow           | Show the previous image.               |
 | Expanded image\*                 | Right Arrow          | Show the next image.                   |
+| Expanded image\*                 | Delete               | Prompt to delete the expanded image.   |
 | Expanded image\*                 | Escape               | Close the expanded image.              |
 
 \* An image is expanded by clicking on the small orange box in the top-right
