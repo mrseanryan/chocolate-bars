@@ -120,7 +120,7 @@ A number of keyboard shortcuts are available:
 | Images panel\*                   | Up Arrow, Down Arrow | Scroll up or down the set of images.   |
 | Images panel\*                   | Space                | Scroll down the set of images.         |
 | Selected image, Expanded image\* | +                    | Toggle the expanded view of the image. |
-| Expanded image\*                 | \* or Enter          | Toggle the star for that image.        |
+| Selected image, Expanded image\* | \* or Enter          | Toggle the star for that image.        |
 | Expanded image\*                 | Left Arrow           | Show the previous image.               |
 | Expanded image\*                 | Right Arrow          | Show the next image.                   |
 | Expanded image\*                 | Escape               | Close the expanded image.              |

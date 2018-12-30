@@ -6,6 +6,7 @@ import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
 import { ImagesRenderer } from "./rendering/ImagesRenderer";
+import { ImageStarRenderer } from "./rendering/ImageStarRenderer";
 import { MoveStarredImagesRenderer } from "./rendering/MovedStarredImagesRenderer";
 import { PagerRenderer } from "./rendering/PagerRenderer";
 import { SelectDirectoryRenderer } from "./rendering/SelectDirectoryRenderer";
@@ -130,7 +131,10 @@ export namespace AppRenderer {
     function toggleStarredImage() {
         if (ExpandedImageRenderer.isOpen()) {
             ExpandedImageRenderer.toggleStarredImage();
+        } else {
+            if (state.selectedImage) {
+                ImageStarRenderer.toggleStarForImage(state.selectedImage);
+            }
         }
-        // TODO xxx else toggle selectedImage
     }
 }
