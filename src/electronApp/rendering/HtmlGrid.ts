@@ -1,4 +1,5 @@
 import * as jquery from "jquery";
+import * as path from "path";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
 import { JQueryUtils } from "../../utils/JQueryUtils";
@@ -39,7 +40,9 @@ export class HtmlGrid {
     }
 
     setTitleForDir(imageInputDir: string) {
-        jquery(".grid-header").html(`Images at '${imageInputDir}'`);
+        const absolutePath = path.resolve(imageInputDir);
+
+        jquery(".grid-header").html(`Images at '${absolutePath}'`);
     }
 
     getHeaderHtml(): string {
