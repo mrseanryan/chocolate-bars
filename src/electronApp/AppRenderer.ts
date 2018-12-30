@@ -43,7 +43,10 @@ export namespace AppRenderer {
 
         JQueryUtils.renderHtml(grid.getHeaderHtml());
         SelectDirectoryRenderer.addSelectDirectoryListener(renderImagesAndPagerForDirectory);
-        MoveStarredImagesRenderer.addMovedStarredListener(state, renderImagesAndPagerForDirectory);
+        MoveStarredImagesRenderer.addMovedStarredListener(
+            state,
+            renderImagesAndPagerForDirectorySamePage
+        );
 
         JQueryUtils.renderHtml(grid.getImagesAndPagerContainerHtml());
 
@@ -60,8 +63,13 @@ export namespace AppRenderer {
     }
 
     async function renderImagesAndPagerForDirectory(imageInputDir: string) {
-        state.epoch++;
         state.currentPage = 0;
+
+        renderImagesAndPagerForDirectorySamePage(imageInputDir);
+    }
+
+    async function renderImagesAndPagerForDirectorySamePage(imageInputDir: string) {
+        state.epoch++;
         state.imageInputDir = imageInputDir;
 
         renderImagesAndPager();

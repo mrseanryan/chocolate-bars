@@ -12,7 +12,7 @@ export namespace MoveStarredImagesRenderer {
 
     export function addMovedStarredListener(
         state: State,
-        renderImagesAndPagerForDirectory: (imageInputDir: string) => void
+        renderImagesAndPagerForDirectorySamePage: (imageInputDir: string) => void
     ) {
         const moveStarredButton = document.getElementById("moveStarredButton");
 
@@ -29,13 +29,13 @@ export namespace MoveStarredImagesRenderer {
                 moveStarredImagesTo(imageInputDir, directories[0])
                     .then(() => {
                         // refresh the current directory:
-                        renderImagesAndPagerForDirectory(imageInputDir);
+                        renderImagesAndPagerForDirectorySamePage(imageInputDir);
                     })
                     .catch((err: any) => {
                         console.error(err);
 
                         // some files may have moved OK - so refresh the current directory:
-                        renderImagesAndPagerForDirectory(imageInputDir);
+                        renderImagesAndPagerForDirectorySamePage(imageInputDir);
                     });
             }
         });
