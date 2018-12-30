@@ -47,6 +47,8 @@ And - I really miss the 'moved starred images' feature of [good ole' Picasa](htt
 -   show exif tags where available (JPEG files)
 -   'star' images in a folder like in Picasa
 -   move previously 'starred' images to a new folder
+-   delete the selected image
+-   handles large number of images, via paging
 
 ## usage - as cli (command line tool)
 
