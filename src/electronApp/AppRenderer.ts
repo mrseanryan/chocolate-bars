@@ -9,6 +9,7 @@ import { ImagesRenderer } from "./rendering/ImagesRenderer";
 import { ImageStarRenderer } from "./rendering/ImageStarRenderer";
 import { MoveStarredImagesRenderer } from "./rendering/MovedStarredImagesRenderer";
 import { PagerRenderer } from "./rendering/PagerRenderer";
+import { RefreshImagesRenderer } from "./rendering/RefreshImagesRenderer";
 import { SelectDirectoryRenderer } from "./rendering/SelectDirectoryRenderer";
 import { State } from "./State";
 
@@ -49,6 +50,7 @@ export namespace AppRenderer {
             state,
             renderImagesAndPagerForDirectorySamePage
         );
+        RefreshImagesRenderer.addRefreshListener(state, renderImagesAndPagerForDirectorySamePage);
 
         JQueryUtils.renderHtml(grid.getImagesAndPagerContainerHtml());
 

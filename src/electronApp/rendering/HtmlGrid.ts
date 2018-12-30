@@ -5,6 +5,7 @@ import { ImageDetail } from "../../bars/model/ImageDetail";
 import { JQueryUtils } from "../../utils/JQueryUtils";
 import { ImageStarRenderer } from "./ImageStarRenderer";
 import { MoveStarredImagesRenderer } from "./MovedStarredImagesRenderer";
+import { RefreshImagesRenderer } from "./RefreshImagesRenderer";
 import { SelectDirectoryRenderer } from "./SelectDirectoryRenderer";
 
 const IMAGE_CONTAINER_ID = "images-wrapping-container";
@@ -48,9 +49,17 @@ export class HtmlGrid {
     getHeaderHtml(): string {
         let html = "";
         html += this.getContainerStart(Orientation.Horizontal, "grid-header-container");
-        html += `<div class="grid-header"/>${MoveStarredImagesRenderer.getButtonHtml()}${SelectDirectoryRenderer.getBrowseButtonHtml()}`;
+        html += `<div class="grid-header"/>${this.getButtonsHtml()}`;
         html += this.getContainerEnd();
         return html;
+    }
+
+    private getButtonsHtml(): string {
+        return (
+            RefreshImagesRenderer.getButtonHtml() +
+            MoveStarredImagesRenderer.getButtonHtml() +
+            SelectDirectoryRenderer.getBrowseButtonHtml()
+        );
     }
 
     getImagesAndPagerContainerHtml(): string {
