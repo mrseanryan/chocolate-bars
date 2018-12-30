@@ -33,8 +33,7 @@ Histograms are useful for finding image defects such as:
 -   low contrast
 
 Also was curious how to implement this in node.js.
-
-Also, I really miss the 'moved starred images' feature of [good ole' Picasa](http://googlephotos.blogspot.com/2016/02/moving-on-from-picasa.html)
+And - I really miss the 'moved starred images' feature of [good ole' Picasa](http://googlephotos.blogspot.com/2016/02/moving-on-from-picasa.html)
 
 ## dependencies
 
@@ -60,7 +59,7 @@ Install:
 
 ### 2. Get chocolate bars (histograms) of images
 
-![Screenshot](./static/site/screenshot-5.png)
+![Screenshot](./static/site/screenshot-6.png)
 
 #### ways to run
 
@@ -117,8 +116,8 @@ A number of keyboard shortcuts are available:
 
 | Area                             | Key                  | Action                                 |
 | -------------------------------- | -------------------- | -------------------------------------- |
-| Images panel\*                   | Up Arrow, Down Arrow | Scroll up or down the set of images.   |
-| Images panel\*                   | Space                | Scroll down the set of images.         |
+| Images panel                     | Up Arrow, Down Arrow | Scroll up or down the set of images.   |
+| Images panel                     | Space                | Scroll down the set of images.         |
 | Selected image, Expanded image\* | +                    | Toggle the expanded view of the image. |
 | Selected image, Expanded image\* | \* or Enter          | Toggle the star for that image.        |
 | Expanded image\*                 | Left Arrow           | Show the previous image.               |
@@ -126,7 +125,7 @@ A number of keyboard shortcuts are available:
 | Expanded image\*                 | Delete               | Prompt to delete the expanded image.   |
 | Expanded image\*                 | Escape               | Close the expanded image.              |
 
-\* An image is expanded by clicking on the small orange box in the top-right
+\* _An image is expanded by clicking on the small orange box in the top-right of the image._
 
 ## references
 
