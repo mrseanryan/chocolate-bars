@@ -29,20 +29,42 @@ export namespace DataStorage {
         const filepath = getDataFilePathForDirectory(imageInputDir);
 
         return new Promise<DirectoryMetaData>((resolve, reject) => {
-            fs.readFile(filepath, "utf8", (error, data) => {
-                if (error) {
-                    console.error(error);
+            const tryToReadFile = () => {
+                attempts++;
+                fs.readFile(filepath, "utf8", (error, data) => {
+                    if (error) {
+                        console.error(error);
+                        retry(error);
+                        return;
+                    }
+
+                    try {
+                        const metaData = JSON.parse(data);
+                        resolve(metaData);
+                    } catch (parseError) {
+                        console.warn("error parsing the JSON - will retry", parseError);
+                        retry(parseError);
+                    }
+                });
+            };
+
+            const MAX_ATTEMPTS = 3;
+            let attempts = 0;
+
+            const retry = (error: any) => {
+                if (attempts >= MAX_ATTEMPTS) {
+                    console.error(
+                        `tried ${MAX_ATTEMPTS} to read JSON - giving up - will default to empty stars`
+                    );
                     reject(error);
                     return;
                 }
 
-                try {
-                    resolve(JSON.parse(data));
-                } catch (parseError) {
-                    console.error("error parsing the JSON", parseError);
-                    reject(parseError);
-                }
-            });
+                console.log("retrying after 1 second ...");
+                setTimeout(() => tryToReadFile(), 1000);
+            };
+
+            tryToReadFile();
         });
     }
 
