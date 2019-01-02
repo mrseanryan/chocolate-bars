@@ -6,7 +6,7 @@ Electron based app - so, it runs on node.js.
 
 ## status - stable
 
-chocolate-bars is stable on Windows (Linux, Mac possible but not tested). Releases follow semantic versioning.
+chocolate-bars is stable on Windows, Linux Ubuntu (Mac is possible but not tested). Releases follow semantic versioning.
 
 [![Travis](https://img.shields.io/travis/mrseanryan/chocolate-bars.svg)](https://travis-ci.org/mrseanryan/chocolate-bars)
 [![node](https://img.shields.io/node/v/chocolate-bars.svg)](https://nodejs.org)
@@ -75,6 +75,12 @@ You can run `chocolate-bars` in one of two ways:
 `npm i -g electron@4`
 
 `npm i -g chocolate-bars@latest --production`
+
+note: on Ubuntu you may need to prefix the above commands with `sudo`:
+
+`sudo npm i -g electron@4`
+
+`sudo npm i -g chocolate-bars@latest --production`
 
 To use:
 
