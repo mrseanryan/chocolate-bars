@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PACKAGE_NAME=image-classifier-ts
+PACKAGE_NAME=chocolate-bars
 
 echo Removing $PACKAGE_NAME ...
 
