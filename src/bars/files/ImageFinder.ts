@@ -5,7 +5,7 @@ import { FileUtils } from "../../utils/FileUtils";
 import { IOutputter } from "../../utils/outputter/IOutputter";
 
 export namespace ImageFinder {
-    export const RECOGNISED_EXTENSIONS = [".jpg", ".jpeg"];
+    export const RECOGNISED_EXTENSIONS = [".jpg", ".jpeg", ".png"];
 
     export async function findImagesInDirectory(
         imageInputDirOrFile: string,
