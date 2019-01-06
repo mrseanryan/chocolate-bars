@@ -11,7 +11,7 @@ export class ExifTagSet {
         interestingTags.forEach(tag => {
             const value = tags[tag] ? tags[tag] : null;
 
-            if (value) {
+            if (value !== undefined && value !== null) {
                 tagSet.map.set(tag as ExifTag, value);
             }
         });

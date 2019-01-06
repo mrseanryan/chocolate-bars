@@ -17,12 +17,11 @@ export function parseOrientationOrThrow(orientationText: string): ExifOrientatio
     }
 
     const index = parseInt(orientationText, 10);
-
-    const orientation = index as ExifOrientation;
-
-    if (orientation === undefined) {
+    if (!isFinite(index)) {
         throw new Error(`Cannot parse ExifOrientation '${orientationText}'`);
     }
+
+    const orientation = index as ExifOrientation;
 
     if (orientation < 1 || orientation > 8) {
         throw new Error(`ExifOrientation '${orientationText}' is out of range (1..8)`);

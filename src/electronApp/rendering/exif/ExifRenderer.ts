@@ -33,10 +33,8 @@ export namespace ExifRenderer {
         let sectionHtml = "";
 
         tagSet.map.forEach((value, key) => {
-            if (value !== null && value !== undefined) {
-                const valueAsText = value.toString();
-                sectionHtml += valueAsText.length > 0 ? `${key}: ${valueAsText}\n` : "";
-            }
+            const valueAsText = value.toString();
+            sectionHtml += valueAsText.length > 0 ? `${key}: ${valueAsText}\n` : "";
         });
 
         if (sectionHtml.length > 0) {
