@@ -287,23 +287,30 @@
 
             #detail-header {
                 height: 20px;
-                position: relative;
+                position: absolute;
+                display: flex;
+                justify-content: center;
+                /* same -px as .image-histogram-container */
+                width: calc(96% - 250px);
             }
             #detail-header-text {
-                position: absolute;
-                top: 16px;
                 z-index: 110;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
+
             .detail-body {
                 height: calc(100% - 20px);
                 width: 100%;
             }
             #detail-panel {
                 height: 300px;
+                margin-top: 8px;
             }
 
             #image-text {
-                width: 280px;
+                width: 250px;
             }
 
             /* hide plotly.js toolbar*/
@@ -323,7 +330,6 @@
                 max-height: calc(100% - 60px);
                 overflow: hidden;
                 overflow-y: auto;
-                /* width: 250px; */
             }
 
             /* note: tried pre but has layout issues with scrollbar.*/
