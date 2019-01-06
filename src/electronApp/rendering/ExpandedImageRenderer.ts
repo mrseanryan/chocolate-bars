@@ -2,6 +2,7 @@ import * as jquery from "jquery";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
 import { JQueryUtils } from "../../utils/JQueryUtils";
+import { ImageOrientationSetter } from "./ImageOrientationSetter";
 import { ImageStarRenderer } from "./ImageStarRenderer";
 
 export namespace ExpandedImageRenderer {
@@ -76,6 +77,8 @@ export namespace ExpandedImageRenderer {
         }" />${ImageStarRenderer.getStarContainerHtml(image)}</div>`;
 
         jquery(`.${IMAGE_POPUP_CLASS}`).append(imageHtml);
+
+        ImageOrientationSetter.setOrientationForCssSelector(".expanded-image-and-star img", image);
         addClickImageStarListener();
     }
 

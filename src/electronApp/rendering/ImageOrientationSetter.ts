@@ -18,6 +18,13 @@ enum Transformation {
 
 export namespace ImageOrientationSetter {
     export async function setOrientation(image: ImageDetail) {
+        const divId = HtmlGrid.getImageDivId(image);
+        const cssSelector = `#${divId}`;
+
+        setOrientationForCssSelector(cssSelector, image);
+    }
+
+    export async function setOrientationForCssSelector(cssSelector: string, image: ImageDetail) {
         try {
             if (!ExifReader.canFileHaveExif(image.originalFilepath)) {
                 return;
@@ -38,7 +45,7 @@ export namespace ImageOrientationSetter {
 
                 const orientation = parseOrientationOrThrow(orientationText);
 
-                setOrientationTo(image, orientation);
+                setOrientationTo(cssSelector, orientation);
             }
         } catch (error) {
             console.log(error);
@@ -46,7 +53,7 @@ export namespace ImageOrientationSetter {
         }
     }
 
-    function setOrientationTo(image: ImageDetail, orientation: ExifOrientation) {
+    function setOrientationTo(cssSelector: string, orientation: ExifOrientation) {
         let cssClasses = "";
 
         switch (orientation) {
@@ -78,8 +85,7 @@ export namespace ImageOrientationSetter {
                 throw new Error(`unhandled orientation '${orientation}'`);
         }
 
-        const divId = HtmlGrid.getImageDivId(image);
-        const jqueryDiv = jquery(`#${divId}`);
+        const jqueryDiv = jquery(cssSelector);
         jqueryDiv.addClass(cssClasses);
     }
 }
