@@ -1,6 +1,7 @@
 import * as jquery from "jquery";
 
 import { ImageDetail } from "../../../bars/model/ImageDetail";
+import { StringUtils } from "../../../utils/StringUtils";
 import { ExifReader } from "./ExifReader";
 import { ExifTagSet } from "./ExifTagSet";
 
@@ -17,11 +18,13 @@ export namespace ExifRenderer {
             return "";
         }
 
-        let html = "<pre>";
+        let html = "<div class='exif-container-text'>";
 
-        html += tagSets.map(set => renderTagSet(set)).join("\n");
+        html += tagSets.map(set => renderTagSet(set)).join("");
 
-        html += "</pre>";
+        html = StringUtils.replaceAll(html, "\n", "<br/>");
+
+        html += "</div>";
 
         return html;
     }

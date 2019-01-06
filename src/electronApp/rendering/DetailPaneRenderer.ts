@@ -46,7 +46,7 @@ export namespace DetailPaneRenderer {
             // tslint:disable-next-line:prefer-template
             `<div>dimensions: ${image.dimensions.width} x ${image.dimensions.height}</div>` +
             `<div>file size: ${MathUtils.roundToFewPlaces(image.fileSizeInMb)} Mb</div>` +
-            `<div id="image-exif" class="exifContainer"></div>`;
+            `<div id="image-exif" class="exif-container"></div>`;
 
         ExifRenderer.renderHtmlForImage(image, "image-exif");
 

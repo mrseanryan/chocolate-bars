@@ -318,16 +318,18 @@
                 overflow: hidden;
             }
 
-            .exifContainer {
+            .exif-container {
                 height: auto;
                 max-height: calc(100% - 60px);
                 overflow: hidden;
                 overflow-y: auto;
-                max-width: 250px;
+                /* width: 250px; */
             }
 
-            .exifContainer pre {
-                margin: 0;
+            /* note: tried pre but has layout issues with scrollbar.*/
+            .exif-container-text {
+                font-family: "Courier New", Courier, monospace;
+                font-size: 13px;
             }
 
             .transform-flip-vertical-axis {
