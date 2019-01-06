@@ -9,6 +9,7 @@ import { DetailPaneRenderer } from "./DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./ExpandedImageRenderer";
 import { HistogramRenderer } from "./HistogramRenderer";
 import { HtmlGrid } from "./HtmlGrid";
+import { ImageOrientationSetter } from "./ImageOrientationSetter";
 import { ImageStarRenderer } from "./ImageStarRenderer";
 import { LoaderRenderer } from "./LoaderRenderer";
 
@@ -54,6 +55,7 @@ export namespace ImagesRenderer {
 
                 grid.addImageToContainer(image);
 
+                ImageOrientationSetter.setOrientation(image);
                 addImageClickListener(state, image, outputter);
 
                 if (isFirst) {

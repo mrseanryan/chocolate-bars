@@ -3733,6 +3733,11 @@ execa@^1.0.0:
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
 
+exif-orientation-examples-sr@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/exif-orientation-examples-sr/-/exif-orientation-examples-sr-1.0.0.tgz#b3b51708cb8085308c71f59e5f2bed403f9f9768"
+  integrity sha512-V6EcQwVklw324GT3GzFg8Q8T4mq+/CZOyGCM6iyn0Enm/oAJaAQvfiABSERxIBv47Ncy/Ww6a7veSlTfv88oRQ==
+
 exif-reader@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/exif-reader/-/exif-reader-1.0.2.tgz#02408b97b61028ea4f45e5b893a836f9aa28ac4f"

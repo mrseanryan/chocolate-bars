@@ -125,6 +125,7 @@
         "coveralls": "^3.0.2",
         "cross-env": "^5.2.0",
         "cz-conventional-changelog": "^2.1.0",
+        "exif-orientation-examples-sr": "^1.0.0",
         "husky": "^1.0.1",
         "jest": "^23.6.0",
         "jest-config": "^23.6.0",
