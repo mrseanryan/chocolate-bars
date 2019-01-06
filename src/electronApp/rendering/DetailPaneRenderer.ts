@@ -4,7 +4,7 @@ import { ImageDetail } from "../../bars/model/ImageDetail";
 import { JQueryUtils } from "../../utils/JQueryUtils";
 import { MathUtils } from "../../utils/MathUtils";
 import { IOutputter } from "../../utils/outputter/IOutputter";
-import { ExifRenderer } from "./ExifRenderer";
+import { ExifRenderer } from "./exif/ExifRenderer";
 import { HistogramRenderer } from "./HistogramRenderer";
 import { LoaderRenderer } from "./LoaderRenderer";
 
@@ -48,7 +48,7 @@ export namespace DetailPaneRenderer {
             `<div>file size: ${MathUtils.roundToFewPlaces(image.fileSizeInMb)} Mb</div>` +
             `<div id="image-exif" class="exifContainer"></div>`;
 
-        ExifRenderer.getHtmlForImage(image, "image-exif");
+        ExifRenderer.renderHtmlForImage(image, "image-exif");
 
         jquery("#image-text").append(html);
     }
