@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as path from "path";
 import * as jquery from "jquery";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
@@ -13,6 +14,10 @@ export namespace ExifRenderer {
     }
 
     async function getHtmlForImageAsync(image: ImageDetail): Promise<string> {
+        if(!hasFileExif(image.originalFilepath)) {
+            return "";
+        }
+
         return new Promise<string>((resolve, reject) => {
             // decode a JPEG file to RGB pixels
             fs.createReadStream(image.originalFilepath)
@@ -24,6 +29,15 @@ export namespace ExifRenderer {
                     resolve(parseExif(meta));
                 });
         });
+    }
+
+    function hasFileExif(filepath: string): boolean {
+        const extension = path.extname(filepath).toLowerCase();
+
+        // currently we are decoding only JPEG files.
+        // note: some PNG files can have some EXIF data but it's not yet standard.
+
+        return [".jpg", ".jpeg"].includes(extension);
     }
 
     function parseExif(meta: any): string {
