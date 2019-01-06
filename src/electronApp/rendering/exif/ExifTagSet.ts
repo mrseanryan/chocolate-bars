@@ -30,9 +30,13 @@ export class ExifTagSet {
 
         return this.map.get(tag)!;
     }
+
+    has(tag: ExifTag): boolean {
+        return !!this.map.has(tag);
+    }
 }
 
-enum ExifTag {
+export enum ExifTag {
     // 'exif'
     ApertureValue = "ApertureValue",
     BrightnessValue = "BrightnessValue",

@@ -10,7 +10,7 @@ export namespace ExifReader {
     export async function getExifTagsForImageAsync(
         image: ImageDetail
     ): Promise<ExifTagSet[] | null> {
-        if (!hasFileExif(image.originalFilepath)) {
+        if (!canFileHaveExif(image.originalFilepath)) {
             return null;
         }
 
@@ -27,7 +27,7 @@ export namespace ExifReader {
         });
     }
 
-    function hasFileExif(filepath: string): boolean {
+    export function canFileHaveExif(filepath: string): boolean {
         const extension = path.extname(filepath).toLowerCase();
 
         // currently we are decoding only JPEG files.
