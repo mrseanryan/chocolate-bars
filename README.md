@@ -41,11 +41,11 @@ And - I really miss the 'moved starred images' feature of [good ole' Picasa](htt
 
 ### dependendcies for Windows
 
-We use `sharp` to resize images during processing. `sharp` requires 
+We use `sharp` to resize images during processing. `sharp` requires
 **[node-gyp](https://github.com/nodejs/node-gyp)** to build, so you will need to
 install
 [Microsoft's windows-build-tools](https://github.com/felixrieseberg/windows-build-tools)
-using this command:_
+using this command:
 
 ```bash
 npm install --global --production windows-build-tools
@@ -60,8 +60,9 @@ npm install --global --production windows-build-tools
 -   'star' images in a folder like in Picasa
 -   move previously 'starred' images to a new folder
 -   delete the selected image
--   handles large number of images, via paging
+-   handles large number of images (2000+), via paging
 -   supports JPEG, PNG file formats
+-   correctly handles JPEG image orientation (from EXIF)
 
 ## usage - as cli (command line tool)
 
