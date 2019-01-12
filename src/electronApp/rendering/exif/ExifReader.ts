@@ -37,10 +37,34 @@ export namespace ExifReader {
     }
 
     function parseExif(meta: any): ExifTagSet[] {
-        return [
+        deleteUnusedTags(meta);
+
+        const result = [
             ExifTagSet.fromTags(meta.exif, "Image"),
             ExifTagSet.fromTags(meta.image, "Device"),
             ExifTagSet.fromTags(meta.gps, "GPS")
         ].filter(e => !!e) as ExifTagSet[];
+
+        deleteAllTags(meta);
+
+        return result;
+    }
+
+    const DELETED = {};
+
+    function deleteUnusedTags(tags: any) {
+        // The MakerNote tag can be really large. Remove it to lower memory
+        // usage if you're parsing a lot of files and saving the tags.
+        if (tags.exif) {
+            tags.exif.MakerNote = DELETED;
+        }
+
+        tags.thumbnail = DELETED;
+    }
+
+    function deleteAllTags(tags: any) {
+        tags.exif = DELETED;
+        tags.image = DELETED;
+        tags.gps = DELETED;
     }
 }
