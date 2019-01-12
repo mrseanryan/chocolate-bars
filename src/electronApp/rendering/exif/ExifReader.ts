@@ -6,6 +6,9 @@ import { ExifTagSet } from "./ExifTagSet";
 
 const jpegDecoder = require("jpg-stream/decoder");
 
+// Reduce memory usage by assuming EXIF is in first part of the file
+const MAX_BYTES_TO_READ = 128 * 1024;
+
 export namespace ExifReader {
     export async function getExifTagsForImageAsync(
         image: ImageDetail
@@ -15,15 +18,33 @@ export namespace ExifReader {
         }
 
         return new Promise<ExifTagSet[]>((resolve, reject) => {
-            // decode a JPEG file to RGB pixels
-            fs.createReadStream(image.originalFilepath)
-                .pipe(new jpegDecoder({ width: 600, height: 400 }))
-                .on("meta", (meta: any) => {
-                    // meta contains an exif object as decoded by
-                    // https://github.com/devongovett/exif-reader
+            // Decode a JPEG file to RGB pixels
+            const stream: fs.ReadStream = fs.createReadStream(image.originalFilepath, {
+                end: MAX_BYTES_TO_READ
+            });
 
-                    resolve(parseExif(meta));
-                });
+            stream.pipe(new jpegDecoder({ width: 600, height: 400 })).on("meta", (meta: any) => {
+                // meta contains an exif object as decoded by
+                // https://github.com/devongovett/exif-reader
+
+                const result = parseExif(meta);
+                closeStreamAndResolve(result);
+            });
+
+            // Reduce memory usage by avoiding reading past the meta data
+            const closeStreamAndResolve = (result: ExifTagSet[]) => {
+                // ref: https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options
+                stream.close(); // This may not close the stream.
+                // Artificially marking end-of-stream, as if the underlying resource had
+                // indicated end-of-file by itself, allows the stream to close.
+                // This does not cancel pending read operations, and if there is such an
+                // operation, the process may still not be able to exit successfully
+                // until it finishes.
+                stream.push(null);
+                stream.read(0);
+
+                resolve(result);
+            };
         });
     }
 
