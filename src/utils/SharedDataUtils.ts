@@ -18,7 +18,7 @@ export namespace SharedDataUtils {
 
     // Can be launched via cli (yargs) OR directly via node
     function getEnableSubDirs(value: string | boolean): boolean {
-        if (value === true) {
+        if (value === "true") {
             return true;
         }
 
