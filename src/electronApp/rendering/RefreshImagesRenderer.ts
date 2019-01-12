@@ -5,7 +5,7 @@ import { State } from "../State";
 
 export namespace RefreshImagesRenderer {
     export function getButtonHtml(): string {
-        return `<button id="refreshButton">Refresh</button>`;
+        return `<button id="refreshButton" class="toolbarButton">Refresh</button>`;
     }
 
     export function addRefreshListener(

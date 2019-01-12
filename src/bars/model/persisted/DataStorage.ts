@@ -5,6 +5,12 @@ import { ImageDetail } from "../ImageDetail";
 import { DirectoryMetaData } from "./DirectoryMetaData";
 
 export namespace DataStorage {
+    export async function clearStarsAndSave() {
+        currentMetaData = getEmptyData();
+
+        return saveForCurrentDirectory();
+    }
+
     export async function loadForDirectoryOrCreate(imageInputDir: string) {
         if (fs.existsSync(getDataFilePathForDirectory(imageInputDir))) {
             try {
@@ -84,7 +90,7 @@ export namespace DataStorage {
             throw new Error("No meta data!");
         }
 
-        const index = getIndexOfStarredImageFilePath(originalImagePath);
+        const index = getIndexOfStarredImageFilePath(getPathRelativeToInputDir(originalImagePath));
 
         if (index < 0) {
             throw new Error(`Cannot find image in store - '${originalImagePath}'`);
@@ -101,7 +107,7 @@ export namespace DataStorage {
 
         if (!originalImagePathAbs.startsWith(imageInputDirAbs)) {
             console.error(
-                `unexpected: image at '${originalImagePath}' is not under '${currentImageInputDir}'`
+                `unexpected: image at '${originalImagePathAbs}' is not under '${imageInputDirAbs}'`
             );
             return originalImagePathAbs;
         }
@@ -135,6 +141,10 @@ export namespace DataStorage {
                 // do nothing
             })
             .catch(error => console.log(error));
+    }
+
+    export async function saveForCurrentDirectory(): Promise<void> {
+        return saveForDirectory(currentImageInputDir);
     }
 
     export async function saveForDirectory(imageInputDir: string): Promise<void> {

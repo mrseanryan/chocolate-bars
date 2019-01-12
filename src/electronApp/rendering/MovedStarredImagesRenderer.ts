@@ -32,7 +32,6 @@ export namespace MoveStarredImagesRenderer {
                     buttonText: "Copy images"
                 }
             },
-
             {
                 mode: MoveOrCopy.Move,
                 buttonId: "moveStarredButton",

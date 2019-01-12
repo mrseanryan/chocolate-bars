@@ -31,6 +31,12 @@ export namespace ImageMover {
                 const fileName = path.basename(imagePath);
                 const newPath = path.resolve(path.join(directoryPath, fileName));
 
+                const callDoneForLast = () => {
+                    if (index === imagePaths.length - 1) {
+                        done();
+                    }
+                };
+
                 switch (mode) {
                     case MoveOrCopy.Copy:
                         fs.copyFile(imagePath, newPath, error => {
@@ -39,9 +45,7 @@ export namespace ImageMover {
                                 hasErrors = true;
                             }
 
-                            if (index === imagePaths.length - 1) {
-                                done();
-                            }
+                            callDoneForLast();
                         });
                         break;
                     case MoveOrCopy.Move:
@@ -49,12 +53,18 @@ export namespace ImageMover {
                             if (error) {
                                 console.error(error);
                                 hasErrors = true;
+                                callDoneForLast();
                             } else {
+                                // Need to save after setting as no star, since done will reload the stars.
                                 DataStorage.setImageAsNoStar(imagePath);
-                            }
-
-                            if (index === imagePaths.length - 1) {
-                                done();
+                                DataStorage.saveForCurrentDirectory()
+                                    .then(() => {
+                                        callDoneForLast();
+                                    })
+                                    .catch(err => {
+                                        console.error(err);
+                                        callDoneForLast();
+                                    });
                             }
                         });
                         break;

@@ -3,6 +3,7 @@ import * as path from "path";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
 import { JQueryUtils } from "../../utils/JQueryUtils";
+import { ClearStarredImagesRenderer } from "./ClearStarredImagesRenderer";
 import { ImageStarRenderer } from "./ImageStarRenderer";
 import { MoveStarredImagesRenderer } from "./MovedStarredImagesRenderer";
 import { RefreshImagesRenderer } from "./RefreshImagesRenderer";
@@ -58,6 +59,7 @@ export class HtmlGrid {
         return (
             RefreshImagesRenderer.getButtonHtml() +
             MoveStarredImagesRenderer.getButtonHtml() +
+            ClearStarredImagesRenderer.getButtonHtml() +
             SelectDirectoryRenderer.getBrowseButtonHtml()
         );
     }

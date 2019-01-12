@@ -4,6 +4,7 @@ import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
 import { ChocolateBarsArgs } from "../utils/SharedDataUtils";
 import { KeyboardController } from "./controllers/KeyboardController";
+import { ClearStarredImagesRenderer } from "./rendering/ClearStarredImagesRenderer";
 import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
 import { HtmlGrid } from "./rendering/HtmlGrid";
@@ -51,6 +52,7 @@ export namespace AppRenderer {
             state,
             renderImagesAndPagerForDirectorySamePage
         );
+        ClearStarredImagesRenderer.addListener(state, renderImagesAndPagerForDirectorySamePage);
         RefreshImagesRenderer.addRefreshListener(state, renderImagesAndPagerForDirectorySamePage);
 
         JQueryUtils.renderHtml(grid.getImagesAndPagerContainerHtml());

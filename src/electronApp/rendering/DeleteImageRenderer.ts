@@ -1,27 +1,24 @@
 import * as fs from "fs";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
-import { PrompterDialog } from "../../utils/PrompterDialog";
+import { Prompter } from "./Prompter";
 
 export namespace DeleteImageRenderer {
     export async function renderPrompt(imageToDelete: ImageDetail, afterDelete: () => void) {
-        const selectedOption = await PrompterDialog.prompt(
-            ["Delete", "Cancel"],
+        Prompter.prompt(
+            "Delete",
             "Delete Image",
-            "Do you want to delete this image? (cannot be undone)"
+            "Do you want to delete this image? (cannot be undone)",
+            () => {
+                deleteImage(imageToDelete)
+                    .then(() => {
+                        afterDelete();
+                    })
+                    .catch((err: any) => {
+                        console.error(err);
+                    });
+            }
         );
-
-        if (selectedOption !== 0) {
-            return;
-        }
-
-        deleteImage(imageToDelete)
-            .then(() => {
-                afterDelete();
-            })
-            .catch((err: any) => {
-                console.error(err);
-            });
     }
 
     async function deleteImage(imageToDelete: ImageDetail) {
