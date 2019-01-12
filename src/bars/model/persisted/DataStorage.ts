@@ -8,6 +8,7 @@ export namespace DataStorage {
     export async function loadForDirectoryOrCreate(imageInputDir: string) {
         if (fs.existsSync(getDataFilePathForDirectory(imageInputDir))) {
             try {
+                currentImageInputDir = imageInputDir;
                 currentMetaData = await loadForDirectory(imageInputDir);
             } catch (error) {
                 console.error("error loading stars - will default to no stars", error);
@@ -68,13 +69,13 @@ export namespace DataStorage {
         });
     }
 
-    export function getPathsOfStarredImages(currentImageInputDir: string): string[] {
+    export function getPathsOfStarredImages(imageInputDir: string): string[] {
         if (!currentMetaData) {
             return [];
         }
 
         return currentMetaData.starredImageFilenames.map(filename =>
-            path.resolve(path.join(currentImageInputDir, filename))
+            path.resolve(path.join(imageInputDir, filename))
         );
     }
 
@@ -83,14 +84,39 @@ export namespace DataStorage {
             throw new Error("No meta data!");
         }
 
-        const filename = path.basename(originalImagePath);
-        const index = getIndexOfStarredImageFilename(filename);
+        const index = getIndexOfStarredImageFilePath(originalImagePath);
 
         if (index < 0) {
-            throw new Error(`Cannot find image in store - '${filename}'`);
+            throw new Error(`Cannot find image in store - '${originalImagePath}'`);
         }
 
         currentMetaData.starredImageFilenames.splice(index, 1);
+    }
+
+    // Get the path to the image, from the input dir. Necessary for supporting sub-directories.
+    export function getPathRelativeToInputDir(originalImagePath: string): string {
+        // Get relative path from this dir
+        const imageInputDirAbs = path.resolve(currentImageInputDir);
+        const originalImagePathAbs = path.resolve(originalImagePath);
+
+        if (!originalImagePathAbs.startsWith(imageInputDirAbs)) {
+            console.error(
+                `unexpected: image at '${originalImagePath}' is not under '${currentImageInputDir}'`
+            );
+            return originalImagePathAbs;
+        }
+
+        return originalImagePathAbs.substr(imageInputDirAbs.length);
+    }
+
+    export function getPathRelativeToInputDirNoLeadingSlash(originalImagePath: string): string {
+        const relativePath = getPathRelativeToInputDir(originalImagePath);
+
+        if (relativePath.startsWith("/") || relativePath.startsWith("\\")) {
+            return relativePath.substr(1);
+        }
+
+        return relativePath;
     }
 
     export function updateImageDetail(image: ImageDetail) {
@@ -143,7 +169,9 @@ export namespace DataStorage {
             if (index >= 0) {
                 currentMetaData.starredImageFilenames.splice(index, 1);
             } else {
-                currentMetaData.starredImageFilenames.push(image.filename);
+                currentMetaData.starredImageFilenames.push(
+                    getPathRelativeToInputDir(image.originalFilepath)
+                );
             }
 
             image.isStarred = index === -1;
@@ -151,20 +179,30 @@ export namespace DataStorage {
     }
 
     function getIndexOfStarredImage(image: ImageDetail): number {
-        return getIndexOfStarredImageFilename(image.filename);
+        return getIndexOfStarredImageFilePath(image.originalFilepath);
     }
 
-    function getIndexOfStarredImageFilename(imageFilename: string): number {
+    function getIndexOfStarredImageFilePath(originalImageFilepath: string): number {
         if (!currentMetaData) {
             return -1;
         }
 
-        return currentMetaData.starredImageFilenames.findIndex(i => i === imageFilename);
+        const relatedPath = getPathRelativeToInputDir(originalImageFilepath);
+
+        const index = currentMetaData.starredImageFilenames.findIndex(i => i === relatedPath);
+
+        if (index === -1) {
+            // legacy JSON file has just filename
+            const filename = path.basename(originalImageFilepath);
+            return currentMetaData.starredImageFilenames.findIndex(i => i === filename);
+        }
+        return index;
     }
 
     function isImageStarred(image: ImageDetail): boolean {
         return getIndexOfStarredImage(image) >= 0;
     }
 
-    export let currentMetaData: DirectoryMetaData | null = null;
+    let currentImageInputDir: string = "";
+    let currentMetaData: DirectoryMetaData | null = null;
 }

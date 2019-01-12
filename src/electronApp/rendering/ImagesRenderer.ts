@@ -177,7 +177,9 @@ export namespace ImagesRenderer {
     }
 
     function setImageHeader(image: ImageDetail) {
-        jquery("#detail-header-text").text("image: " + image.filename);
+        jquery("#detail-header-text").text(
+            "image: " + DataStorage.getPathRelativeToInputDirNoLeadingSlash(image.originalFilepath)
+        );
     }
 
     function onClickOpenImageInNewWindow(image: ImageDetail) {
