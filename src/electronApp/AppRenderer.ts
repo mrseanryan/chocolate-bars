@@ -44,7 +44,7 @@ export namespace AppRenderer {
 
         JQueryUtils.renderHtml(grid.getHeaderHtml());
         SelectDirectoryRenderer.addSelectDirectoryListener(renderImagesAndPagerForDirectory);
-        MoveStarredImagesRenderer.addMovedStarredListener(
+        MoveStarredImagesRenderer.addMoveOrCopyStarredListeners(
             state,
             renderImagesAndPagerForDirectorySamePage
         );

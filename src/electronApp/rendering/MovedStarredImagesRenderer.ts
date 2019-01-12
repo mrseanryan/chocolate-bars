@@ -1,35 +1,74 @@
-import * as fs from "fs";
-import * as path from "path";
-
-import { DataStorage } from "../../bars/model/persisted/DataStorage";
 import { DirectorySelectorDialog } from "../../utils/DirectorySelectorDialog";
+import { ImageMover, MoveOrCopy } from "../../utils/ImageMover";
 import { State } from "../State";
+
+type ButtonConfig = {
+    mode: MoveOrCopy;
+    buttonId: string;
+    dialog: {
+        title: string;
+        buttonText: string;
+    };
+};
 
 export namespace MoveStarredImagesRenderer {
     export function getButtonHtml(): string {
-        return `<button id="moveStarredButton">Move *...</button>`;
+        return (
+            `<button id="copyStarredButton" class="moveOrCopyStarredButton">Copy *...</button>` +
+            `<button id="moveStarredButton" class="moveOrCopyStarredButton">Move *...</button>`
+        );
     }
 
-    export function addMovedStarredListener(
+    export function addMoveOrCopyStarredListeners(
         state: State,
         renderImagesAndPagerForDirectorySamePage: (imageInputDir: string) => void
     ) {
-        const moveStarredButton = document.getElementById("moveStarredButton");
+        const buttons: ButtonConfig[] = [
+            {
+                mode: MoveOrCopy.Copy,
+                buttonId: "copyStarredButton",
+                dialog: {
+                    title: "Copy starred images to directory",
+                    buttonText: "Copy images"
+                }
+            },
 
-        if (!moveStarredButton) {
-            throw new Error("could not find the 'move starred' button");
+            {
+                mode: MoveOrCopy.Move,
+                buttonId: "moveStarredButton",
+                dialog: {
+                    title: "Move starred images to directory",
+                    buttonText: "Move images"
+                }
+            }
+        ];
+
+        buttons.forEach(button => {
+            addMoveOrCopyStarredListener(state, renderImagesAndPagerForDirectorySamePage, button);
+        });
+    }
+
+    function addMoveOrCopyStarredListener(
+        state: State,
+        renderImagesAndPagerForDirectorySamePage: (imageInputDir: string) => void,
+        buttonConfig: ButtonConfig
+    ) {
+        const button = document.getElementById(buttonConfig.buttonId);
+
+        if (!button) {
+            throw new Error(`Could not find the button with id '${buttonConfig.buttonId}'`);
         }
 
-        moveStarredButton.addEventListener("click", _ => {
+        button.addEventListener("click", _ => {
             const directories = DirectorySelectorDialog.selectImagesDirectory(
-                "Move starred images to directory",
-                "Move images"
+                buttonConfig.dialog.title,
+                buttonConfig.dialog.buttonText
             );
 
             const imageInputDir = state.imageInputDir;
 
             if (directories && directories.length === 1) {
-                moveStarredImagesTo(imageInputDir, directories[0])
+                ImageMover.moveStarredImagesTo(imageInputDir, directories[0], buttonConfig.mode)
                     .then(() => {
                         // refresh the current directory:
                         renderImagesAndPagerForDirectorySamePage(imageInputDir);
@@ -41,43 +80,6 @@ export namespace MoveStarredImagesRenderer {
                         renderImagesAndPagerForDirectorySamePage(imageInputDir);
                     });
             }
-        });
-    }
-
-    async function moveStarredImagesTo(
-        currentImageInputDir: string,
-        directoryPath: string
-    ): Promise<void> {
-        const imagePaths = DataStorage.getPathsOfStarredImages(currentImageInputDir);
-
-        let hasErrors = false;
-
-        return new Promise<void>((resolve, reject) => {
-            const done = () => {
-                if (hasErrors) {
-                    reject("Some errors occurred when moving the files");
-                } else {
-                    resolve();
-                }
-            };
-
-            imagePaths.forEach((imagePath, index) => {
-                const fileName = path.basename(imagePath);
-                const newPath = path.resolve(path.join(directoryPath, fileName));
-
-                fs.rename(imagePath, newPath, error => {
-                    if (error) {
-                        console.error(error);
-                        hasErrors = true;
-                    } else {
-                        DataStorage.setImageAsNoStar(imagePath);
-                    }
-
-                    if (index === imagePaths.length - 1) {
-                        done();
-                    }
-                });
-            });
         });
     }
 }
