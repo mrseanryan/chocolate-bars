@@ -14,8 +14,8 @@ type ButtonConfig = {
 export namespace MoveStarredImagesRenderer {
     export function getButtonHtml(): string {
         return (
-            `<button id="copyStarredButton" class="moveOrCopyStarredButton">Copy *...</button>` +
-            `<button id="moveStarredButton" class="moveOrCopyStarredButton">Move *...</button>`
+            `<button id="copyStarredButton" class="toolbarButton">Copy *...</button>` +
+            `<button id="moveStarredButton" class="toolbarButton">Move *...</button>`
         );
     }
 

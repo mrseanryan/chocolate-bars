@@ -2,7 +2,7 @@ import { DirectorySelectorDialog } from "../../utils/DirectorySelectorDialog";
 
 export namespace SelectDirectoryRenderer {
     export function getBrowseButtonHtml(): string {
-        return `<button id="browseButton">Browse...</button>`;
+        return `<button id="browseButton" class="toolbarButton">Browse...</button>`;
     }
 
     export function addSelectDirectoryListener(
