@@ -1,4 +1,3 @@
-import { DataStorage } from "../bars/model/persisted/DataStorage";
 import { SharedDataUtils } from "../utils/SharedDataUtils";
 import { AppRenderer } from "./AppRenderer";
 
@@ -9,13 +8,13 @@ import { AppRenderer } from "./AppRenderer";
 window.onload = () => {
     AppRenderer.onLoad();
 
-    const imageInputDir = SharedDataUtils.getArgs()[2];
-
-    processDirectory(imageInputDir);
+    processDirectory();
 };
 
-function processDirectory(imageInputDir: string) {
+function processDirectory() {
     setTimeout(() => {
-        AppRenderer.renderContainerAndDetailWithImages(imageInputDir);
+        const args = SharedDataUtils.getArgs();
+
+        AppRenderer.renderContainerAndDetailWithImages(args);
     }, 0);
 }

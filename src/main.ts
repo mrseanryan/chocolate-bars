@@ -13,6 +13,7 @@ const argv = require("yargs")
 
 const imageInputDir = argv._[0];
 
+const subDirs = !!argv.subDirs;
 const shrink = !!argv.shrink;
 const isVerbose = !!argv.verbose;
 
@@ -27,7 +28,7 @@ if (shrink) {
 function shrinkImagesAt() {
     console.log(`*shrink* images at ${imageInputDir} ...`);
 
-    ImageFinder.findImagesInDirectory(imageInputDir, outputter)
+    ImageFinder.findImagesInDirectory(imageInputDir, subDirs, outputter)
         .then(files => {
             files.forEach(file => {
                 ImageResizer.resizeImage(file, outputter)
@@ -52,7 +53,7 @@ function launchChocolateBarsApp() {
     try {
         const appPath = path.resolve(path.join(__dirname, "electronApp/appMain.js"));
 
-        child_process.spawn("electron", [appPath, imageInputDir], { shell: true });
+        child_process.spawn("electron", [appPath, imageInputDir, subDirs], { shell: true });
     } catch (error) {
         console.error("[error]", error);
         showElectronTip();

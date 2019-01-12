@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 import { FileUtils } from "../../utils/FileUtils";
+import { Nodash } from "../../utils/Nodash";
 import { IOutputter } from "../../utils/outputter/IOutputter";
 
 export namespace ImageFinder {
@@ -9,45 +10,64 @@ export namespace ImageFinder {
 
     export async function findImagesInDirectory(
         imageInputDirOrFile: string,
+        enableSubDirs: boolean,
         outputter: IOutputter
     ): Promise<string[]> {
         if (
-            !isDirectoryOrNotEnoughPermissions(imageInputDirOrFile) &&
+            getFileTypeOrNotEnoughPermissions(imageInputDirOrFile) === FileType.File &&
             isFileExtensionOk(imageInputDirOrFile)
         ) {
             return [imageInputDirOrFile];
         }
 
-        const readdirPromise = () => {
-            return new Promise<string[]>(function(ok, notOk) {
-                fs.readdir(imageInputDirOrFile, function(err, _files) {
-                    if (err) {
-                        notOk(err);
-                    } else {
-                        ok(_files);
-                    }
-                });
-            });
-        };
+        return readImagesAt(imageInputDirOrFile, enableSubDirs, outputter);
+    }
+
+    async function readImagesAt(
+        imageInputDir: string,
+        enableSubDirs: boolean,
+        outputter: IOutputter
+    ): Promise<string[]> {
 
         let files: string[];
 
         try {
-            files = await readdirPromise();
+            files = await readdirPromise(imageInputDir);
         } catch (error) {
             outputter.error(error);
             return [];
         }
 
         const absoluteFilePaths = files.map(f => {
-            return path.resolve(path.join(imageInputDirOrFile, f));
+            return path.resolve(path.join(imageInputDir, f));
         });
 
         const imageFilePaths = filterToImages(absoluteFilePaths, outputter);
-
         imageFilePaths.sort(bySizeAscending);
 
+        if (enableSubDirs) {
+            const subDirFilePaths = filterToDirectories(absoluteFilePaths);
+
+            const subDirImageFilePaths = await Promise.all(
+                subDirFilePaths.map(subDir => readImagesAt(subDir, enableSubDirs, outputter))
+            );
+
+            return imageFilePaths.concat(Nodash.flatten(subDirImageFilePaths));
+        }
+
         return imageFilePaths;
+    }
+
+    function readdirPromise(imageInputDir: string) {
+        return new Promise<string[]>(function(ok, notOk) {
+            fs.readdir(imageInputDir, function(err, _files) {
+                if (err) {
+                    notOk(err);
+                } else {
+                    ok(_files);
+                }
+            });
+        });
     }
 
     function bySizeAscending(one: string, two: string): number {
@@ -62,9 +82,18 @@ export namespace ImageFinder {
         return bySize(one) - bySize(two) + byNameAscending();
     }
 
+    function filterToDirectories(filePaths: string[]): string[] {
+        return filePaths.filter(imagePath => {
+            return getFileTypeOrNotEnoughPermissions(imagePath) === FileType.Directory;
+        });
+    }
+
     function filterToImages(filePaths: string[], outputter: IOutputter): string[] {
         return filePaths.filter(imagePath => {
-            if (isDirectoryOrNotEnoughPermissions(imagePath) || !isFileExtensionOk(imagePath)) {
+            if (
+                getFileTypeOrNotEnoughPermissions(imagePath) !== FileType.File ||
+                !isFileExtensionOk(imagePath)
+            ) {
                 outputter.warn(
                     `\nskipping file ${imagePath} (is dir or not enough permissions or a skipped file extension)`
                 );
@@ -86,13 +115,20 @@ export namespace ImageFinder {
         return RECOGNISED_EXTENSIONS.some(goodExt => goodExt.toLowerCase() === ext.toLowerCase());
     };
 
-    const isDirectoryOrNotEnoughPermissions = (filepath: string) => {
+    enum FileType {
+        Directory,
+        File,
+        Error
+    }
+
+    const getFileTypeOrNotEnoughPermissions = (filepath: string): FileType => {
         try {
-            return fs.lstatSync(filepath).isDirectory();
+            const isDirectory = fs.lstatSync(filepath).isDirectory();
+            return isDirectory ? FileType.Directory : FileType.File;
         } catch (error) {
             // can occur if not enough permissions, or file is already in use
             console.error(error);
-            return true;
+            return FileType.Error;
         }
     };
 }

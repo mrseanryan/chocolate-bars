@@ -19,7 +19,11 @@ export namespace PagerRenderer {
             renderPager(pageId, state, outputter, renderImagesAndPager);
         };
 
-        const allImages = await ImageFinder.findImagesInDirectory(state.imageInputDir, outputter);
+        const allImages = await ImageFinder.findImagesInDirectory(
+            state.imageInputDir,
+            state.enableSubDirs,
+            outputter
+        );
 
         const requiredPages = Math.ceil(allImages.length / PagingModel.IMAGES_PER_PAGE);
 

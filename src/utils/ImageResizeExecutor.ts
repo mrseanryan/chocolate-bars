@@ -13,11 +13,16 @@ import { ShrinkResultSerDe } from "./ShrinkResultSerDe";
 export namespace ImageResizeExecutor {
     export async function* resizeImagesAtIterable(
         imagesDirectory: string,
+        enableSubDirs: boolean,
         outputter: IOutputter,
         currentPage: number = -1
     ): AsyncIterableIterator<ImageFilePath> {
         outputter.infoVerbose(`finding images at ${imagesDirectory}...`);
-        const files = await ImageFinder.findImagesInDirectory(imagesDirectory, outputter);
+        const files = await ImageFinder.findImagesInDirectory(
+            imagesDirectory,
+            enableSubDirs,
+            outputter
+        );
 
         const filesThisPage = filterFilesForPage(files, currentPage);
 
@@ -80,7 +85,7 @@ export namespace ImageResizeExecutor {
     async function execShrinkPromise(filePath: string): Promise<string> {
         // determine path, whether running locally in repo OR globally as cli:
         // dist/lib/electronApp
-        const thisScriptDir = path.dirname(SharedDataUtils.getArgs()[1]);
+        const thisScriptDir = path.dirname(SharedDataUtils.getArgs().thisScriptDir);
 
         return new Promise<string>((resolve, reject) => {
             child_process.execFile(

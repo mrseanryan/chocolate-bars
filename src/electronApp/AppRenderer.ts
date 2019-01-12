@@ -2,6 +2,7 @@ import { DataStorage } from "../bars/model/persisted/DataStorage";
 import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
+import { ChocolateBarsArgs } from "../utils/SharedDataUtils";
 import { KeyboardController } from "./controllers/KeyboardController";
 import { DetailPaneRenderer } from "./rendering/DetailPaneRenderer";
 import { ExpandedImageRenderer } from "./rendering/ExpandedImageRenderer";
@@ -19,6 +20,7 @@ const grid = new HtmlGrid();
 
 const state: State = {
     currentPage: 0,
+    enableSubDirs: false,
     imageInputDir: "",
     epoch: 0,
     selectedImage: null
@@ -39,8 +41,9 @@ export namespace AppRenderer {
         }, 5000);
     }
 
-    export async function renderContainerAndDetailWithImages(imageInputDir: string) {
-        state.imageInputDir = imageInputDir;
+    export async function renderContainerAndDetailWithImages(args: ChocolateBarsArgs) {
+        state.imageInputDir = args.imageInputDir;
+        state.enableSubDirs = args.enableSubDirs;
 
         JQueryUtils.renderHtml(grid.getHeaderHtml());
         SelectDirectoryRenderer.addSelectDirectoryListener(renderImagesAndPagerForDirectory);
