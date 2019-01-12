@@ -60,7 +60,7 @@ npm install --global --production windows-build-tools
 -   'star' images in a folder like in Picasa
 -   move previously 'starred' images to a new folder
 -   delete the selected image
--   handles large number of images (2000+), via paging
+-   handles large number of images (2000+) and sub-directories, via paging
 -   supports JPEG, PNG file formats
 -   correctly handles JPEG image orientation (from EXIF)
 
@@ -98,7 +98,9 @@ note: on Ubuntu you may need to prefix the above commands with `sudo`:
 
 To use:
 
-`chocolate-bars <path to image direcory>`
+`chocolate-bars <path to image direcory> [--subDirs]`
+
+where `--subDirs` means also view images in sub directories.
 
 ##### b) from the source code
 
@@ -123,14 +125,10 @@ To check your images:
 example:
 
 ```
-./go.sh ../myPhotos
+./go.sh ../myPhotos --subDirs
 ```
 
-To see more detailed usage info:
-
-```
-./go.sh
-```
+where `--subDirs` means also view images in sub directories.
 
 ### keyboard shortcuts
 
