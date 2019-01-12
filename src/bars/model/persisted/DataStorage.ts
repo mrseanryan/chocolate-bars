@@ -68,7 +68,7 @@ export namespace DataStorage {
                 }
 
                 console.log("retrying after 1 second ...");
-                setTimeout(() => tryToReadFile(), 1000);
+                setTimeout(() => tryToReadFile(), 2000);
             };
 
             tryToReadFile();
@@ -90,7 +90,7 @@ export namespace DataStorage {
             throw new Error("No meta data!");
         }
 
-        const index = getIndexOfStarredImageFilePath(getPathRelativeToInputDir(originalImagePath));
+        const index = getIndexOfStarredImageFilePath(originalImagePath);
 
         if (index < 0) {
             throw new Error(`Cannot find image in store - '${originalImagePath}'`);
