@@ -1,7 +1,10 @@
 import * as fs from "fs";
 import * as path from "path";
 
+import { ImageFinder } from "../bars/files/ImageFinder";
 import { DataStorage } from "../bars/model/persisted/DataStorage";
+import { State } from "../electronApp/State";
+import { IOutputter } from "./outputter/IOutputter";
 
 export enum MoveOrCopy {
     Copy,
@@ -12,9 +15,15 @@ export namespace ImageMover {
     export async function moveStarredImagesTo(
         currentImageInputDir: string,
         directoryPath: string,
-        mode: MoveOrCopy
+        mode: MoveOrCopy,
+        state: State,
+        outputter: IOutputter
     ): Promise<void> {
-        const imagePaths = DataStorage.getPathsOfStarredImages(currentImageInputDir);
+        const starredImagesThisPage = await getStarredImagesThisPage(
+            currentImageInputDir,
+            state,
+            outputter
+        );
 
         let hasErrors = false;
 
@@ -27,12 +36,12 @@ export namespace ImageMover {
                 }
             };
 
-            imagePaths.forEach((imagePath, index) => {
+            starredImagesThisPage.forEach((imagePath, index) => {
                 const fileName = path.basename(imagePath);
                 const newPath = path.resolve(path.join(directoryPath, fileName));
 
                 const callDoneForLast = () => {
-                    if (index === imagePaths.length - 1) {
+                    if (index === starredImagesThisPage.length - 1) {
                         done();
                     }
                 };
@@ -73,5 +82,23 @@ export namespace ImageMover {
                 }
             });
         });
+    }
+
+    async function getStarredImagesThisPage(
+        currentImageInputDir: string,
+        state: State,
+        outputter: IOutputter
+    ): Promise<string[]> {
+        const imagePaths = DataStorage.getPathsOfStarredImages(currentImageInputDir);
+
+        const imagesThisPage = await ImageFinder.findImagesInDirectoryAtPage(
+            currentImageInputDir,
+            state,
+            outputter
+        );
+
+        return imagePaths.filter(imagePath =>
+            imagesThisPage.some(imageThisPage => imageThisPage === imagePath)
+        );
     }
 }

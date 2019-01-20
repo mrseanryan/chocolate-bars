@@ -1,12 +1,43 @@
 import * as fs from "fs";
 import * as path from "path";
 
+import { State } from "../../electronApp/State";
 import { FileUtils } from "../../utils/FileUtils";
 import { Nodash } from "../../utils/Nodash";
 import { IOutputter } from "../../utils/outputter/IOutputter";
+import { PagingModel } from "../model/PagingModel";
 
 export namespace ImageFinder {
     export const RECOGNISED_EXTENSIONS = [".jpg", ".jpeg", ".png"];
+
+    export async function findImagesInDirectoryAtPage(
+        imageInputDirOrFile: string,
+        state: State,
+        outputter: IOutputter
+    ): Promise<string[]> {
+        const files = await findImagesInDirectory(
+            imageInputDirOrFile,
+            state.enableSubDirs,
+            outputter
+        );
+
+        return filterFilesForPage(files, state.currentPage);
+    }
+
+    function filterFilesForPage(files: string[], currentPage: number): string[] {
+        if (currentPage < 0) {
+            return files;
+        }
+
+        const start = currentPage * PagingModel.IMAGES_PER_PAGE;
+
+        const filesThisPage: string[] = [];
+        for (let i = start; i < start + PagingModel.IMAGES_PER_PAGE && i < files.length; i++) {
+            filesThisPage.push(files[i]);
+        }
+
+        return filesThisPage;
+    }
 
     export async function findImagesInDirectory(
         imageInputDirOrFile: string,
@@ -28,7 +59,6 @@ export namespace ImageFinder {
         enableSubDirs: boolean,
         outputter: IOutputter
     ): Promise<string[]> {
-
         let files: string[];
 
         try {

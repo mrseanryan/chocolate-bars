@@ -37,9 +37,8 @@ export namespace ImagesRenderer {
 
         for await (const result of ChocolateBars.processDirectoryIterable(
             imageInputDir,
-            state.enableSubDirs,
-            outputter,
-            state.currentPage
+            state,
+            outputter
         )) {
             if (thisEpoch !== state.epoch) {
                 // a stale response

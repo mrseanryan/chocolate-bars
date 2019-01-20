@@ -3,7 +3,7 @@ import * as path from "path";
 
 import { ImageFinder } from "../bars/files/ImageFinder";
 import { ImageFilePath } from "../bars/model/ImageFilePath";
-import { PagingModel } from "../bars/model/PagingModel";
+import { State } from "../electronApp/State";
 import { FileUtils } from "./FileUtils";
 import { IOutputter } from "./outputter/IOutputter";
 import { SharedDataUtils } from "./SharedDataUtils";
@@ -13,18 +13,15 @@ import { ShrinkResultSerDe } from "./ShrinkResultSerDe";
 export namespace ImageResizeExecutor {
     export async function* resizeImagesAtIterable(
         imagesDirectory: string,
-        enableSubDirs: boolean,
-        outputter: IOutputter,
-        currentPage: number = -1
+        state: State,
+        outputter: IOutputter
     ): AsyncIterableIterator<ImageFilePath> {
         outputter.infoVerbose(`finding images at ${imagesDirectory}...`);
-        const files = await ImageFinder.findImagesInDirectory(
+        const filesThisPage = await ImageFinder.findImagesInDirectoryAtPage(
             imagesDirectory,
-            enableSubDirs,
+            state,
             outputter
         );
-
-        const filesThisPage = filterFilesForPage(files, currentPage);
 
         for (const file of filesThisPage) {
             if (!FileUtils.isLargeFile(file)) {
@@ -65,21 +62,6 @@ export namespace ImageResizeExecutor {
                 continue;
             }
         }
-    }
-
-    function filterFilesForPage(files: string[], currentPage: number): string[] {
-        if (currentPage < 0) {
-            return files;
-        }
-
-        const start = currentPage * PagingModel.IMAGES_PER_PAGE;
-
-        const filesThisPage: string[] = [];
-        for (let i = start; i < start + PagingModel.IMAGES_PER_PAGE && i < files.length; i++) {
-            filesThisPage.push(files[i]);
-        }
-
-        return filesThisPage;
     }
 
     async function execShrinkPromise(filePath: string): Promise<string> {

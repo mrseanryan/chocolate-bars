@@ -1,3 +1,4 @@
+import { State } from "../electronApp/State";
 import { ImageResizeExecutor } from "../utils/ImageResizeExecutor";
 import { IOutputter } from "../utils/outputter/IOutputter";
 import { ChocolateResult } from "./model/ChocolateResult";
@@ -8,16 +9,14 @@ export namespace ChocolateBars {
     // Yield image results as they become available
     export async function* processDirectoryIterable(
         imageInputDir: string,
-        enableSubDirs: boolean,
-        outputter: IOutputter,
-        currentPage: number
+        state: State,
+        outputter: IOutputter
     ): AsyncIterableIterator<ChocolateResult> {
         // shrink if needed, and use that path (also keep original path)
         const iterable = ImageResizeExecutor.resizeImagesAtIterable(
             imageInputDir,
-            enableSubDirs,
-            outputter,
-            currentPage
+            state,
+            outputter
         );
 
         let id = 0;

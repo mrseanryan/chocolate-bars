@@ -1,5 +1,6 @@
 import { DirectorySelectorDialog } from "../../utils/DirectorySelectorDialog";
 import { ImageMover, MoveOrCopy } from "../../utils/ImageMover";
+import { IOutputter } from "../../utils/outputter/IOutputter";
 import { State } from "../State";
 
 type ButtonConfig = {
@@ -21,6 +22,7 @@ export namespace MoveStarredImagesRenderer {
 
     export function addMoveOrCopyStarredListeners(
         state: State,
+        outputter: IOutputter,
         renderImagesAndPagerForDirectorySamePage: (imageInputDir: string) => void
     ) {
         const buttons: ButtonConfig[] = [
@@ -43,14 +45,20 @@ export namespace MoveStarredImagesRenderer {
         ];
 
         buttons.forEach(button => {
-            addMoveOrCopyStarredListener(state, renderImagesAndPagerForDirectorySamePage, button);
+            addMoveOrCopyStarredListener(
+                state,
+                renderImagesAndPagerForDirectorySamePage,
+                button,
+                outputter
+            );
         });
     }
 
     function addMoveOrCopyStarredListener(
         state: State,
         renderImagesAndPagerForDirectorySamePage: (imageInputDir: string) => void,
-        buttonConfig: ButtonConfig
+        buttonConfig: ButtonConfig,
+        outputter: IOutputter
     ) {
         const button = document.getElementById(buttonConfig.buttonId);
 
@@ -67,7 +75,13 @@ export namespace MoveStarredImagesRenderer {
             const imageInputDir = state.imageInputDir;
 
             if (directories && directories.length === 1) {
-                ImageMover.moveStarredImagesTo(imageInputDir, directories[0], buttonConfig.mode)
+                ImageMover.moveStarredImagesTo(
+                    imageInputDir,
+                    directories[0],
+                    buttonConfig.mode,
+                    state,
+                    outputter
+                )
                     .then(() => {
                         // refresh the current directory:
                         renderImagesAndPagerForDirectorySamePage(imageInputDir);

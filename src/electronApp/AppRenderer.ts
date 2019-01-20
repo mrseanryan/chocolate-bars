@@ -54,6 +54,7 @@ export namespace AppRenderer {
         SelectDirectoryRenderer.addSelectDirectoryListener(renderImagesAndPagerForDirectory);
         MoveStarredImagesRenderer.addMoveOrCopyStarredListeners(
             state,
+            outputter,
             renderImagesAndPagerForDirectorySamePage
         );
         ClearStarredImagesRenderer.addListener(state, renderImagesAndPagerForDirectorySamePage);
