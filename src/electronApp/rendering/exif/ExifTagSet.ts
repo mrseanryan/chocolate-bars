@@ -37,8 +37,8 @@ export class ExifTagSet {
     }
 
     private static parseExifTagValue(tag: string, tagValue: any): string {
-        const value = tagValue.value;
-        let description = tagValue.description;
+        const value = ExifTagSet.handleUndefined(tagValue.value);
+        let description = ExifTagSet.handleUndefined(tagValue.description);
 
         if (tag === ExifTag.ColorSpace && value === "1" && description === "1") {
             description = "sRGB";
@@ -53,6 +53,15 @@ export class ExifTagSet {
         }
 
         return `${value}(${description})`;
+    }
+
+    // Just in case whatever exif library is used returns undefined or null
+    private static handleUndefined(value: string | undefined | null): string {
+        if (value === undefined || value === null) {
+            return "";
+        }
+
+        return value;
     }
 
     readonly map = new Map<ExifTag, string>();
