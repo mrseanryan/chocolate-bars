@@ -21,14 +21,14 @@ export namespace ExifRenderer {
         image: ImageDetail,
         outputter: IOutputter
     ): Promise<string> {
-        const tagSet = await ExifReader.getExifTagsForImageAsync(image, outputter);
-        if (!tagSet) {
+        const tagSets = await ExifReader.getExifTagsForImageAsync(image, outputter);
+        if (!tagSets) {
             return "";
         }
 
         let html = "<div class='exif-container-text'>";
 
-        html += renderTagSet(tagSet);
+        html += tagSets.map(set => renderTagSet(set)).join("");
 
         html = StringUtils.replaceAll(html, "\n", "<br/>");
 

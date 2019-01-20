@@ -17,12 +17,12 @@ export namespace ExifReader {
     export async function getExifTagsForImageAsync(
         image: ImageDetail,
         outputter: IOutputter
-    ): Promise<ExifTagSet | null> {
+    ): Promise<ExifTagSet[] | null> {
         if (!canFileHaveExif(image.originalFilepath)) {
             return null;
         }
 
-        return new Promise<ExifTagSet | null>((resolve, reject) => {
+        return new Promise<ExifTagSet[] | null>((resolve, reject) => {
             fs.open(image.originalFilepath, "r", function(status, fd) {
                 if (status) {
                     console.error(status.message);
@@ -63,7 +63,7 @@ export namespace ExifReader {
         return [".jpg", ".jpeg"].includes(extension);
     }
 
-    function parseExif(buffer: Buffer, outputter: IOutputter): ExifTagSet | null {
+    function parseExif(buffer: Buffer, outputter: IOutputter): ExifTagSet[] | null {
         const tags = exifReader.load(buffer.buffer);
 
         deleteUnusedTags(tags);

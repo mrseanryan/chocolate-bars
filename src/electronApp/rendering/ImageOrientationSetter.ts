@@ -4,7 +4,7 @@ import { ImageDetail } from "../../bars/model/ImageDetail";
 import { IOutputter } from "../../utils/outputter/IOutputter";
 import { ExifOrientation, parseOrientationOrThrow } from "./exif/ExifOrientation";
 import { ExifReader } from "./exif/ExifReader";
-import { ExifTag } from "./exif/ExifTagSet";
+import { ExifTag } from "./exif/ExifTag";
 import { HtmlGrid } from "./HtmlGrid";
 
 enum Transformation {
@@ -35,14 +35,18 @@ export namespace ImageOrientationSetter {
                 return;
             }
 
-            const tagSet = await ExifReader.getExifTagsForImageAsync(image, outputter);
+            const tagSets = await ExifReader.getExifTagsForImageAsync(image, outputter);
 
-            if (!tagSet) {
+            if (!tagSets) {
                 return;
             }
 
-            if (tagSet.has(ExifTag.Orientation)) {
-                const orientationText = tagSet.get(ExifTag.Orientation)!;
+            const tagSetsWithOrientation = tagSets.filter(tagSet =>
+                tagSet.has(ExifTag.Orientation)
+            );
+
+            if (tagSetsWithOrientation.length > 0) {
+                const orientationText = tagSetsWithOrientation[0].get(ExifTag.Orientation)!;
 
                 const orientation = parseOrientationOrThrow(orientationText);
 

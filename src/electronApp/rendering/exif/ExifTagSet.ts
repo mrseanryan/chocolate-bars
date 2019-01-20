@@ -1,4 +1,6 @@
 import { IOutputter } from "../../../utils/outputter/IOutputter";
+import { ExifTag } from "./ExifTag";
+import { ExifTagsBySection } from "./ExifTagsBySection";
 
 const KNOWN_LATITUDE_FORMAT = "North latitude";
 const KNOWN_LONGITUDE_FORMAT = "East longitude";
@@ -6,30 +8,32 @@ const KNOWN_LONGITUDE_FORMAT = "East longitude";
 const DUMP_INDENT = "      ";
 
 export class ExifTagSet {
-    static fromTags(tags: any, outputter: IOutputter): ExifTagSet | null {
-        if (!tags) {
+    static fromTags(exifTags: any, outputter: IOutputter): ExifTagSet[] | null {
+        if (!exifTags) {
             return null;
         }
 
-        console.log("xxx");
-        console.dir(tags);
+        const tagSets: ExifTagSet[] = [];
 
-        const interestingTags = Object.keys(ExifTag);
+        const tagsBySection = ExifTagsBySection.getTagsBySection();
 
-        // TODO xxx divide tags into groups - like Image, Device, GPS
-        const tagSet = new ExifTagSet("tags");
+        tagsBySection.forEach((tags, section) => {
+            const tagSet = new ExifTagSet(section);
 
-        interestingTags.forEach(tag => {
-            const value = tags[tag] ? tags[tag] : null;
+            tags.forEach(tag => {
+                const value = exifTags[tag] ? exifTags[tag] : null;
 
-            if (value !== undefined && value !== null) {
-                tagSet.map.set(tag as ExifTag, ExifTagSet.parseExifTagValue(tag, value));
-            }
+                if (value !== undefined && value !== null) {
+                    tagSet.map.set(tag as ExifTag, ExifTagSet.parseExifTagValue(tag, value));
+                }
+            });
+
+            tagSet.dump(outputter);
+
+            tagSets.push(tagSet);
         });
 
-        tagSet.dump(outputter);
-
-        return tagSet;
+        return tagSets;
     }
 
     private static parseExifTagValue(tag: string, tagValue: any): string {
@@ -92,32 +96,4 @@ export class ExifTagSet {
             this.get(ExifTag.GPSLongitudeRef) === KNOWN_LONGITUDE_FORMAT
         );
     }
-}
-
-// Interesting subset of exif tags
-export enum ExifTag {
-    ApertureValue = "ApertureValue", // 1.53
-    ColorSpace = "ColorSpace", // sRGB, 1 = sRGB
-    DateTime = "DateTime", // 2018:07:15 16:57:48
-    DigitalZoomRatio = "DigitalZoomRatio", // 1/1
-    ExposureTime = "ExposureTime", // 0.007518796992481203, 1/1600
-    FNumber = "FNumber", // 1.7, 4/1
-    Flash = "Flash", // 0(Flash did not fire)
-    // [object Object](Fired: False; Return: 0; Mode: 0; Function: False; RedEyeMode: False)
-    FocalLength = "FocalLength", // 4.2
-    FocalLengthIn35mmFormat = "FocalLengthIn35mmFormat",
-    GPSAltitude = "GPSAltitude", // 51 m
-    GPSAltitudeRef = "GPSAltitudeRef", // Sea level
-    GPSDateStamp = "GPSDateStamp", // 2018:07:15
-    GPSLatitude = "GPSLatitude", // 51.92166666666667
-    GPSLatitudeRef = "GPSLatitudeRef", // North latitude
-    GPSLongitude = "GPSLongitude", // 4.502777777777778
-    GPSLongitudeRef = "GPSLongitudeRef", // East longitude
-    ISOSpeedRatings = "ISOSpeedRatings", // 40
-    Orientation = "Orientation", // right-top
-    ResolutionUnit = "ResolutionUnit", // 2, inches,
-    ShutterSpeedValue = "ShutterSpeedValue", // 7.05
-    SubjectDistance = "SubjectDistance", // 3/100
-    XResolution = "XResolution", // 72
-    YResolution = "YResolution" // 72
 }
