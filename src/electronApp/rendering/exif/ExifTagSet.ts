@@ -48,8 +48,8 @@ export class ExifTagSet {
             return description;
         }
 
-        if (description === value) {
-            return description;
+        if (description.toString() === value.toString()) {
+            return description.toString();
         }
 
         return `${value}(${description})`;

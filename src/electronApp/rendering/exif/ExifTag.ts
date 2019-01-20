@@ -18,6 +18,8 @@ export enum ExifTag {
     GPSLongitude = "GPSLongitude", // 4.502777777777778
     GPSLongitudeRef = "GPSLongitudeRef", // East longitude
     ISOSpeedRatings = "ISOSpeedRatings", // 40
+    Make = "Make",
+    Model = "Model",
     Orientation = "Orientation", // right-top
     ResolutionUnit = "ResolutionUnit", // 2, inches,
     ShutterSpeedValue = "ShutterSpeedValue", // 7.05

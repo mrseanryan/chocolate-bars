@@ -25,6 +25,8 @@ export namespace ExifTagsBySection {
 
     function getDeviceTags(): ExifTag[] {
         return [
+            ExifTag.Make,
+            ExifTag.Model,
             ExifTag.ApertureValue,
             ExifTag.DigitalZoomRatio,
             ExifTag.ExposureTime,
