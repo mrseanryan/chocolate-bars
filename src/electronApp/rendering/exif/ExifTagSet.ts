@@ -99,7 +99,13 @@ export enum ExifTag {
     ApertureValue = "ApertureValue", // 1.53
     ColorSpace = "ColorSpace", // sRGB, 1 = sRGB
     DateTime = "DateTime", // 2018:07:15 16:57:48
+    DigitalZoomRatio = "DigitalZoomRatio", // 1/1
+    ExposureTime = "ExposureTime", // 0.007518796992481203, 1/1600
+    FNumber = "FNumber", // 1.7, 4/1
+    Flash = "Flash", // 0(Flash did not fire)
+    // [object Object](Fired: False; Return: 0; Mode: 0; Function: False; RedEyeMode: False)
     FocalLength = "FocalLength", // 4.2
+    FocalLengthIn35mmFormat = "FocalLengthIn35mmFormat",
     GPSAltitude = "GPSAltitude", // 51 m
     GPSAltitudeRef = "GPSAltitudeRef", // Sea level
     GPSDateStamp = "GPSDateStamp", // 2018:07:15
@@ -109,17 +115,9 @@ export enum ExifTag {
     GPSLongitudeRef = "GPSLongitudeRef", // East longitude
     ISOSpeedRatings = "ISOSpeedRatings", // 40
     Orientation = "Orientation", // right-top
-    ShutterSpeedValue = "ShutterSpeedValue", // 7.05
-    XResolution = "XResolution", // 72
-    YResolution = "YResolution", // 72
     ResolutionUnit = "ResolutionUnit", // 2, inches,
-
-    DigitalZoomRatio = "DigitalZoomRatio", // 1/1
-    Flash = "Flash", // 0(Flash did not fire)
-    // [object Object](Fired: False; Return: 0; Mode: 0; Function: False; RedEyeMode: False)
-    FNumber = "FNumber", // 1.7, 4/1
-    ExposureTime = "ExposureTime", // 0.007518796992481203, 1/1600
-    FocalLengthIn35mmFormat = "FocalLengthIn35mmFormat",
-    ISO = "ISO",
-    SubjectDistance = "SubjectDistance" // 3/100
+    ShutterSpeedValue = "ShutterSpeedValue", // 7.05
+    SubjectDistance = "SubjectDistance", // 3/100
+    XResolution = "XResolution", // 72
+    YResolution = "YResolution" // 72
 }
