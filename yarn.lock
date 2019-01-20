@@ -3738,10 +3738,10 @@ exif-orientation-examples-sr@^1.0.0:
   resolved "https://registry.yarnpkg.com/exif-orientation-examples-sr/-/exif-orientation-examples-sr-1.0.0.tgz#b3b51708cb8085308c71f59e5f2bed403f9f9768"
   integrity sha512-V6EcQwVklw324GT3GzFg8Q8T4mq+/CZOyGCM6iyn0Enm/oAJaAQvfiABSERxIBv47Ncy/Ww6a7veSlTfv88oRQ==
 
-exif-reader@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/exif-reader/-/exif-reader-1.0.2.tgz#02408b97b61028ea4f45e5b893a836f9aa28ac4f"
-  integrity sha1-AkCLl7YQKOpPReW4k6g2+aoorE8=
+exifreader@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/exifreader/-/exifreader-2.5.0.tgz#0f795e601632b78a463b9518755601f7f51efdeb"
+  integrity sha512-jxS+cSjalvtF4Ga1D0G1YbVwPBOUYIGMuVbUNfor1+5CSc4h2FBvFC59HSkpPTqiHnA9zF0W5BW8eV3CjmklcQ==
 
 exit@^0.1.2:
   version "0.1.2"
@@ -6397,14 +6397,6 @@ jest@^23.6.0:
     import-local "^1.0.0"
     jest-cli "^23.6.0"
 
-jpg-stream@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/jpg-stream/-/jpg-stream-1.1.2.tgz#4dba159d9d19368df21318f648cee980a72be407"
-  integrity sha1-TboVnZ0ZNo3yExj2SM7pgKcr5Ac=
-  dependencies:
-    exif-reader "^1.0.0"
-    pixel-stream "^1.0.3"
-
 jquery@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
@@ -8730,13 +8722,6 @@ pirates@^4.0.0:
   integrity sha512-8t5BsXy1LUIjn3WWOlOuFDuKswhQb/tkak641lvBgmPOBUQHXveORtlMCp6OdPV1dtuTaEahKA8VNz6uLfKBtA==
   dependencies:
     node-modules-regexp "^1.0.0"
-
-pixel-stream@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/pixel-stream/-/pixel-stream-1.0.3.tgz#53e8c54b21d5508393b53bcb32b64a7755f1fa5e"
-  integrity sha1-U+jFSyHVUIOTtTvLMrZKd1Xx+l4=
-  dependencies:
-    shallow-copy "0.0.1"
 
 pkg-conf@^2.1.0:
   version "2.1.0"
@@ -12159,6 +12144,11 @@ xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
   integrity sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==
+
+xmldom@^0.1.27:
+  version "0.1.27"
+  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
+  integrity sha1-1QH5ezvbQDr4757MIFcxh6rawOk=
 
 "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.1"

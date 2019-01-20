@@ -1,6 +1,7 @@
 import { DataStorage } from "../bars/model/persisted/DataStorage";
 import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
+import { IOutputter } from "../utils/outputter/IOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
 import { ChocolateBarsArgs } from "../utils/SharedDataUtils";
 import { KeyboardController } from "./controllers/KeyboardController";
@@ -29,7 +30,11 @@ const state: State = {
 
 export namespace AppRenderer {
     export function onLoad() {
-        KeyboardController.addKeyboardListener(state, renderImagesAndPagerForDirectorySamePage);
+        KeyboardController.addKeyboardListener(
+            state,
+            outputter,
+            renderImagesAndPagerForDirectorySamePage
+        );
 
         periodicallySave();
     }

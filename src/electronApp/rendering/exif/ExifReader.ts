@@ -2,49 +2,55 @@ import * as fs from "fs";
 import * as path from "path";
 
 import { ImageDetail } from "../../../bars/model/ImageDetail";
+import { IOutputter } from "../../../utils/outputter/IOutputter";
 import { ExifTagSet } from "./ExifTagSet";
 
-const jpegDecoder = require("jpg-stream/decoder");
+// To solve warning from exifreader
+(global as any).DOMParser = require("xmldom").DOMParser;
+
+const exifReader = require("exifreader");
 
 // Reduce memory usage by assuming EXIF is in first part of the file
 const MAX_BYTES_TO_READ = 128 * 1024;
 
 export namespace ExifReader {
     export async function getExifTagsForImageAsync(
-        image: ImageDetail
-    ): Promise<ExifTagSet[] | null> {
+        image: ImageDetail,
+        outputter: IOutputter
+    ): Promise<ExifTagSet | null> {
         if (!canFileHaveExif(image.originalFilepath)) {
             return null;
         }
 
-        return new Promise<ExifTagSet[]>((resolve, reject) => {
-            // Decode a JPEG file to RGB pixels
-            const stream: fs.ReadStream = fs.createReadStream(image.originalFilepath, {
-                end: MAX_BYTES_TO_READ
+        return new Promise<ExifTagSet | null>((resolve, reject) => {
+            fs.open(image.originalFilepath, "r", function(status, fd) {
+                if (status) {
+                    console.error(status.message);
+                    reject(status.message);
+                    return;
+                }
+                const buffer = Buffer.alloc(MAX_BYTES_TO_READ);
+
+                fs.read(fd, buffer, 0, MAX_BYTES_TO_READ, 0, function(err) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                        return;
+                    }
+
+                    try {
+                        const exifResult = parseExif(buffer, outputter);
+                        resolve(exifResult);
+                    } catch (error) {
+                        if (error.name === "MetadataMissingError") {
+                            // no exif data
+                            resolve(null);
+                        } else {
+                            reject(error);
+                        }
+                    }
+                });
             });
-
-            stream.pipe(new jpegDecoder({ width: 600, height: 400 })).on("meta", (meta: any) => {
-                // meta contains an exif object as decoded by
-                // https://github.com/devongovett/exif-reader
-
-                const result = parseExif(meta);
-                closeStreamAndResolve(result);
-            });
-
-            // Reduce memory usage by avoiding reading past the meta data
-            const closeStreamAndResolve = (result: ExifTagSet[]) => {
-                // ref: https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options
-                stream.close(); // This may not close the stream.
-                // Artificially marking end-of-stream, as if the underlying resource had
-                // indicated end-of-file by itself, allows the stream to close.
-                // This does not cancel pending read operations, and if there is such an
-                // operation, the process may still not be able to exit successfully
-                // until it finishes.
-                stream.push(null);
-                stream.read(0);
-
-                resolve(result);
-            };
         });
     }
 
@@ -57,18 +63,16 @@ export namespace ExifReader {
         return [".jpg", ".jpeg"].includes(extension);
     }
 
-    function parseExif(meta: any): ExifTagSet[] {
-        deleteUnusedTags(meta);
+    function parseExif(buffer: Buffer, outputter: IOutputter): ExifTagSet | null {
+        const tags = exifReader.load(buffer.buffer);
 
-        const result = [
-            ExifTagSet.fromTags(meta.exif, "Image"),
-            ExifTagSet.fromTags(meta.image, "Device"),
-            ExifTagSet.fromTags(meta.gps, "GPS")
-        ].filter(e => !!e) as ExifTagSet[];
+        deleteUnusedTags(tags);
 
-        deleteAllTags(meta);
+        const tagset = ExifTagSet.fromTags(tags, outputter);
 
-        return result;
+        deleteAllTags(tags);
+
+        return tagset;
     }
 
     const DELETED = {};
@@ -76,16 +80,21 @@ export namespace ExifReader {
     function deleteUnusedTags(tags: any) {
         // The MakerNote tag can be really large. Remove it to lower memory
         // usage if you're parsing a lot of files and saving the tags.
-        if (tags.exif) {
-            tags.exif.MakerNote = DELETED;
-        }
+        tags.MakerNote = DELETED;
+
+        // also delete any props that start with 'undefined-
+        Object.keys(tags)
+            .filter(t => t.startsWith("undefined"))
+            .forEach(t => {
+                tags[t] = DELETED;
+            });
 
         tags.thumbnail = DELETED;
     }
 
     function deleteAllTags(tags: any) {
-        tags.exif = DELETED;
-        tags.image = DELETED;
-        tags.gps = DELETED;
+        Object.keys(tags).forEach(t => {
+            tags[t] = DELETED;
+        });
     }
 }

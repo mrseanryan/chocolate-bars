@@ -2,6 +2,7 @@ import * as jquery from "jquery";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
 import { JQueryUtils } from "../../utils/JQueryUtils";
+import { IOutputter } from "../../utils/outputter/IOutputter";
 import { ImageOrientationSetter } from "./ImageOrientationSetter";
 import { ImageStarRenderer } from "./ImageStarRenderer";
 
@@ -51,11 +52,11 @@ export namespace ExpandedImageRenderer {
         );
     }
 
-    export function onClickExpandImage(image: ImageDetail) {
+    export function onClickExpandImage(image: ImageDetail, outputter: IOutputter) {
         currentImageIndex = allImages.findIndex(i => i.originalFilepath === image.originalFilepath);
         isPopupOpen = true;
 
-        updateCurrentImageByIndex();
+        updateCurrentImageByIndex(outputter);
 
         jquery(`.${IMAGE_POPUP_CLASS}`).addClass("user-image-popup-visible");
     }
@@ -65,7 +66,7 @@ export namespace ExpandedImageRenderer {
         jquery(`.${IMAGE_POPUP_CLASS}`).removeClass("user-image-popup-visible");
     }
 
-    function updateCurrentImageByIndex() {
+    function updateCurrentImageByIndex(outputter: IOutputter) {
         const image = getCurrentImage();
 
         // TODO could clear just the image - not the star
@@ -78,7 +79,11 @@ export namespace ExpandedImageRenderer {
 
         jquery(`.${IMAGE_POPUP_CLASS}`).append(imageHtml);
 
-        ImageOrientationSetter.setOrientationForCssSelector(".expanded-image-and-star img", image);
+        ImageOrientationSetter.setOrientationForCssSelector(
+            ".expanded-image-and-star img",
+            image,
+            outputter
+        );
         addClickImageStarListener();
     }
 
@@ -87,22 +92,22 @@ export namespace ExpandedImageRenderer {
         return image;
     }
 
-    export function goToPreviousImage() {
+    export function goToPreviousImage(outputter: IOutputter) {
         currentImageIndex--;
         if (currentImageIndex < 0) {
             currentImageIndex = 0;
         }
 
-        updateCurrentImageByIndex();
+        updateCurrentImageByIndex(outputter);
     }
 
-    export function goToNextImage() {
+    export function goToNextImage(outputter: IOutputter) {
         currentImageIndex++;
         if (currentImageIndex >= allImages.length) {
             currentImageIndex = allImages.length - 1;
         }
 
-        updateCurrentImageByIndex();
+        updateCurrentImageByIndex(outputter);
     }
 
     export function toggleStarredImage() {

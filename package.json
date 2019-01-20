@@ -153,12 +153,13 @@
     },
     "dependencies": {
         "electron": "^4.0.0",
+        "exifreader": "^2.5.0",
         "histogram": "^3.0.1",
         "image-size": "^0.6.3",
-        "jpg-stream": "^1.1.2",
         "jquery": "^3.3.1",
         "plotly.js": "^1.43.1",
         "sharp": "^0.21.1",
+        "xmldom": "^0.1.27",
         "yargs": "^12.0.5"
     }
 }

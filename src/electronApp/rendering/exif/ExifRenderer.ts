@@ -1,26 +1,34 @@
 import * as jquery from "jquery";
 
 import { ImageDetail } from "../../../bars/model/ImageDetail";
+import { IOutputter } from "../../../utils/outputter/IOutputter";
 import { StringUtils } from "../../../utils/StringUtils";
 import { ExifReader } from "./ExifReader";
 import { ExifTagSet } from "./ExifTagSet";
 
 export namespace ExifRenderer {
-    export async function renderHtmlForImage(image: ImageDetail, divId: string) {
-        const html = await getHtmlForImageAsync(image);
+    export async function renderHtmlForImage(
+        image: ImageDetail,
+        divId: string,
+        outputter: IOutputter
+    ) {
+        const html = await getHtmlForImageAsync(image, outputter);
 
         jquery("#" + divId).append(html);
     }
 
-    async function getHtmlForImageAsync(image: ImageDetail): Promise<string> {
-        const tagSets = await ExifReader.getExifTagsForImageAsync(image);
-        if (!tagSets) {
+    async function getHtmlForImageAsync(
+        image: ImageDetail,
+        outputter: IOutputter
+    ): Promise<string> {
+        const tagSet = await ExifReader.getExifTagsForImageAsync(image, outputter);
+        if (!tagSet) {
             return "";
         }
 
         let html = "<div class='exif-container-text'>";
 
-        html += tagSets.map(set => renderTagSet(set)).join("");
+        html += renderTagSet(tagSet);
 
         html = StringUtils.replaceAll(html, "\n", "<br/>");
 

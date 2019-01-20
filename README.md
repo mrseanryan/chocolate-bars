@@ -149,6 +149,16 @@ A number of keyboard shortcuts are available:
 
 ## references
 
+### image data
+
+#### color spaces in image files
+
+http://regex.info/blog/photo-tech/color-spaces-page2
+
+#### online exif viewer
+
+http://exif.regex.info/exif.cgi
+
 ### electron starter
 
 https://github.com/electron/electron-quick-start
@@ -174,6 +184,10 @@ see the [contributing readme](CONTRIBUTING.md).
 ## origin
 
 This project is based on the excellent seeder project [typescript-library-starter](https://github.com/alexjoverm/typescript-library-starter).
+
+### libaries
+
+**chocolate-bars** uses the [ExifReader library](https://github.com/mattiasw/ExifReader).
 
 ### ORIGINAL readme (from the seeder project)
 

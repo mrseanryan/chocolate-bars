@@ -56,7 +56,7 @@ export namespace ImagesRenderer {
 
                 grid.addImageToContainer(image);
 
-                ImageOrientationSetter.setOrientation(image);
+                ImageOrientationSetter.setOrientation(image, outputter);
                 addImageClickListener(state, image, outputter);
 
                 if (isFirst) {
@@ -128,7 +128,7 @@ export namespace ImagesRenderer {
         ExpandedImageRenderer.addImage(image);
 
         imageExpandDiv.addEventListener("click", () =>
-            ExpandedImageRenderer.onClickExpandImage(image)
+            ExpandedImageRenderer.onClickExpandImage(image, outputter)
         );
     }
 

@@ -1,4 +1,5 @@
 import { ImageDetail } from "../../bars/model/ImageDetail";
+import { IOutputter } from "../../utils/outputter/IOutputter";
 import { DeleteImageRenderer } from "../rendering/DeleteImageRenderer";
 import { ExpandedImageRenderer } from "../rendering/ExpandedImageRenderer";
 import { ImageStarRenderer } from "../rendering/ImageStarRenderer";
@@ -9,6 +10,7 @@ const remote = require("electron").remote;
 export namespace KeyboardController {
     export function addKeyboardListener(
         state: State,
+        outputter: IOutputter,
         renderImagesAndPagerForDirectorySamePage: (imageInputDir: string) => void
     ) {
         document.addEventListener("keydown", function(e) {
@@ -37,13 +39,13 @@ export namespace KeyboardController {
                 }
                 case "ArrowLeft": {
                     if (ExpandedImageRenderer.isOpen()) {
-                        ExpandedImageRenderer.goToPreviousImage();
+                        ExpandedImageRenderer.goToPreviousImage(outputter);
                     }
                     break;
                 }
                 case "ArrowRight": {
                     if (ExpandedImageRenderer.isOpen()) {
-                        ExpandedImageRenderer.goToNextImage();
+                        ExpandedImageRenderer.goToNextImage(outputter);
                     }
                     break;
                 }
@@ -51,7 +53,7 @@ export namespace KeyboardController {
                     if (ExpandedImageRenderer.isOpen()) {
                         ExpandedImageRenderer.hideExpandedImage();
                     } else if (!ExpandedImageRenderer.isOpen() && state.selectedImage) {
-                        ExpandedImageRenderer.onClickExpandImage(state.selectedImage);
+                        ExpandedImageRenderer.onClickExpandImage(state.selectedImage, outputter);
                     }
                     break;
                 }

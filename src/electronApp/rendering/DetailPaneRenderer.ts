@@ -48,7 +48,7 @@ export namespace DetailPaneRenderer {
             `<div>file size: ${MathUtils.roundToFewPlaces(image.fileSizeInMb)} Mb</div>` +
             `<div id="image-exif" class="exif-container"></div>`;
 
-        ExifRenderer.renderHtmlForImage(image, "image-exif");
+        ExifRenderer.renderHtmlForImage(image, "image-exif", outputter);
 
         jquery("#image-text").append(html);
     }

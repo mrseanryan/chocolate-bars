@@ -1,6 +1,7 @@
 import * as jquery from "jquery";
 
 import { ImageDetail } from "../../bars/model/ImageDetail";
+import { IOutputter } from "../../utils/outputter/IOutputter";
 import { ExifOrientation, parseOrientationOrThrow } from "./exif/ExifOrientation";
 import { ExifReader } from "./exif/ExifReader";
 import { ExifTag } from "./exif/ExifTagSet";
@@ -17,31 +18,31 @@ enum Transformation {
 }
 
 export namespace ImageOrientationSetter {
-    export async function setOrientation(image: ImageDetail) {
+    export async function setOrientation(image: ImageDetail, outputter: IOutputter) {
         const divId = HtmlGrid.getImageDivId(image);
         const cssSelector = `#${divId}`;
 
-        setOrientationForCssSelector(cssSelector, image);
+        setOrientationForCssSelector(cssSelector, image, outputter);
     }
 
-    export async function setOrientationForCssSelector(cssSelector: string, image: ImageDetail) {
+    export async function setOrientationForCssSelector(
+        cssSelector: string,
+        image: ImageDetail,
+        outputter: IOutputter
+    ) {
         try {
             if (!ExifReader.canFileHaveExif(image.originalFilepath)) {
                 return;
             }
 
-            const tagSets = await ExifReader.getExifTagsForImageAsync(image);
+            const tagSet = await ExifReader.getExifTagsForImageAsync(image, outputter);
 
-            if (!tagSets) {
+            if (!tagSet) {
                 return;
             }
 
-            const tagSetsWithOrientation = tagSets.filter(tagSet =>
-                tagSet.has(ExifTag.Orientation)
-            );
-
-            if (tagSetsWithOrientation.length > 0) {
-                const orientationText = tagSetsWithOrientation[0].get(ExifTag.Orientation)!;
+            if (tagSet.has(ExifTag.Orientation)) {
+                const orientationText = tagSet.get(ExifTag.Orientation)!;
 
                 const orientation = parseOrientationOrThrow(orientationText);
 
