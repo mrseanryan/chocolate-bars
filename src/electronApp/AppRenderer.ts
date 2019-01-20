@@ -16,7 +16,7 @@ import { RefreshImagesRenderer } from "./rendering/RefreshImagesRenderer";
 import { SelectDirectoryRenderer } from "./rendering/SelectDirectoryRenderer";
 import { State } from "./State";
 
-const outputter = new ConsoleOutputter(Verbosity.High);
+const outputter = new ConsoleOutputter(Verbosity.Low);
 
 const grid = new HtmlGrid();
 
