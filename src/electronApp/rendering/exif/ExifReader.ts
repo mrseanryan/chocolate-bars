@@ -33,7 +33,7 @@ export namespace ExifReader {
 
                 fs.read(fd, buffer, 0, MAX_BYTES_TO_READ, 0, function(err) {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         reject(err);
                         return;
                     }

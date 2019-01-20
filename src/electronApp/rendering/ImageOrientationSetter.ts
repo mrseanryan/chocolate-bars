@@ -49,7 +49,7 @@ export namespace ImageOrientationSetter {
                 setOrientationTo(cssSelector, orientation);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return;
         }
     }
