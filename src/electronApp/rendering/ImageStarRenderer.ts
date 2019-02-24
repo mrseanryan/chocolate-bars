@@ -12,10 +12,6 @@ export namespace ImageStarRenderer {
         return `<div class="${STAR_CONTAINER_CLASS}">${getStarOrNoStarHtml(image)}</div>`;
     }
 
-    // export function getStarHtml(image: ImageDetail): string {
-    //     return image.isStarred ? `<div class="star">*</div>` : ``;
-    // }
-
     export function getStarOrNoStarHtml(image: ImageDetail): string {
         return image.isStarred ? `<div class="star">*</div>` : `<div class="no-star"></div>`;
     }

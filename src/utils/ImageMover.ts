@@ -40,42 +40,42 @@ export namespace ImageMover {
                 const fileName = path.basename(imagePath);
                 const newPath = path.resolve(path.join(directoryPath, fileName));
 
-                const callDoneForLast = () => {
+                const callDoneForLast = (needToSaveStorage: boolean) => {
                     if (index === starredImagesThisPage.length - 1) {
-                        done();
+                        if (!needToSaveStorage) {
+                            done();
+                        } else {
+                            DataStorage.saveForCurrentDirectory()
+                                .then(() => {
+                                    done();
+                                })
+                                .catch(err => {
+                                    console.error(err);
+                                    done();
+                                });
+                        }
                     }
                 };
 
+                // Use *sync* methods so we only save after the *last* item
                 switch (mode) {
                     case MoveOrCopy.Copy:
-                        fs.copyFile(imagePath, newPath, error => {
-                            if (error) {
-                                console.error(error);
-                                hasErrors = true;
-                            }
-
-                            callDoneForLast();
-                        });
+                        fs.copyFileSync(imagePath, newPath);
+                        callDoneForLast(false);
                         break;
                     case MoveOrCopy.Move:
-                        fs.rename(imagePath, newPath, error => {
-                            if (error) {
-                                console.error(error);
-                                hasErrors = true;
-                                callDoneForLast();
-                            } else {
-                                // Need to save after setting as no star, since done will reload the stars.
-                                DataStorage.setImageAsNoStar(imagePath);
-                                DataStorage.saveForCurrentDirectory()
-                                    .then(() => {
-                                        callDoneForLast();
-                                    })
-                                    .catch(err => {
-                                        console.error(err);
-                                        callDoneForLast();
-                                    });
-                            }
-                        });
+                        try {
+                            fs.renameSync(imagePath, newPath);
+
+                            // Need to save after setting as no star, since done will reload the stars.
+                            DataStorage.setImageAsNoStar(imagePath);
+
+                            callDoneForLast(true);
+                        } catch (error) {
+                            console.error(error);
+                            callDoneForLast(false);
+                        }
+
                         break;
                     default:
                         throw new Error(`unhandled mode '${mode}'`);

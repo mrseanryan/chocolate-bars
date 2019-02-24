@@ -35,16 +35,9 @@ export namespace AppRenderer {
             renderImagesAndPagerForDirectorySamePage
         );
 
-        periodicallySave();
     }
 
     // TODO should really save on quit - would need to send JSON back to server
-    export function periodicallySave() {
-        setInterval(() => {
-            console.log("saving data...");
-            DataStorage.saveForDirectorySync(state.imageInputDir);
-        }, 5000);
-    }
 
     export async function renderContainerAndDetailWithImages(args: ChocolateBarsArgs) {
         state.imageInputDir = args.imageInputDir;

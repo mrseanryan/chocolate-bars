@@ -12,9 +12,10 @@ export namespace DataStorage {
     }
 
     export async function loadForDirectoryOrCreate(imageInputDir: string) {
+        currentImageInputDir = imageInputDir;
+
         if (fs.existsSync(getDataFilePathForDirectory(imageInputDir))) {
             try {
-                currentImageInputDir = imageInputDir;
                 currentMetaData = await loadForDirectory(imageInputDir);
             } catch (error) {
                 console.error("error loading stars - will default to no stars", error);
@@ -135,14 +136,6 @@ export namespace DataStorage {
         return filepath;
     }
 
-    export function saveForDirectorySync(imageInputDir: string) {
-        saveForDirectory(imageInputDir)
-            .then(() => {
-                // do nothing
-            })
-            .catch(error => console.log(error));
-    }
-
     export async function saveForCurrentDirectory(): Promise<void> {
         return saveForDirectory(currentImageInputDir);
     }
@@ -186,6 +179,8 @@ export namespace DataStorage {
 
             image.isStarred = index === -1;
         }
+
+        saveForCurrentDirectory();
     }
 
     function getIndexOfStarredImage(image: ImageDetail): number {
