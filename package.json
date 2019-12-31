@@ -31,7 +31,7 @@
     },
     "license": "MIT",
     "engines": {
-        "node": ">=8.3.0"
+        "node": ">=8.17.0"
     },
     "scripts": {
         "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
@@ -152,14 +152,14 @@
         "typescript": "^3.0.3"
     },
     "dependencies": {
-        "electron": "^4.0.0",
-        "exifreader": "^2.5.0",
+        "electron": "^4.2.12",
+        "exifreader": "^2.13.0",
         "histogram": "^3.0.1",
-        "image-size": "^0.6.3",
+        "image-size": "^0.8.3",
         "jquery": "^3.3.1",
         "plotly.js": "^1.43.1",
-        "sharp": "^0.21.1",
-        "xmldom": "^0.1.27",
-        "yargs": "^12.0.5"
+        "sharp": "^0.23.1",
+        "xmldom": "^0.2.1",
+        "yargs": "^15.0.2"
     }
 }
