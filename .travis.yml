@@ -5,6 +5,7 @@ cache:
 notifications:
     email: false
 node_js:
+    - "12"
     - "10"
     # - '11' - 11 broken with alpha versions of 'canvas-prebuilt' - but is experimental as odd node.js version!?
     - "8"
