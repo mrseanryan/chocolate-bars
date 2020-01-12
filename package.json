@@ -2,7 +2,7 @@
     "name": "chocolate-bars",
     "version": "0.0.0-semantically-released",
     "description": "Present histograms (bars!) of images in a directory, including extras such as exif data from the camera.",
-    "main": "dist/chocolate-bars.js",
+    "main": "dist/lib/chocolate-bars.js",
     "typings": "dist/types/chocolate-bars.d.ts",
     "files": [
         "dist"
