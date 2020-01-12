@@ -2,66 +2,16 @@
     "name": "chocolate-bars",
     "version": "0.0.0-semantically-released",
     "description": "Present histograms (bars!) of images in a directory, including extras such as exif data from the camera.",
-    "keywords": [
-        "electron",
-        "exif",
-        "exif-data",
-        "histogram",
-        "image",
-        "image viewer",
-        "image-viewer",
-        "photo",
-        "photo viewer",
-        "photo-viewer",
-        "viewer"
-    ],
-    "main": "dist/chocolate-bars.umd.js",
-    "module": "dist/chocolate-bars.es5.js",
+    "main": "dist/chocolate-bars.js",
     "typings": "dist/types/chocolate-bars.d.ts",
     "files": [
         "dist"
     ],
-    "author": "str <str_ie@yahoo.co.uk>",
+    "author": "Sean Ryan <mr.sean.ryan(at)gmail.com>",
     "bin": {
         "chocolate-bars": "./dist/lib/cli.js"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/mrseanryan/chocolate-bars.git"
-    },
     "license": "MIT",
-    "engines": {
-        "node": ">=8.17.0"
-    },
-    "scripts": {
-        "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
-        "lint:local": "tslint  --project tsconfig.json -t codeFrame",
-        "prebuild": "rimraf dist",
-        "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src && yarn build:extra",
-        "build:extra": "yarn build:cli && yarn build:static",
-        "build:cli": "echo '#!/usr/bin/env node' > dist/lib/cli.js && cat dist/lib/main.js >> dist/lib/cli.js && chmod +x dist/lib/cli.js",
-        "build:minimal": "tsc --module commonjs && yarn build:extra",
-        "build:minimal:watch": "tsc --module commonjs -w",
-        "build:static": "yarn build:static:html && yarn build:static:images",
-        "build:static:html": "cp static/electronApp/index.html ./dist/lib/electronApp && cp node_modules/histogram/histogram.min.js ./dist/lib/electronApp && cp node_modules/plotly.js/dist/plotly.min.js ./dist/lib/electronApp",
-        "build:static:images": "cp static/electronApp/images/* ./dist/lib/electronApp",
-        "build-and-test": "yarn build:minimal && yarn test",
-        "log:dist": "ls dist -lR",
-        "start:rollup": "rollup -c rollup.config.ts -w",
-        "start": "npm run build:minimal && electron ./dist/lib/electronApp/appMain.js",
-        "start:watch": "yarn build:minimal:watch",
-        "test": "jest --coverage",
-        "test:watch": "jest --coverage --watch",
-        "test:prod": "npm run build && npm run lint && npm run test -- --no-cache",
-        "deploy-docs": "ts-node tools/gh-pages-publish",
-        "report-coverage": "cat ./coverage/lcov.info | coveralls",
-        "commit": "git-cz",
-        "semantic-release": "semantic-release",
-        "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-        "precommit": "lint-staged",
-        "travis-deploy-once": "travis-deploy-once",
-        "prepush": "npm run test:prod && npm run lint:local"
-    },
     "lint-staged": {
         "{src,test}/**/*.ts": [
             "prettier --write",
@@ -77,6 +27,10 @@
         "transform": {
             ".(ts|tsx)": "ts-jest"
         },
+        "transformIgnorePatterns": [
+            "^.+\\.js$",
+            "^.+\\.json$"
+        ],
         "testEnvironment": "node",
         "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
         "moduleFileExtensions": [
@@ -95,7 +49,7 @@
         ],
         "coverageThreshold": {
             "global": {
-                "branches": 90,
+                "branches": 83,
                 "functions": 95,
                 "lines": 95,
                 "statements": 95
@@ -103,6 +57,10 @@
         },
         "collectCoverageFrom": [
             "src/chocolate-bars.ts"
+        ],
+        "testPathIgnorePatterns": [
+            "/testHarness/",
+            "/node_modules/"
         ]
     },
     "prettier": {
@@ -115,51 +73,94 @@
         ]
     },
     "devDependencies": {
-        "@commitlint/cli": "^7.1.2",
-        "@commitlint/config-conventional": "^7.1.2",
-        "@types/jest": "^23.3.2",
-        "@types/jquery": "^3.3.28",
-        "@types/node": "^10.11.0",
-        "@types/yargs": "^12.0.1",
-        "commitizen": "^3.0.0",
-        "coveralls": "^3.0.2",
-        "cross-env": "^5.2.0",
-        "cz-conventional-changelog": "^2.1.0",
-        "exif-orientation-examples-sr": "^1.0.0",
-        "husky": "^1.0.1",
-        "jest": "^23.6.0",
-        "jest-config": "^23.6.0",
-        "lint-staged": "^8.0.0",
-        "lodash.camelcase": "^4.3.0",
-        "prettier": "^1.14.3",
+        "@commitlint/cli": "^8.2.0",
+        "@commitlint/config-conventional": "^8.2.0",
+        "@types/jest": "^24.0.25",
+        "@types/jquery": "^3.3.31",
+        "@types/node": "^13.1.2",
+        "@types/yargs": "^15.0.0",
+        "commitizen": "^4.0.3",
+        "coveralls": "^3.0.9",
+        "cross-env": "^6.0.3",
+        "cz-conventional-changelog": "^3.0.2",
+        "husky": "^3.1.0",
+        "jest": "^24.9.0",
+        "jest-config": "^24.9.0",
+        "lint-staged": "^9.5.0",
+        "prettier": "^1.19.1",
         "prompt": "^1.0.0",
-        "replace-in-file": "^3.4.2",
-        "rimraf": "^2.6.2",
-        "rollup": "^0.68.0",
-        "rollup-plugin-commonjs": "^9.1.8",
-        "rollup-plugin-json": "^3.1.0",
-        "rollup-plugin-node-resolve": "^4.0.0",
-        "rollup-plugin-sourcemaps": "^0.4.2",
-        "rollup-plugin-typescript2": "^0.18.0",
-        "semantic-release": "^15.13.2",
-        "travis-deploy-once": "^5.0.11",
-        "ts-jest": "^23.10.2",
-        "ts-node": "^7.0.1",
-        "tslint": "^5.11.0",
-        "tslint-config-prettier": "^1.15.0",
+        "replace-in-file": "^5.0.2",
+        "rimraf": "^3.0.0",
+        "semantic-release": "^15.14.0",
+        "ts-jest": "^24.2.0",
+        "ts-node": "^8.5.4",
+        "tslint": "^5.20.1",
+        "tslint-config-prettier": "^1.18.0",
         "tslint-config-standard-sr": "^8.2.0",
-        "typedoc": "^0.14.0",
-        "typescript": "^3.0.3"
+        "typedoc": "^0.15.6",
+        "typescript": "^3.7.4"
+    },
+    "engines": {
+        "node": ">=10.18.0"
+    },
+    "scripts": {
+        "clean": "rm -rf dist/",
+        "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+        "lint:local": "tslint  --project tsconfig.json -t codeFrame",
+        "prebuild": "rimraf dist",
+        "build": "tsc --module commonjs && typedoc --out docs --target es6 --theme minimal --mode file src && yarn build:extra",
+        "build:extra": "yarn build:cli && yarn build:static",
+        "build:cli": "echo '#!/usr/bin/env node' > dist/lib/cli.js && cat dist/lib/main.js >> dist/lib/cli.js && chmod +x dist/lib/cli.js",
+        "build:minimal": "tsc --module commonjs && yarn build:extra",
+        "build:minimal:watch": "tsc --module commonjs -w",
+        "build:static": "yarn build:static:html && yarn build:static:images",
+        "build:static:html": "cp static/electronApp/index.html ./dist/lib/electronApp && cp node_modules/histogram/histogram.min.js ./dist/lib/electronApp && cp node_modules/plotly.js/dist/plotly.min.js ./dist/lib/electronApp",
+        "build:static:images": "cp static/electronApp/images/* ./dist/lib/electronApp",
+        "build-and-test": "yarn build:minimal && yarn test",
+        "log:dist": "ls dist -lR",
+        "start": "yarn build:minimal && electron ./dist/lib/electronApp/appMain.js",
+        "start:watch": "yarn build:minimal:watch",
+        "test": "yarn build:minimal && jest --coverage",
+        "test:watch": "jest --coverage --watch",
+        "test:prod": "yarn build && yarn lint && yarn test -- --no-cache",
+        "deploy-docs": "ts-node tools/gh-pages-publish",
+        "report-coverage": "cat ./coverage/lcov.info | coveralls",
+        "commit": "git-cz",
+        "semantic-release": "semantic-release",
+        "semantic-release-prepare": "ts-node tools/semantic-release-prepare"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mrseanryan/chocolate-bars.git"
     },
     "dependencies": {
         "electron": "^4.2.12",
         "exifreader": "^2.13.0",
-        "histogram": "^3.0.1",
+        "histogram": "^3.0.3",
         "image-size": "^0.8.3",
         "jquery": "^3.3.1",
         "plotly.js": "^1.43.1",
         "sharp": "^0.23.1",
         "xmldom": "^0.2.1",
         "yargs": "^15.0.2"
+    },
+    "keywords": [
+        "electron",
+        "exif",
+        "exif-data",
+        "histogram",
+        "image",
+        "image viewer",
+        "image-viewer",
+        "photo",
+        "photo viewer",
+        "photo-viewer",
+        "viewer"
+    ],
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged",
+            "pre-push": "yarn test:prod"
+        }
     }
 }
