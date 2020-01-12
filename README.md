@@ -35,9 +35,9 @@ And - I really miss the 'moved starred images' feature of [good ole' Picasa](htt
 
 ## dependencies
 
--   Node 8.11.3 or higher
+-   Node 10.18.0 or higher
 
-### dependendcies for Windows
+### dependencies for Windows
 
 We use `sharp` to resize images during processing. `sharp` requires
 **[node-gyp](https://github.com/nodejs/node-gyp)** to build, so you will need to
@@ -64,14 +64,7 @@ npm install --global --production windows-build-tools
 
 ## usage - as cli (command line tool)
 
-### 1. Install dependencies
-
-Install:
-
--   Yarn
--   Node 8.3.11 (or higher)
-
-### 2. Get chocolate bars (histograms) of images
+### View Images and Get chocolate bars (histograms)
 
 ![Screenshot](./static/site/screenshot-6.png)
 
