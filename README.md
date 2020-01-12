@@ -11,7 +11,6 @@ chocolate-bars is stable on Windows, Linux Ubuntu (Mac is possible but not teste
 [![Travis](https://img.shields.io/travis/mrseanryan/chocolate-bars.svg)](https://travis-ci.org/mrseanryan/chocolate-bars)
 [![node](https://img.shields.io/node/v/chocolate-bars.svg)](https://nodejs.org)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/mrseanryan/chocolate-bars.svg)](https://greenkeeper.io/)
 [![Dependencies](https://david-dm.org/mrseanryan/chocolate-bars.svg)](https://david-dm.org/mrseanryan/chocolate-bars)
 [![Dev Dependencies](https://david-dm.org/mrseanryan/chocolate-bars/dev-status.svg)](https://david-dm.org/mrseanryan/chocolate-bars?type=dev)
 
