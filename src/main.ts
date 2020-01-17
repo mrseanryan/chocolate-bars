@@ -49,7 +49,7 @@ function launchChocolateBarsApp() {
         const electronArgs = [
             // MUST align with SharedDataUtils.ts and ImageSizeExecutor.ts:
             appPath,
-            ...process.argv.filter(a => !a.startsWith("--imageDir")),
+            ...process.argv,
             `--imageDir=${ArgsParser.encodeSpaces(parsedArgs.imageDir)}`
         ];
 
