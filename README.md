@@ -93,7 +93,15 @@ To use:
 
 where `--subDirs` means also view images in sub directories.
 
-If `imageDir` is not given, then `chocolate-bars` will try to open the default photos folder, depending on the OS.
+This can be abbreviated to:
+
+`chocolate-bars [--i=<path to image directory>] [--s]`
+
+note: If `--imageDir` (or `--i`) is not given, then `chocolate-bars` will try to open the default photos folder, depending on the OS.
+
+For a full list of options, see the built-in help:
+
+`chocolate-bars --help`
 
 ##### b) from the source code
 
@@ -122,6 +130,10 @@ example:
 ```
 
 where `--subDirs` means also view images in sub directories.
+
+For a full list of options, see the built-in help:
+
+`./go.sh --help`
 
 ### keyboard shortcuts
 

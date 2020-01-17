@@ -13,30 +13,35 @@ export type Args = {
 
 export namespace ArgsParser {
     export function parse(): Args {
-        const argv = yargs.options({
-            imageDir: {
-                type: "string",
-                default: getDefaultImageDirForOs(),
-                description:
-                    "The folder containing images. Defaults to typical locations for your OS."
-            },
-            shrink: {
-                type: "boolean",
-                default: false,
-                description:
-                    "Shrink images the given imageDir. Internal option that you do not normally need to use."
-            },
-            subdirs: {
-                type: "boolean",
-                default: false,
-                description: "If true, then also show images from sub-folders."
-            },
-            verbose: {
-                type: "boolean",
-                default: false,
-                description: "If true, then use verbose logging."
-            }
-        }).argv;
+        const argv = yargs
+            .options({
+                imageDir: {
+                    alias: "i",
+                    type: "string",
+                    default: getDefaultImageDirForOs(),
+                    description:
+                        "The folder containing images. Defaults to typical locations for your OS."
+                },
+                shrink: {
+                    type: "boolean",
+                    default: false,
+                    description:
+                        "Make shrunken copies of images in the given imageDir. This is an internal option that you do not normally need to use."
+                },
+                subdirs: {
+                    alias: "s",
+                    type: "boolean",
+                    default: false,
+                    description: "If true, then also show images from sub-folders."
+                },
+                verbose: {
+                    alias: "v",
+                    type: "boolean",
+                    default: false,
+                    description: "If true, then use verbose logging."
+                }
+            })
+            .strict().argv;
 
         const imageDir = argv.imageDir || getDefaultImageDirForOs();
 
