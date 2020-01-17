@@ -49,7 +49,7 @@ function launchChocolateBarsApp() {
         const electronArgs = [
             // MUST align with SharedDataUtils.ts and ImageSizeExecutor.ts:
             appPath,
-            ...process.argv.filter(a => !a.startsWith("--imageDir")),
+            ...process.argv.filter(notImageDir),
             `--imageDir=${ArgsParser.encodeSpaces(parsedArgs.imageDir)}`
         ];
 
@@ -59,5 +59,9 @@ function launchChocolateBarsApp() {
     } catch (error) {
         console.error("[error]", error);
         showElectronTip();
+    }
+
+    function notImageDir(option: string): boolean {
+        return !option.startsWith("--imageDir") && !option.startsWith("-i");
     }
 }
