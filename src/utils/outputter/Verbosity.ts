@@ -3,3 +3,16 @@ export enum Verbosity {
     Medium,
     High
 }
+
+export function verbosityAsText(verbosity: Verbosity): string {
+    switch (verbosity) {
+        case Verbosity.Low:
+            return "Low";
+        case Verbosity.Medium:
+            return "Medium";
+        case Verbosity.High:
+            return "High";
+        default:
+            return "(unknown)";
+    }
+}

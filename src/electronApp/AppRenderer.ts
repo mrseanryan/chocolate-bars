@@ -1,6 +1,6 @@
 import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
-import { Verbosity } from "../utils/outputter/Verbosity";
+import { Verbosity, verbosityAsText } from "../utils/outputter/Verbosity";
 import { ChocolateBarsArgs } from "../utils/SharedDataUtils";
 import { KeyboardController } from "./controllers/KeyboardController";
 import { ClearStarredImagesRenderer } from "./rendering/ClearStarredImagesRenderer";
@@ -40,8 +40,8 @@ export namespace AppRenderer {
     export async function renderContainerAndDetailWithImages(args: ChocolateBarsArgs) {
         setVerbosity(args.isVerbose);
 
-        state.imageInputDir = args.imageInputDir;
-        state.enableSubDirs = args.enableSubDirs;
+        state.imageInputDir = args.imageDir;
+        state.enableSubDirs = args.subDirs;
 
         JQueryUtils.renderHtml(grid.getHeaderHtml());
         SelectDirectoryRenderer.addSelectDirectoryListener(renderImagesAndPagerForDirectory);
@@ -63,7 +63,10 @@ export namespace AppRenderer {
     }
 
     function setVerbosity(isVerbose: boolean) {
-        outputter = new ConsoleOutputter(isVerbose ? Verbosity.High : Verbosity.Low);
+        const verbosity = isVerbose ? Verbosity.High : Verbosity.Low;
+
+        outputter = new ConsoleOutputter(verbosity);
+        outputter.info(`Verbosity = ${verbosityAsText(verbosity)}`);
     }
 
     async function renderImagesAndPager() {

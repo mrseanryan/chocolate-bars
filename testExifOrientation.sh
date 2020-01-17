@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-yarn build:minimal && ./go.sh ./node_modules/exif-orientation-examples-sr
+yarn build:minimal && ./go.sh --imageDir=./node_modules/exif-orientation-examples-sr

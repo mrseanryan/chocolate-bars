@@ -1,6 +1,9 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
 
+import { ArgsParser } from "../utils/ArgsParser";
+import { ChocolateBarsArgs } from "../utils/SharedDataUtils";
+
 let mainWindow: Electron.BrowserWindow | null = null;
 
 function createWindow() {
@@ -19,12 +22,18 @@ function createWindow() {
 
     mainWindow.setMenu(null);
 
-    // and load the index.html of the app.
+    // Load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, "./index.html"));
 
-    (global as any)["sharedObject"] = { prop1: process.argv };
+    const args = ArgsParser.parse();
 
-    // Emitted when the window is closed.
+    const chocolateArgs: ChocolateBarsArgs = {
+        ...args,
+        thisScriptDir: process.argv[1]
+    };
+
+    (global as any)["sharedObject"] = chocolateArgs;
+
     mainWindow.on("closed", () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time

@@ -46,25 +46,18 @@ function launchChocolateBarsApp() {
     try {
         const appPath = path.resolve(path.join(__dirname, "electronApp/appMain.js"));
 
-        child_process.spawn(
-            "electron",
-            [
-                // MUST align with SharedDataUtils.ts and ImageSizeExecutor.ts:
-                appPath,
-                parsedArgs.imageDir,
-                boolAsString(parsedArgs.subDirs, "subDirs"),
-                boolAsString(parsedArgs.isVerbose, "verbose")
-            ],
-            {
-                shell: true
-            }
-        );
+        const electronArgs = [
+            // MUST align with SharedDataUtils.ts and ImageSizeExecutor.ts:
+            appPath,
+            ...process.argv.filter(a => !a.startsWith("--imageDir")),
+            `--imageDir=${ArgsParser.encodeSpaces(parsedArgs.imageDir)}`
+        ];
+
+        child_process.spawn("electron", electronArgs, {
+            shell: true
+        });
     } catch (error) {
         console.error("[error]", error);
         showElectronTip();
-    }
-
-    function boolAsString(val: boolean, argName: string): string {
-        return val ? argName : `${argName}-disabled`;
     }
 }

@@ -6,4 +6,4 @@ yarn build:minimal
 
 yarn build:cli
 
-node ./dist/lib/cli.js --help
+node ./dist/lib/cli.js --badArg --verbose
