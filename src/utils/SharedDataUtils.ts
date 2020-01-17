@@ -1,33 +1,17 @@
+import { Args, ArgsParser } from "./ArgsParser";
+
 const remote = require("electron").remote;
 
-export type ChocolateBarsArgs = {
-    imageInputDir: string;
-    enableSubDirs: boolean;
+export type ChocolateBarsArgs = Args & {
     thisScriptDir: string;
-    isVerbose: boolean;
 };
 
 export namespace SharedDataUtils {
     export function getArgs(): ChocolateBarsArgs {
-        const args = remote.getGlobal("sharedObject").prop1;
-        return {
-            thisScriptDir: args[1],
-            imageInputDir: args[2],
-            enableSubDirs: args[3] === "subDirs",
-            isVerbose: args[4] === "verbose"
-        };
-    }
+        const args = remote.getGlobal("sharedObject") as ChocolateBarsArgs;
 
-    // Can be launched via cli (yargs) OR directly via node
-    function getEnableSubDirs(value: string | boolean): boolean {
-        if (value === "true") {
-            return true;
-        }
+        args.imageDir = ArgsParser.decodeSpaces(args.imageDir);
 
-        if (value === "--subDirs") {
-            return true;
-        }
-
-        return false;
+        return args;
     }
 }

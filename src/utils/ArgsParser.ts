@@ -1,5 +1,7 @@
 import { existsSync } from "fs";
 
+import { StringUtils } from "./StringUtils";
+
 const yargs = require("yargs");
 
 export type Args = {
@@ -44,6 +46,16 @@ export namespace ArgsParser {
             shrink: !!argv.shrink,
             subDirs: !!argv.subDirs
         };
+    }
+
+    const SPACE_TOKEN = "__-32-__"; // avoid & or ; or ! which shell can act on
+
+    export function encodeSpaces(text: string): string {
+        return StringUtils.replaceAll(text, " ", SPACE_TOKEN);
+    }
+
+    export function decodeSpaces(text: string): string {
+        return StringUtils.replaceAll(text, SPACE_TOKEN, " ");
     }
 
     function getDefaultImageDirForOs(): string {

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-yarn build:minimal && ./go.sh ./static/testData/empty
+yarn build:minimal && ./go.sh --imageDir=./static/testData/empty
