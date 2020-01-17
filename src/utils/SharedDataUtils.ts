@@ -4,15 +4,17 @@ export type ChocolateBarsArgs = {
     imageInputDir: string;
     enableSubDirs: boolean;
     thisScriptDir: string;
+    isVerbose: boolean;
 };
 
 export namespace SharedDataUtils {
     export function getArgs(): ChocolateBarsArgs {
         const args = remote.getGlobal("sharedObject").prop1;
         return {
+            thisScriptDir: args[1],
             imageInputDir: args[2],
-            enableSubDirs: getEnableSubDirs(args[3]),
-            thisScriptDir: args[1]
+            enableSubDirs: args[3] === "subDirs",
+            isVerbose: args[4] === "verbose"
         };
     }
 

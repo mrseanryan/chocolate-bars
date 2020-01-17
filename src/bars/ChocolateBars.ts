@@ -3,7 +3,6 @@ import { ImageResizeExecutor } from "../utils/ImageResizeExecutor";
 import { IOutputter } from "../utils/outputter/IOutputter";
 import { ChocolateResult } from "./model/ChocolateResult";
 import { ImageDetail } from "./model/ImageDetail";
-import { ImageFilePath } from "./model/ImageFilePath";
 
 export namespace ChocolateBars {
     // Yield image results as they become available
@@ -18,6 +17,12 @@ export namespace ChocolateBars {
             state,
             outputter
         );
+
+        // Possible issue:
+        // How to handle directory that has images, but none of them successfully resize?
+        //
+        // - the iterable will be empty, so caller will never hide the 'loading' icon
+        // Could always return an empty image? But maybe there is no nice way to handle this scenario.
 
         let id = 0;
         for await (const result of iterable) {

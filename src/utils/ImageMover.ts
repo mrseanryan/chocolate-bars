@@ -11,6 +11,30 @@ export enum MoveOrCopy {
     Move
 }
 
+export namespace MoveOrCopyUtils {
+    export function toTextCapitalized(mode: MoveOrCopy): string {
+        switch (mode) {
+            case MoveOrCopy.Copy:
+                return "Copy";
+            case MoveOrCopy.Move:
+                return "Move";
+            default:
+                throw new Error(`Unknown mode: ${mode}`);
+        }
+    }
+
+    export function toTextPastTense(mode: MoveOrCopy): string {
+        switch (mode) {
+            case MoveOrCopy.Copy:
+                return "copied";
+            case MoveOrCopy.Move:
+                return "moved";
+            default:
+                throw new Error(`Unknown mode: ${mode}`);
+        }
+    }
+}
+
 export namespace ImageMover {
     export async function moveStarredImagesTo(
         currentImageInputDir: string,
@@ -35,6 +59,10 @@ export namespace ImageMover {
                     resolve();
                 }
             };
+
+            if (starredImagesThisPage.length === 0) {
+                reject("Please first add stars to some images");
+            }
 
             starredImagesThisPage.forEach((imagePath, index) => {
                 const fileName = path.basename(imagePath);
@@ -100,5 +128,14 @@ export namespace ImageMover {
         return imagePaths.filter(imagePath =>
             imagesThisPage.some(imageThisPage => imageThisPage === imagePath)
         );
+    }
+
+    export async function hasStarredImagesThisPage(
+        currentImageInputDir: string,
+        state: State,
+        outputter: IOutputter
+    ): Promise<boolean> {
+        const images = await getStarredImagesThisPage(currentImageInputDir, state, outputter);
+        return images.length > 0;
     }
 }

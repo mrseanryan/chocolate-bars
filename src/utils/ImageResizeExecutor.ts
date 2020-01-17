@@ -32,15 +32,20 @@ export namespace ImageResizeExecutor {
                 continue;
             }
             if (FileUtils.isSmallerFileNewer(file)) {
+                const smallerFilepath = FileUtils.getSmallerFilePath(file);
+                outputter.infoVerbose(`using cached resized image at ${smallerFilepath}...`);
+
                 yield {
                     originalFilepath: file,
-                    smallerFilepath: FileUtils.getSmallerFilePath(file)
+                    smallerFilepath
                 };
                 continue;
             }
             outputter.infoVerbose(`resizing image at ${file}...`);
 
-            const stdout = await execShrinkPromise(file);
+            const stdout = await execShrinkPromise(file, outputter);
+
+            outputter.infoVerbose(`resized image at ${file}.`);
 
             const stdoutText = stdout;
 
@@ -64,23 +69,29 @@ export namespace ImageResizeExecutor {
         }
     }
 
-    async function execShrinkPromise(filePath: string): Promise<string> {
+    async function execShrinkPromise(filePath: string, outputter: IOutputter): Promise<string> {
         // determine path, whether running locally in repo OR globally as cli:
         // dist/lib/electronApp
         const thisScriptDir = path.dirname(SharedDataUtils.getArgs().thisScriptDir);
+
+        const scriptToRun = path.resolve(path.join(thisScriptDir, "..", "main.js"));
+
+        outputter.infoVerbose(`resizing image via ${scriptToRun}...`);
 
         return new Promise<string>((resolve, reject) => {
             child_process.execFile(
                 "node",
                 // .. to reach dist/lib
-                [path.resolve(path.join(thisScriptDir, "..", "main.js")), filePath, "--shrink"],
+                [scriptToRun, `--imageDir=${filePath}`, "--shrink"],
                 (err, stdout, stderr) => {
                     if (err) {
+                        console.error(err);
                         reject(err);
                         return;
                     }
 
                     if (stderr) {
+                        console.error(stderr);
                         reject(stderr);
                         return;
                     }
