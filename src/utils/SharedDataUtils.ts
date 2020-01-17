@@ -10,8 +10,13 @@ export namespace SharedDataUtils {
     export function getArgs(): ChocolateBarsArgs {
         const args = remote.getGlobal("sharedObject") as ChocolateBarsArgs;
 
-        args.imageDir = ArgsParser.decodeSpaces(args.imageDir);
+        args.imageDir = ArgsParser.decodeSpaces(ensureIsString(args.imageDir));
 
         return args;
+    }
+
+    // With cli usage of '-i', the encoded imageDir appears twice, so we get an array
+    function ensureIsString(imageDir: string | string[]): string {
+        return Array.isArray(imageDir) ? imageDir[imageDir.length - 1] : imageDir;
     }
 }
