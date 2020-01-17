@@ -89,9 +89,11 @@ note: on Ubuntu you may need to prefix the above commands with `sudo`:
 
 To use:
 
-`chocolate-bars <path to image direcory> [--subDirs]`
+`chocolate-bars [--imageDir=<path to image directory>] [--subDirs]`
 
 where `--subDirs` means also view images in sub directories.
+
+If `imageDir` is not given, then `chocolate-bars` will try to open the default photos folder, depending on the OS.
 
 ##### b) from the source code
 
@@ -110,13 +112,13 @@ To test your installation:
 To check your images:
 
 ```
-./go.sh <path to image direcory>
+./go.sh --imageDir=<path to image direcory>
 ```
 
 example:
 
 ```
-./go.sh ../myPhotos --subDirs
+./go.sh --imageDir=../myPhotos --subDirs
 ```
 
 where `--subDirs` means also view images in sub directories.

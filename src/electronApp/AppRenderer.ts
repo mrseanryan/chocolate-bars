@@ -1,4 +1,3 @@
-import { DataStorage } from "../bars/model/persisted/DataStorage";
 import { JQueryUtils } from "../utils/JQueryUtils";
 import { ConsoleOutputter } from "../utils/outputter/ConsoleOutputter";
 import { Verbosity } from "../utils/outputter/Verbosity";
@@ -15,7 +14,7 @@ import { RefreshImagesRenderer } from "./rendering/RefreshImagesRenderer";
 import { SelectDirectoryRenderer } from "./rendering/SelectDirectoryRenderer";
 import { State } from "./State";
 
-const outputter = new ConsoleOutputter(Verbosity.Low);
+let outputter = new ConsoleOutputter(Verbosity.Low);
 
 const grid = new HtmlGrid();
 
@@ -34,12 +33,13 @@ export namespace AppRenderer {
             outputter,
             renderImagesAndPagerForDirectorySamePage
         );
-
     }
 
     // TODO should really save on quit - would need to send JSON back to server
 
     export async function renderContainerAndDetailWithImages(args: ChocolateBarsArgs) {
+        setVerbosity(args.isVerbose);
+
         state.imageInputDir = args.imageInputDir;
         state.enableSubDirs = args.enableSubDirs;
 
@@ -60,6 +60,10 @@ export namespace AppRenderer {
         ExpandedImageRenderer.renderHiddenPopup();
 
         await renderImagesAndPager();
+    }
+
+    function setVerbosity(isVerbose: boolean) {
+        outputter = new ConsoleOutputter(isVerbose ? Verbosity.High : Verbosity.Low);
     }
 
     async function renderImagesAndPager() {

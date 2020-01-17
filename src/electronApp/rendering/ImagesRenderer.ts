@@ -26,7 +26,11 @@ export namespace ImagesRenderer {
 
         clearImages(grid);
 
+        outputter.infoVerbose("DataStorage.loadForDirectoryOrCreate - ...");
+
         await DataStorage.loadForDirectoryOrCreate(state.imageInputDir);
+
+        outputter.infoVerbose("DataStorage.loadForDirectoryOrCreate - [done]");
 
         const imageInputDir = state.imageInputDir;
         grid.setTitleForDir(imageInputDir);
@@ -35,11 +39,13 @@ export namespace ImagesRenderer {
         let thisEpoch = state.epoch;
         let imagesLoaded = 0;
 
+        outputter.infoVerbose("ChocolateBars.processDirectoryIterable ...");
         for await (const result of ChocolateBars.processDirectoryIterable(
             imageInputDir,
             state,
             outputter
         )) {
+            outputter.infoVerbose("ChocolateBars.processDirectoryIterable [done]");
             if (thisEpoch !== state.epoch) {
                 // a stale response
                 return;
