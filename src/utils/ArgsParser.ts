@@ -20,26 +20,26 @@ export namespace ArgsParser {
                     type: "string",
                     default: getDefaultImageDirForOs(),
                     description:
-                        "The folder containing images. Defaults to typical locations for your OS."
+                        "The folder containing images. Defaults to typical locations for your OS.",
                 },
                 shrink: {
                     type: "boolean",
                     default: false,
                     description:
-                        "Make shrunken copies of images in the given imageDir. This is an internal option that you do not normally need to use."
+                        "Make shrunken copies of images in the given imageDir. This is an internal option that you do not normally need to use.",
                 },
-                subdirs: {
+                subDirs: {
                     alias: "s",
                     type: "boolean",
                     default: false,
-                    description: "If true, then also show images from sub-folders."
+                    description: "If true, then also show images from sub-folders.",
                 },
                 verbose: {
                     alias: "v",
                     type: "boolean",
                     default: false,
-                    description: "If true, then use verbose logging."
-                }
+                    description: "If true, then use verbose logging.",
+                },
             })
             .strict().argv;
 
@@ -49,7 +49,7 @@ export namespace ArgsParser {
             imageDir,
             isVerbose: !!argv.verbose,
             shrink: !!argv.shrink,
-            subDirs: !!argv.subDirs
+            subDirs: !!argv.subDirs,
         };
     }
 
@@ -79,11 +79,11 @@ export namespace ArgsParser {
         const candidateDirs = [
             `${process.env.USERPROFILE}\\Pictures`,
             `${process.env.USERPROFILE}\\Photos`,
-            `${process.env.USERPROFILE}\\Documents`
+            `${process.env.USERPROFILE}\\Documents`,
         ];
 
         const fallbackDir = candidateDirs[candidateDirs.length - 1];
 
-        return candidateDirs.find(d => existsSync(d)) || fallbackDir;
+        return candidateDirs.find((d) => existsSync(d)) || fallbackDir;
     }
 }
