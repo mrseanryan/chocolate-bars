@@ -21,6 +21,8 @@ chocolate-bars is stable on Windows, Linux Ubuntu (Mac is possible but not teste
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K73ALBJ)
+
 ## why?
 
 Histograms are useful for finding image defects such as:
