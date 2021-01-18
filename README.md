@@ -8,7 +8,8 @@ Electron based app - so, it runs on node.js.
 
 chocolate-bars is stable on Windows, Linux Ubuntu (Mac is possible but not tested). Releases follow semantic versioning.
 
-[![Build Status](https://travis-ci.com/mrseanryan/chocolate-bars.svg?branch=master)](https://travis-ci.com/mrseanryan/chocolate-bars)
+<!-- disabled as uses too many travis credits! [![Build Status](https://travis-ci.com/mrseanryan/chocolate-bars.svg?branch=master)](https://travis-ci.com/mrseanryan/chocolate-bars) -->
+
 [![node](https://img.shields.io/node/v/chocolate-bars.svg)](https://nodejs.org)
 
 [![Dependencies](https://david-dm.org/mrseanryan/chocolate-bars.svg)](https://david-dm.org/mrseanryan/chocolate-bars)
