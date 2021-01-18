@@ -109,7 +109,7 @@
         "prebuild": "rimraf dist",
         "build": "tsc --module commonjs && typedoc --out docs --theme minimal src && yarn build:extra",
         "build:extra": "yarn build:cli && yarn build:static",
-        "build:cli": "echo '#!/usr/bin/env node' > dist/lib/cli.js && cat dist/lib/main.js >> dist/lib/cli.js && chmod +x dist/lib/cli.js",
+        "build:cli": "echo #!/usr/bin/env node > dist/lib/cli.js && cat dist/lib/main.js >> dist/lib/cli.js && chmod +x dist/lib/cli.js",
         "build:minimal": "tsc --module commonjs && yarn build:extra",
         "build:minimal:watch": "tsc --module commonjs -w",
         "build:static": "yarn build:static:html && yarn build:static:images",
