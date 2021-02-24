@@ -143,6 +143,7 @@
         "xmldom": "^0.4.0",
         "yargs": "^16.2.0"
     },
+    "funding": "https://github.com/mrseanryan/chocolate-bars?sponsor=1",
     "keywords": [
         "electron",
         "exif",
