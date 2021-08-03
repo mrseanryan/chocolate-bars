@@ -140,7 +140,7 @@
         "jquery": "^3.3.1",
         "plotly.js": "^1.43.1",
         "sharp": "^0.27.0",
-        "xmldom": "^0.4.0",
+        "xmldom": "^0.6.0",
         "yargs": "^16.2.0"
     },
     "funding": "https://github.com/mrseanryan/chocolate-bars?sponsor=1",
