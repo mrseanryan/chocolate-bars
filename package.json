@@ -133,7 +133,7 @@
         "url": "git@github.com:mrseanryan/chocolate-bars.git"
     },
     "dependencies": {
-        "electron": "^4.2.12",
+        "electron": "^11.5.0",
         "exifreader": "^3.13.0",
         "histogram": "^3.0.3",
         "image-size": "^0.9.3",
